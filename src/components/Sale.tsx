@@ -12,7 +12,7 @@ export default function Sale() {
   ]
    return (
       <>
-         <div className={`${paddingForpage} bg-gray-100`}>
+         <div className={`${paddingForpage} bg-blue-50`}>
             <div className="">
               <div className=" text-4xl font-semibold font-serif py-5">
                 <p>Sale...</p>

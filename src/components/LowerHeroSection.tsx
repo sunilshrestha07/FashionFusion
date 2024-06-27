@@ -5,21 +5,10 @@ import React from "react";
 export default function LowerHeroSection() {
    return (
       <>
-         <div className="bg-gray-100">
+         <div className="bg-orange-100">
             <div
                className={`grid grid-rows-2 sm:grid-rows-none sm:grid-cols-2 gap-4 sm:gap-6 md:gap-8 ${paddingForpage}`}
             >
-               {/* <div className=" col-span-1 w-full aspect-square flex items-center justify-center ">
-                  <Image
-                     className="w-full h-full object-cover object-top"
-                     src="/images/model.jpg"
-                     alt="Model image"
-                     width={400}
-                     height={400}
-                     quality={100}
-                  />
-               </div> */}
-
                <div className=" col-span-1 w-full aspect-square  flex justify-center items-center">
                   <div className=" flex justify-center items-center ">
                      <div className="w-1/2 aspect-[9/13] rounded-3xl  relative z-10">
