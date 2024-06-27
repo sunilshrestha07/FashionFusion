@@ -19,7 +19,7 @@ export default function Navbar() {
    }
 
    return (
-      <nav className="px-4 py-2 sm:px-5 sm:py-2 md:px-10 md:py-3 lg:px-24 lg:py-5">
+      <nav className="px-4 py-4 sm:px-5 sm:py-2 md:px-10 md:py-3 lg:px-24 lg:py-5 sticky top-0 left-1 w-full bg-white z-40">
          <div className="grid grid-cols-4 sm:grid-cols-8 items-center">
             {/* logo section */}
             <div className="col-span-2 ">
@@ -67,9 +67,9 @@ export default function Navbar() {
                </div>
 
                {/* hamburger menu */}
-               <div className="w-6 xl:w-8 aspect-square  object-cover sm:hidden relative">
+               <div className="w-6 xl:w-8 aspect-square  object-cover sm:hidden ">
                   <img src="/icons/menu.png" alt="" onClick={handelHamClick} />
-                  <div className={`absolute top-7 right-0 bg-white w-screen aspect-[9/16.75] flex justify-center transition ease-in-out duration-300 ${isMenuActive ? "block" : "hidden"}`}>
+                  <div className={`absolute top-16 right-0 bg-white w-screen aspect-[9/16.75] flex justify-center transition ease-in-out duration-300 z-20 ${isMenuActive ? "block" : "hidden"}`}>
                      <div className=" mt-20 flex flex-col gap-10 ">
                         {menu.map((item, index) => (
                            <div onClick={handelHamClick}
