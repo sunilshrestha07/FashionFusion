@@ -24,9 +24,9 @@ export default function Home() {
                   <div className=" sm:text-base xl:text-xl w-11/12 sm:w-2/4 xl:w-2/5">
                      <p>
                         Our online store offers a wide selection of premium
-                        quality hoodies that are designed to keep you
+                        quality clothes that are designed to keep you
                         comfortable and stylish. Browse our collection and find
-                        the perfect hoodie that suits your style and needs.
+                        the perfect clothes that suits your style and needs.
                      </p>
                   </div>
                   <div className=" font-lora flex gap-10">
