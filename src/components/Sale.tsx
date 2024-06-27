@@ -28,7 +28,7 @@ export default function Sale() {
                       alt={item.name}
                       width={300}
                       height={500}
-                      quality={60}
+                      quality={90}
                       />
                     </div>
                     <div className=" text-xl text-center">
