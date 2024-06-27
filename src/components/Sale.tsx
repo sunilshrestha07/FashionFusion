@@ -4,7 +4,7 @@ import React from "react";
 
 export default function Sale() {
   const saleItems = [
-    {id:1,name:"Hump tees", href:"/male", image:'/images/men2.jpg', price:"$100" , category:"tshirt"},
+    {id:1,name:"Hump tees", href:"/male", image:'/images/model.jpg', price:"$100" , category:"tshirt"},
     {id:2,name:"Hump tees", href:"/male", image:'/images/women4.jpg', price:"$100" , category:"hoodie"},
     {id:3,name:"Hump tees", href:"/male", image:'/images/women5.jpg', price:"$100" , category:"pants"},
     {id:4,name:"Hump tees", href:"/male", image:'/images/main.jpg', price:"$100" , category:"tshirt"},

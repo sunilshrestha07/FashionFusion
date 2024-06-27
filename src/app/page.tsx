@@ -12,10 +12,11 @@ export default function Home() {
             <div className=" w-full aspect-[9/12] sm:aspect-[15/11] md:aspect-[15/10] lg:aspect-[15/7] object-cover overflow-hidden relative">
                <Image
                   className="w-full h-full object-cover object-center sm:object-top"
-                  src="/images/main.jpg"
+                  src="/images/mainmain2.svg"
                   alt="hero image"
                   width={1000}
-                  height={500}
+                  height={1000}
+                  quality={100}
                />
                <div className={`absolute top-0 bg-gradient-to-r from-black  to-transparent w-full aspect-[9/12] sm:aspect-[15/11] md:aspect-[15/10] lg:aspect-[15/7] text-gray-300 flex flex-col gap-8 ${paddingForpage}`}>
                   <div className="  sm:w-1/2 text-5xl sm:text-5xl md:text-6xl xl:text-7xl font-serif font-semibold flex flex-col sm:gap-4 xl:gap-8">
