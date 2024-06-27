@@ -14,8 +14,8 @@ export default function Home() {
                   className="w-full h-full object-cover object-right sm:object-center"
                   src="/images/mainmain2.svg"
                   alt="hero image"
-                  width={1000}
-                  height={1000}
+                  width={600}
+                  height={600}
                   quality={100}
                   priority={true}
                />

@@ -17,9 +17,9 @@ export default function LowerHeroSection() {
                               className="w-full h-full object-cover object-center z-50"
                               src="/images/cinematic.jpg"
                               alt="Model image"
-                              width={500}
-                              height={600}
-                              quality={100}
+                              width={400}
+                              height={500}
+                              quality={90}
                            />
                         </div>
                         <div className="w-2/3 aspect-[9/12] rounded-3xl overflow-hidden absolute top-[16%] -left-[45%] -z-10">
@@ -27,9 +27,9 @@ export default function LowerHeroSection() {
                               className="w-full h-full object-cover object-center"
                               src="/images/men6.jpg"
                               alt="Model image"
-                              width={500}
-                              height={600}
-                              quality={100}
+                              width={300}
+                              height={400}
+                              quality={70}
                            />
                         </div>
                         <div className="w-1/2 aspect-[9/12] rounded-3xl overflow-hidden absolute -bottom-[16%] -right-[32%] -z-10">
@@ -37,9 +37,9 @@ export default function LowerHeroSection() {
                               className="w-full h-full object-cover object-center z-0"
                               src="/images/men3.jpg"
                               alt="Model image"
-                              width={500}
-                              height={600}
-                              quality={100}
+                              width={300}
+                              height={500}
+                              quality={70}
                            />
                         </div>
                         <div className="w-1/2 aspect-[9/12] rounded-3xl overflow-hidden absolute -top-[16%] -right-[30%] ">
@@ -47,9 +47,9 @@ export default function LowerHeroSection() {
                               className="w-full h-full object-cover object-center z-0"
                               src="/images/women1.jpg"
                               alt="Model image"
-                              width={500}
-                              height={600}
-                              quality={100}
+                              width={300}
+                              height={500}
+                              quality={70}
                            />
                         </div>
                      </div>

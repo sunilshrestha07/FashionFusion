@@ -7,26 +7,14 @@ export default function FooterCard() {
       <div>
          <div className="">
             <div className=" w-full aspect-[10/8] sm:aspect-[16/6] lg:aspect-[16/5] relative">
-               {/* <Image
+               <Image
                   className="w-full h-full object-cover object-center"
                   src="/images/foot.jpg"
                   alt="footerbody image"
                   width={1000}
                   height={500}
                   quality={100}
-               /> */}
-               <video
-                  className="w-full h-full object-cover object-center"
-                  controls
-                  preload="metadata"
-                  poster="/images/foot.jpg"
-                  autoPlay={true}
-                  muted={true}
-                  loop={true}
-               >
-                  <source src="/images/nft.mp4" type="video/mp4" />
-                  Your browser does not support the video tag.
-               </video>
+               />
                <div className=" backdrop-brightness-50 absolute w-full h-full top-0 left-0 flex flex-col justify-center items-center gap-3 sm:gap-6 md:gap-10">
                   <div className=" text-2xl sm:text-3xl xl:text-5xl font-semibold font-serif flex flex-col text-center text-white">
                      Experience Comfort & Style

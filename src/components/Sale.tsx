@@ -26,9 +26,9 @@ export default function Sale() {
                       className="w-full h-full object-cover object-top hover:scale-110 transition ease-in-out duration-200"
                       src={item.image}
                       alt={item.name}
-                      width={400}
-                      height={600}
-                      quality={100}
+                      width={300}
+                      height={500}
+                      quality={70}
                       />
                     </div>
                     <div className=" text-xl text-center">
