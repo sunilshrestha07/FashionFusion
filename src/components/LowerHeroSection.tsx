@@ -19,7 +19,7 @@ export default function LowerHeroSection() {
                               alt="Model image"
                               width={400}
                               height={500}
-                              quality={90}
+                              quality={80}
                            />
                         </div>
                         <div className="w-2/3 aspect-[9/12] rounded-3xl overflow-hidden absolute top-[16%] -left-[45%] -z-10">
@@ -29,7 +29,7 @@ export default function LowerHeroSection() {
                               alt="Model image"
                               width={300}
                               height={400}
-                              quality={70}
+                              quality={60}
                            />
                         </div>
                         <div className="w-1/2 aspect-[9/12] rounded-3xl overflow-hidden absolute -bottom-[16%] -right-[32%] -z-10">
@@ -39,7 +39,7 @@ export default function LowerHeroSection() {
                               alt="Model image"
                               width={300}
                               height={500}
-                              quality={70}
+                              quality={60}
                            />
                         </div>
                         <div className="w-1/2 aspect-[9/12] rounded-3xl overflow-hidden absolute -top-[16%] -right-[30%] ">
@@ -49,7 +49,7 @@ export default function LowerHeroSection() {
                               alt="Model image"
                               width={300}
                               height={500}
-                              quality={70}
+                              quality={60}
                            />
                         </div>
                      </div>
