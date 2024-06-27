@@ -4,8 +4,8 @@ import React from "react";
 
 export default function Sale() {
   const saleItems = [
-    {id:1,name:"Hump tees", href:"/male", image:'/images/model.jpg', price:"$100" , category:"tshirt"},
-    {id:2,name:"Hump tees", href:"/male", image:'/images/women4.jpg', price:"$100" , category:"hoodie"},
+    {id:1,name:"Hump tees", href:"/male", image:'/images/women8.jpg', price:"$100" , category:"tshirt"},
+    {id:2,name:"Hump tees", href:"/male", image:'/images/women9.jpg', price:"$100" , category:"hoodie"},
     {id:3,name:"Hump tees", href:"/male", image:'/images/women5.jpg', price:"$100" , category:"pants"},
     {id:4,name:"Hump tees", href:"/male", image:'/images/main.jpg', price:"$100" , category:"tshirt"},
     {id:5,name:"Hump tees", href:"/male", image:'/images/model.jpg', price:"$100" , category:"tshirt"},
@@ -26,9 +26,9 @@ export default function Sale() {
                       className="w-full h-full object-cover object-top hover:scale-110 transition ease-in-out duration-200"
                       src={item.image}
                       alt={item.name}
-                      width={300}
-                      height={500}
-                      quality={90}
+                      width={500}
+                      height={600}
+                      quality={70}
                       />
                     </div>
                     <div className=" text-xl text-center">
