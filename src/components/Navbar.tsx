@@ -5,8 +5,8 @@ import { usePathname } from "next/navigation";
 import React, { useState } from "react";
 
 export default function Navbar() {
-    const [isMenuActive, setIsMenuActive] = useState<boolean>(false);
-   const pathname =usePathname();
+   const [isMenuActive, setIsMenuActive] = useState<boolean>(false);
+   const pathname = usePathname();
    const menu = [
       { name: "Home", href: "/" },
       { name: "Sales", href: "/sales" },
@@ -14,18 +14,20 @@ export default function Navbar() {
       { name: "Female", href: "/female" },
    ];
 
-   const handelHamClick = () =>{
+   const handelHamClick = () => {
       setIsMenuActive(!isMenuActive);
-   }
+   };
 
    return (
       <nav className="px-4 py-4 sm:px-5 sm:py-2 md:px-10 md:py-3 lg:px-24 lg:py-5 sticky top-0 left-1 w-full bg-white z-40">
          <div className="grid grid-cols-4 sm:grid-cols-8 items-center">
             {/* logo section */}
             <div className="col-span-2 ">
-               <h1 className="font-semibold text-2xl sm:text-2xl md:text-3xl xl:text-4xl">
-                  FashionFusion
-               </h1>
+               <Link href="/">
+                  <h1 className="font-semibold text-2xl sm:text-2xl md:text-3xl xl:text-4xl">
+                     FashionFusion
+                  </h1>
+               </Link>
             </div>
 
             {/* navlinks section */}
@@ -69,21 +71,21 @@ export default function Navbar() {
                {/* hamburger menu */}
                <div className="w-6 xl:w-8 aspect-square  object-cover sm:hidden ">
                   <img src="/icons/menu.png" alt="" onClick={handelHamClick} />
-                  <div className={`absolute top-16 right-0 bg-white w-screen aspect-[9/16.75] flex justify-center transition ease-in-out duration-300 z-20 ${isMenuActive ? "block" : "hidden"}`}>
+                  <div
+                     className={`absolute top-16 right-0 bg-white w-screen aspect-[9/16.75] flex justify-center transition ease-in-out duration-300 z-20 ${
+                        isMenuActive ? "block" : "hidden"
+                     }`}
+                  >
                      <div className=" mt-20 flex flex-col gap-10 ">
                         {menu.map((item, index) => (
-                           <div onClick={handelHamClick}
+                           <div
+                              onClick={handelHamClick}
                               className={`navlinks font-semibold w-full text-4xl hover:text-black transition ease-in-out duration-300 text-gray-600 ml-8 ${
                                  pathname === item.href ? "text-black" : ""
                               }`}
                               key={index}
                            >
-                              <Link
-                                 href={item.href}
-                              >
-                                 {item.name}
-                              </Link>
-                              
+                              <Link href={item.href}>{item.name}</Link>
                            </div>
                         ))}
                      </div>

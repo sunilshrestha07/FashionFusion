@@ -2,6 +2,8 @@ import LowerHeroSection from "@/components/LowerHeroSection";
 import { paddingForpage } from "./sizeDeclare";
 import Image from "next/image";
 import Link from "next/link";
+import Sale from "@/components/Sale";
+import FooterCard from "@/components/FooterCard";
 
 export default function Home() {
    return (
@@ -44,6 +46,18 @@ export default function Home() {
             <div className=" mt-16 md:mt-28">
                <LowerHeroSection/>
             </div>
+
+            {/* sale section */}
+            <div className=" mt-16 md:mt-28">
+               <Sale/>
+            </div>
+
+            {/* footercard */}
+            <div className=" mt-12 md:mt-20">
+               <FooterCard/>
+            </div>
+
+
          </div>
       </main>
    );

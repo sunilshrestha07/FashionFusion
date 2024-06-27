@@ -14,8 +14,8 @@ export default function LowerHeroSection() {
                      className="w-full h-full object-cover object-top"
                      src="/images/model.jpg"
                      alt="Model image"
-                     width={1000}
-                     height={1000}
+                     width={400}
+                     height={400}
                      quality={100}
                   />
                </div>
@@ -39,7 +39,7 @@ export default function LowerHeroSection() {
             </div>
 
             <div className={`sm:mt-5 ${paddingForpage}`}>
-               <div className="flex flex-col gap-3">
+               <div className="flex flex-col gap-3 mb-16">
                   <div className="text-4xl sm:text-3xl xl:text-4xl font-semibold font-serif flex flex-col text-center">
                      <p>Experience the Best in Comfort & Style</p>
                   </div>
