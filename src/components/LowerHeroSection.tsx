@@ -11,7 +11,7 @@ export default function LowerHeroSection() {
             >
                <div className=" col-span-1 w-full aspect-square  flex justify-center items-center">
                   <div className=" flex justify-center items-center ">
-                     <div className="w-1/2 aspect-[9/13] rounded-3xl  relative z-10">
+                     <div className="w-2/3 sm:w-1/2 aspect-[9/13] rounded-3xl  relative z-10">
                         <div className="w-full h-full rounded-3xl overflow-hidden z-50">
                            <Image
                               className="w-full h-full object-cover object-center z-50"
@@ -57,7 +57,7 @@ export default function LowerHeroSection() {
                </div>
 
                <div className=" col-span-1 flex flex-col justify-center items-start gap-5">
-                  <div className=" text-4xl sm:text-3xl xl:text-5xl font-semibold font-serif flex flex-col gap-1">
+                  <div className=" text-4xl sm:text-3xl xl:text-5xl font-semibold font-serif flex flex-col gap-1 w-full items-center sm:items-start">
                      <p>Premium</p>
                      <p>Quality Clothes</p>
                      <p>for All Seasons</p>

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Quicksand } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
+import FooterCard from "@/components/FooterCard";
 
 const quicksand = Quicksand({ subsets: ["latin"] });
 
@@ -20,6 +21,7 @@ export default function RootLayout({
       <body className={quicksand.className}>
         <Navbar/>
         {children}
+        <FooterCard/>
         </body>
     </html>
   );

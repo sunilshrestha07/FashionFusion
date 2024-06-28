@@ -52,13 +52,6 @@ export default function Home() {
             <div className=" mt-16 md:mt-28">
                <Sale/>
             </div>
-
-            {/* footercard */}
-            <div className=" mt-12 md:mt-20">
-               <FooterCard/>
-            </div>
-
-
          </div>
       </main>
    );

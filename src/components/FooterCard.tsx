@@ -20,7 +20,7 @@ export default function FooterCard() {
                      Experience Comfort & Style
                   </div>
                   <div className="text-sm sm:text-base xl:text-xl font-medium text-center text-white w-11/12 sm:w-10/12">
-                     At Hoodieshub, our mission is to provide our customers with
+                     At FashionFusion, our mission is to provide our customers with
                      the best in comfort and style. We are dedicated to quality,
                      sustainability, and affordability, ensuring you get the
                      best value for your money. Shop with us and experience the
