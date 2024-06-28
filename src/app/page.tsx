@@ -17,6 +17,7 @@ export default function Home() {
                   width={600}
                   height={600}
                   quality={80}
+                  priority={true}
                />
                <div
                   className={`absolute top-0 bg-gradient-to-r from-black  to-transparent w-full aspect-[9/12] sm:aspect-[15/11] md:aspect-[15/10] lg:aspect-[15/7] text-gray-300 flex flex-col gap-8 ${paddingForpage}`}
