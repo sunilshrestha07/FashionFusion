@@ -50,7 +50,7 @@ export default function Sale() {
       <>
          <div className={`${paddingForpage} bg-blue-50`}>
             <div className="">
-               <div className=" text-4xl font-semibold font-serif py-5">
+               <div className=" text-4xl font-semibold font-serif py-5 mb-5">
                   <p>Sale...</p>
                </div>
                <div className=" grid sm:grid-cols-2 md:grid-cols-3 gap-8 sm:gap-14 md:gap-10 lg:gap-24">
