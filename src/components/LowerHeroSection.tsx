@@ -1,6 +1,9 @@
+"use client";
+
 import { paddingForpage } from "../app/sizeDeclare";
 import Image from "next/image";
 import React from "react";
+import { motion } from "framer-motion"
 
 export default function LowerHeroSection() {
    return (
@@ -22,7 +25,17 @@ export default function LowerHeroSection() {
                               quality={80}
                            />
                         </div>
-                        <div className="w-2/3 aspect-[9/12] rounded-3xl overflow-hidden absolute top-[16%] -left-[45%] -z-10">
+                        <motion.div
+                        initial={{
+                           translateX: -53,
+                         }}
+                         whileInView={{
+                           opacity: 1,
+                           translateX: 0,
+                           transition: { delay: 0.2, duration: 0.5 },
+                         }}
+                         viewport={{ once: false, amount: 0 }}
+                        className="w-2/3 aspect-[9/12] rounded-3xl overflow-hidden absolute top-[16%] -left-[45%] -z-10">
                            <Image
                               className="w-full h-full object-cover object-center"
                               src="/images/men6.jpg"
@@ -31,8 +44,18 @@ export default function LowerHeroSection() {
                               height={400}
                               quality={60}
                            />
-                        </div>
-                        <div className="w-1/2 aspect-[9/12] rounded-3xl overflow-hidden absolute -bottom-[16%] -right-[32%] -z-10">
+                        </motion.div>
+                        <motion.div 
+                        initial={{
+                           translateX: 53,
+                         }}
+                         whileInView={{
+                           opacity: 1,
+                           translateX: 0,
+                           transition: { delay: 0.2, duration: 0.5 },
+                         }}
+                         viewport={{ once: false, amount: 0 }}
+                        className="w-1/2 aspect-[9/12] rounded-3xl overflow-hidden absolute -bottom-[16%] -right-[32%] -z-10">
                            <Image
                               className="w-full h-full object-cover object-center z-0"
                               src="/images/men3.jpg"
@@ -41,8 +64,18 @@ export default function LowerHeroSection() {
                               height={500}
                               quality={60}
                            />
-                        </div>
-                        <div className="w-1/2 aspect-[9/12] rounded-3xl overflow-hidden absolute -top-[16%] -right-[30%] ">
+                        </motion.div>
+                        <motion.div 
+                        initial={{
+                           translateX: 53,
+                         }}
+                         whileInView={{
+                           opacity: 1,
+                           translateX: 0,
+                           transition: { delay: 0.2, duration: 0.5 },
+                         }}
+                         viewport={{ once: false, amount: 0 }}
+                        className="w-1/2 aspect-[9/12] rounded-3xl overflow-hidden absolute -top-[16%] -right-[30%] ">
                            <Image
                               className="w-full h-full object-cover object-center z-0"
                               src="/images/women1.jpg"
@@ -51,7 +84,7 @@ export default function LowerHeroSection() {
                               height={500}
                               quality={60}
                            />
-                        </div>
+                        </motion.div>
                      </div>
                   </div>
                </div>
