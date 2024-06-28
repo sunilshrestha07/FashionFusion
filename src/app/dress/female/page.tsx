@@ -85,7 +85,7 @@ export default function Female() {
                         <p>Female Collection</p>
                      </div>
                      <div className=" font-medium">
-                        <p>Our collection of women's clothing</p>
+                        <p>Our collection of women&apos;s clothing</p>
                      </div>
                   </div>
                   <div className=" my-10">

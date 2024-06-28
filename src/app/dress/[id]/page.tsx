@@ -96,7 +96,9 @@ export default function AboutDress() {
                   <div className={`flex flex-col gap-5  mb-10`}>
                      <div className="">
                         <Link href="/dress">
-                           <img
+                           <Image
+                              width={40}
+                              height={40}
                               className="w-7 aspect-square object-cover object-center"
                               src="/icons/backbtn.png"
                               alt=""

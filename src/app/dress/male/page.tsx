@@ -73,7 +73,7 @@ export default function Female() {
                         <p>Male Collection</p>
                      </div>
                      <div className=" font-medium">
-                        <p>Our collection of male's clothing</p>
+                        <p>Our collection of male&apos;s clothing</p>
                      </div>
                   </div>
                   <div className=" my-10">
