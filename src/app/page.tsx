@@ -3,7 +3,6 @@ import { paddingForpage } from "./sizeDeclare";
 import Image from "next/image";
 import Link from "next/link";
 import Sale from "@/components/Sale";
-import FooterCard from "@/components/FooterCard";
 
 export default function Home() {
    return (
@@ -14,9 +13,9 @@ export default function Home() {
                   className="w-full h-full object-cover object-right sm:object-center"
                   src="/images/mainmain2.svg"
                   alt="hero image"
-                  width={600}
-                  height={600}
-                  quality={80}
+                  width={900}
+                  height={900}
+                  quality={90}
                   priority={true}
                />
                <div

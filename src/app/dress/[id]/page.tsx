@@ -112,9 +112,9 @@ export default function AboutDress() {
                                  className="w-full h-full object-cover object-center"
                                  src={specificDress.image}
                                  alt="footerbody image"
-                                 width={500}
-                                 height={700}
-                                 quality={90}
+                                 width={600}
+                                 height={800}
+                                 quality={95}
                               />
                            </div>
                            <div className="row-span-1 sm:col-span-3 flex flex-col justify-between">

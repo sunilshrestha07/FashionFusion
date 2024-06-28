@@ -115,7 +115,7 @@ export default function Female() {
                                           alt={item.name}
                                           width={400}
                                           height={500}
-                                          quality={80}
+                                          quality={70}
                                        />
                                     </div>
                                     <div className=" font-semibold text-xl opacity-90 truncate mb-3 flex flex-col gap-1">
