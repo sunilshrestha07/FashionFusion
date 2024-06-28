@@ -55,11 +55,13 @@ export default function AboutDress() {
       const stars = [];
       for (let i = 0; i < 5; i++) {
          stars.push(
-            <img
+            <Image
+               width={20}
+               height={20}
                key={i}
                src={i < starCount ? filledStarSrc : emptyStarSrc}
                alt="Star"
-               className="h-5 "
+               className="h-5 aspect-square object-contain"
             />
          );
       }
@@ -73,7 +75,7 @@ export default function AboutDress() {
 
    const handleBuy = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      if(!formData.color || !formData.size){
+      if (!formData.color || !formData.size) {
          alert("Please select color and size");
          return;
       }
@@ -146,8 +148,8 @@ export default function AboutDress() {
                                           {specificDress.color.map(
                                              (color, index) => (
                                                 <div key={index}>
-                                                   <label >
-                                                      <input 
+                                                   <label>
+                                                      <input
                                                          className="hidden"
                                                          type="radio"
                                                          name="color"

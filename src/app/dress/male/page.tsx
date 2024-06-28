@@ -41,7 +41,6 @@ export default function Female() {
          image: "/images/men6.jpg",
          rating: 4.5,
       },
-
    ];
 
    const filledStarSrc = "/icons/ystar.png";
@@ -52,11 +51,13 @@ export default function Female() {
       const stars = [];
       for (let i = 0; i < 5; i++) {
          stars.push(
-            <img
+            <Image
+               width={20}
+               height={20}
                key={i}
                src={i < starCount ? filledStarSrc : emptyStarSrc}
                alt="Star"
-               className="h-4"
+               className="h-4 aspect-square object-contain"
             />
          );
       }
