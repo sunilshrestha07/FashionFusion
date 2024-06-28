@@ -9,9 +9,9 @@ export default function Navbar() {
    const pathname = usePathname();
    const menu = [
       { name: "Home", href: "/" },
-      { name: "Sales", href: "/sales" },
-      { name: "Male", href: "/male" },
-      { name: "Female", href: "/female" },
+      { name: "Sales", href: "/dress/sales" },
+      { name: "Male", href: "/dress/male" },
+      { name: "Female", href: "/dress/female" },
    ];
 
    const handelHamClick = () => {

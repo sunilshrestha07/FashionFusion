@@ -15,6 +15,9 @@ const config: Config = {
       },
       fontFamily:{
         'quicksand': ['Quicksand']
+      },
+      boxShadow: {
+        "product": "-2px 2px 8px 1px rgba(0, 0, 0, 0.15)",
       }
     },
   },
