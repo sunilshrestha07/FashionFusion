@@ -1,7 +1,7 @@
 import React from 'react'
 
-export default function Dress() {
+export default function page() {
   return (
-    <div>Dress</div>
+    <div>page</div>
   )
 }

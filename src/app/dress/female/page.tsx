@@ -88,6 +88,17 @@ export default function Female() {
                         <p>Our collection of women&apos;s clothing</p>
                      </div>
                   </div>
+                  <div className=" mt-5">
+                        <Link href="/dress">
+                           <Image
+                              width={40}
+                              height={40}
+                              className="w-7 aspect-square object-cover object-center"
+                              src="/icons/backbtn.png"
+                              alt=""
+                           />
+                        </Link>
+                     </div>
                   <div className=" my-10">
                      <div className=" grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-16">
                         {femaleCollection.map((item, index) => (

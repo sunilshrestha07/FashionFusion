@@ -3,24 +3,24 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-export default function Female() {
+export default function Sales() {
    const femaleCollection = [
       {
          name: "Hump tum zumzum tees",
          price: "$100",
-         image: "/images/men1.jpg",
+         image: "/images/women5.jpg",
          rating: 4,
       },
       {
          name: "Hump tum zumzum tees",
          price: "$100",
-         image: "/images/men2.jpg",
+         image: "/images/women4.jpg",
          rating: 4.5,
       },
       {
          name: "Hump tum zumzum tees",
          price: "$100",
-         image: "/images/men3.jpg",
+         image: "/images/men6.jpg",
          rating: 5,
       },
       {
@@ -38,7 +38,7 @@ export default function Female() {
       {
          name: "Hump bump pop top tees tumtu",
          price: "$100",
-         image: "/images/men6.jpg",
+         image: "/images/women6.jpg",
          rating: 4.5,
       },
    ];
@@ -65,18 +65,19 @@ export default function Female() {
    };
    return (
       <>
-         <div className=" bg-blue-50">
+         <div className=" bg-gray-200">
             <div className={paddingForpage}>
                <div className="">
                   <div className="">
                      <div className=" text-4xl font-medium font-serif">
-                        <p>Male Collection</p>
+                        <p>Summer Sale</p>
                      </div>
-                     <div className=" font-medium">
-                        <p>Our collection of male&apos;s clothing</p>
+                     <div className=" font-medium ">
+                        <p className=" font-semibold text-xl">Sale Valid till:<span className="text-red-500"> August 30, 2024</span></p>
+                        <p>Discounts: Up to 50% off selected items</p>
                      </div>
                   </div>
-                  <div className="mt-5">
+                  <div className=" mt-5">
                         <Link href="/dress">
                            <Image
                               width={40}
