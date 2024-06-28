@@ -74,8 +74,8 @@ export default function Navbar() {
                   <img src="/icons/menu.png" alt="" onClick={handelHamClick} />
                </div>
                <div
-                  className={`absolute bg-transparent backdrop-brightness-50 backdrop-blur-xl w-1/2 h-screen flex justify-center transition-all ease-in-out duration-300 z-20 ${
-                     isMenuActive ? "right-0" : " -right-0 -z-0 opacity-0"
+                  className={`absolute bg-transparent backdrop-brightness-50 backdrop-blur-xl w-1/2 h-screen flex justify-center transition-all ease-in-out duration-300 z-20 sm:hidden ${
+                     isMenuActive ? "right-0 transition-all ease-in-out duration-300" : " hidden transition-all ease-in-out duration-300"
                   } top-16`}
                >
                   <div className="mt-20 flex flex-col gap-10">
