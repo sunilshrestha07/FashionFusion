@@ -69,26 +69,26 @@ export default function Navbar() {
                </div>
 
                {/* hamburger menu */}
-               <div className="w-6 xl:w-8 aspect-square  object-cover sm:hidden ">
+               <div className="w-6 xl:w-8 aspect-square object-cover sm:hidden">
                   <img src="/icons/menu.png" alt="" onClick={handelHamClick} />
-                  <div
-                     className={`absolute top-16 right-0 bg-white w-screen aspect-[9/16.75] flex justify-center transition ease-in-out duration-300 z-20 ${
-                        isMenuActive ? "block" : "hidden"
-                     }`}
-                  >
-                     <div className=" mt-20 flex flex-col gap-10 ">
-                        {menu.map((item, index) => (
-                           <div
-                              onClick={handelHamClick}
-                              className={`navlinks font-semibold w-full text-4xl hover:text-black transition ease-in-out duration-300 text-gray-600 ml-8 ${
-                                 pathname === item.href ? "text-black" : ""
-                              }`}
-                              key={index}
-                           >
-                              <Link href={item.href}>{item.name}</Link>
-                           </div>
-                        ))}
-                     </div>
+               </div>
+               <div
+                  className={`absolute bg-transparent backdrop-brightness-50 backdrop-blur-xl w-1/2 h-screen flex justify-center transition-all ease-in-out duration-300 z-20 ${
+                     isMenuActive ? "right-0" : " -right-0 -z-0 opacity-0"
+                  } top-16`}
+               >
+                  <div className="mt-20 flex flex-col gap-10">
+                     {menu.map((item, index) => (
+                        <div
+                           onClick={handelHamClick}
+                           className={`navlinks font-semibold w-full text-xl text-white hover:text-black ${
+                              pathname === item.href ? "text-black" : ""
+                           }`}
+                           key={index}
+                        >
+                           <Link href={item.href}>{item.name}</Link>
+                        </div>
+                     ))}
                   </div>
                </div>
             </div>
