@@ -37,6 +37,39 @@ export default function FooterCard() {
                </div>
             </div>
          </div>
+
+         <div className=" px-10 sm:px-28 py-10">
+            <div className=" grid grid-rows-3 gap-6 sm:grid-rows-none sm:grid-cols-3">
+               <div className=" col-span-1 flex flex-col gap-2 justify-center items-center sm:items-start ">
+                  <p className="font-bold text-xl">FashionFusion</p>
+                  <p className="font-medium text-sm md:text-base sm:w-3/4">
+                     Follow us on social media
+                     and stay updated on our latest collections and promotions.
+                  </p>
+                  <div className=" flex gap-3 mt-1">
+                     <div className=" w-7 aspect-square rounded-full overflow-hidden">
+                        <img className="w-full h-full object-cover object-center" src="/icons/tiktok.png" alt="" />
+                     </div>
+                     <div className=" w-7 aspect-square rounded-full overflow-hidden">
+                        <img className="w-full h-full object-cover object-center" src="/icons/instagram.png" alt="" />
+                     </div>
+                     <div className=" w-7 aspect-square rounded-full overflow-hidden">
+                        <img className="w-full h-full object-cover object-center" src="/icons/instagram.png" alt="" />
+                     </div>
+                  </div>
+               </div>
+               <div className="col-span-1 flex flex-col gap-2 items-center">
+                  <p className="font-bold text-xl">Shop</p>
+                  <p className="font-medium text-sm sm:text-base"><Link href="/male">Male</Link></p>
+                  <p className="font-medium text-sm sm:text-base"><Link href="/female">Female</Link></p>
+               </div>
+               <div className=" col-span-1 flex flex-col gap-2 -mt-10 sm:-mt-0 items-center">
+                  <p className="font-bold text-xl">About</p>
+                  <p className="font-medium text-sm sm:text-base"><Link href="/">Home</Link></p>
+                  <p className="font-medium text-sm sm:text-base"><Link href="/sale">Sale</Link></p>
+               </div>
+            </div>
+         </div>
       </div>
    );
 }
