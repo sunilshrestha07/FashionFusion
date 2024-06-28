@@ -136,14 +136,14 @@ export default function AboutDress() {
                                     </div>
                                  </div>
                                  <div className="">
-                                    <p className=" text-xl sm:text-base xl:text-xl font-medium">
+                                    <p className=" text-base sm:text-base xl:text-xl font-medium">
                                        {specificDress.description}
                                     </p>
                                  </div>
                                  {/* size and color section */}
                                  <div className=" flex gap-16 lg:mt-4 mb-4">
                                     <div className="">
-                                       <p className=" text-xl xl:text-2xl font-semibold">
+                                       <p className=" text-sm sm:text-xl xl:text-2xl font-semibold">
                                           Availabe Colors:
                                        </p>
                                        <div className="flex gap-3">
@@ -184,7 +184,7 @@ export default function AboutDress() {
                                        </div>
                                     </div>
                                     <div className=" ">
-                                       <p className=" text-xl xl:text-2xl font-semibold">
+                                       <p className=" text-sm sm:text-xl xl:text-2xl font-semibold">
                                           Available Sizes:
                                        </p>
                                        <div className=" flex gap-4">
