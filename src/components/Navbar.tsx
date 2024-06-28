@@ -16,6 +16,7 @@ export default function Navbar() {
 
    const handelHamClick = () => {
       setIsMenuActive(!isMenuActive);
+      document.body.style.overflow = isMenuActive ? 'auto' : 'hidden';
    };
 
    return (
