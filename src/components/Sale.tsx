@@ -48,7 +48,7 @@ export default function Sale() {
    ];
    return (
       <>
-         {/* <div className={`${paddingForpage} bg-blue-50`}>
+         <div className={`${paddingForpage} bg-blue-50`}>
             <div className="">
                <div className=" text-4xl font-semibold font-serif py-5 mb-5">
                   <p>Sale...</p>
@@ -83,9 +83,9 @@ export default function Sale() {
                   ))}
                </div>
             </div>
-         </div> */}
+         </div>
 
-         <div className="bg-gray-300 w-full aspect-[16/6] flex justify-center items-center relative mb-16 sm:mb-20">
+         {/* <div className="bg-gray-300 w-full aspect-[16/6] flex justify-center items-center relative mb-16 sm:mb-20">
             <div className=" w-9/12 aspect-[16/8] relative">
                <Link href="/dress/sales">
                   <Image
@@ -106,7 +106,7 @@ export default function Sale() {
                   </div>
                </Link>
             </div>
-         </div>
+         </div> */}
       </>
    );
 }
