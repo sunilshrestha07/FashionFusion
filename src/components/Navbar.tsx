@@ -68,6 +68,7 @@ export default function Navbar() {
                         width={90}
                         height={90}
                         quality={90}
+                        priority={true}
                         className="w-full h-full object-cover object-center"
                         src="/icons/bag.png"
                         alt="Bag"
@@ -83,6 +84,7 @@ export default function Navbar() {
                         width={90}
                         height={90}
                         quality={90}
+                        priority={true}
                         className="w-full h-full object-cover object-center  "
                         src="/icons/user.png"
                         alt="User"
