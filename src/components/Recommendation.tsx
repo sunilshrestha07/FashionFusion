@@ -3,24 +3,24 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-export default function Sales() {
+export default function Recommendation() {
    const femaleCollection = [
       {
          name: "Hump tum zumzum tees",
          price: "$100",
-         image: "/images/women5.jpg",
+         image: "/images/men1.jpg",
          rating: 4,
       },
       {
          name: "Hump tum zumzum tees",
          price: "$100",
-         image: "/images/women4.jpg",
+         image: "/images/men2.jpg",
          rating: 4.5,
       },
       {
          name: "Hump tum zumzum tees",
          price: "$100",
-         image: "/images/men6.jpg",
+         image: "/images/men3.jpg",
          rating: 5,
       },
       {
@@ -38,20 +38,8 @@ export default function Sales() {
       {
          name: "Hump bump pop top tees tumtu",
          price: "$100",
-         image: "/images/women6.jpg",
+         image: "/images/men6.jpg",
          rating: 4.5,
-      },
-      {
-         name: "Hump bump pop top tees",
-         price: "$100",
-         image: "/images/lay.jpg",
-         rating: 2.5,
-      },
-      {
-         name: "Hump bump pop top tees",
-         price: "$100",
-         image: "/images/land3.jpg",
-         rating: 2.5,
       },
    ];
 
@@ -77,32 +65,17 @@ export default function Sales() {
    };
    return (
       <>
-         <div className=" bg-gray-200">
+         <div className="bg-orange-50">
             <div className={paddingForpage}>
                <div className="">
-                  <div className="">
-                     <div className=" text-4xl font-medium font-serif">
-                        <p>Summer Sale</p>
-                     </div>
-                     <div className=" font-medium ">
-                        <p className=" font-semibold text-xl">Sale Valid till:<span className="text-red-500"> August 30, 2024</span></p>
-                        <p>Discounts: Up to 50% off selected items</p>
-                     </div>
-                  </div>
-                  <div className=" mt-5">
-                        <Link href="/dress">
-                           <Image
-                              width={40}
-                              height={40}
-                              className="w-7 aspect-square object-cover object-center"
-                              src="/icons/backbtn.png"
-                              alt=""
-                           />
-                        </Link>
-                     </div>
+                <div className=" text-2xl font-semibold font-serif">
+                    <p>Related Products</p>
+                </div>
                   <div className=" my-10">
                      <div className=" grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-16">
-                        {femaleCollection.map((item, index) => (
+                        {femaleCollection
+                        .splice(0, 4)
+                        .map((item, index) => (
                            <div
                               className=" col-span-1 shadow-product rounded-lg"
                               key={index}

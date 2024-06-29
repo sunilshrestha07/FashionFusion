@@ -48,7 +48,7 @@ export default function Sale() {
    ];
    return (
       <>
-         <div className={`${paddingForpage} bg-blue-50`}>
+         {/* <div className={`${paddingForpage} bg-blue-50`}>
             <div className="">
                <div className=" text-4xl font-semibold font-serif py-5 mb-5">
                   <p>Sale...</p>
@@ -82,6 +82,29 @@ export default function Sale() {
                      </div>
                   ))}
                </div>
+            </div>
+         </div> */}
+
+         <div className="bg-gray-300 w-full aspect-[16/6] flex justify-center items-center relative mb-16 sm:mb-20">
+            <div className=" w-9/12 aspect-[16/8] relative">
+               <Link href="/dress/sales">
+                  <Image
+                     className="w-full h-full object-cover sm:object-fill object-center"
+                     src="/images/sale5.svg"
+                     alt="footer image"
+                     width={1000}
+                     height={800}
+                     quality={100}
+                  />
+                  <div className=" absolute bottom-[0%] sm:bottom-[12%] left-[6.5%]  sm:left-[15.7%] z-50">
+                     <button
+                        type="submit"
+                        className=" bg-gray-800 text-white hover:text-black hover:bg-white outline outline-1 outline-black    sm:text-sm text-xs lg:text-xl font-semibold px-4 sm:px-5  lg:px-6 lg:py-1 xl:px-7 xl:py-2  "
+                     >
+                        Buy Now
+                     </button>
+                  </div>
+               </Link>
             </div>
          </div>
       </>

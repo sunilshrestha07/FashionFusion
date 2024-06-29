@@ -40,6 +40,17 @@ export default function Female() {
          price: "$100",
          image: "/images/men6.jpg",
          rating: 4.5,
+      },{
+         name: "Hump bump pop top tees",
+         price: "$100",
+         image: "/images/summermen.jpg",
+         rating: 2.5,
+      },
+      {
+         name: "Hump bump pop top tees",
+         price: "$100",
+         image: "/images/template2.jpg",
+         rating: 2.5,
       },
    ];
 

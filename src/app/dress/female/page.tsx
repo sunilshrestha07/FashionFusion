@@ -53,6 +53,7 @@ export default function Female() {
          image: "/images/women9.jpg",
          rating: 2.5,
       },
+      
    ];
 
    const filledStarSrc = "/icons/ystar.png";

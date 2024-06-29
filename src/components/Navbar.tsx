@@ -16,7 +16,7 @@ export default function Navbar() {
 
    const handelHamClick = () => {
       setIsMenuActive(!isMenuActive);
-      document.body.style.overflow = isMenuActive ? 'auto' : 'hidden';
+      document.body.style.overflow = isMenuActive ? "auto" : "hidden";
    };
 
    return (
@@ -54,13 +54,16 @@ export default function Navbar() {
 
             {/* profile and cart section */}
             <div className="flex gap-6 sm:gap-8 col-span-2 sm:col-span-1 items-center w-full h-full  justify-end">
-               <div className="w-6  xl:w-8 aspect-square rounded-full overflow-hidden object-cover">
-                  <img
-                     className="w-full h-full object-cover object-center"
-                     src="/icons/bag.png"
-                     alt="Bag"
-                  />
-               </div>
+               <Link href="/cart">
+                  <div className="w-6  xl:w-8 aspect-square rounded-full overflow-hidden object-cover">
+                     <img
+                        className="w-full h-full object-cover object-center"
+                        src="/icons/bag.png"
+                        alt="Bag"
+                     />
+                  </div>
+               </Link>
+               <Link href="/signup">
                <div className="w-6  xl:w-8 aspect-square rounded-full overflow-hidden object-cover">
                   <img
                      className="w-full h-full object-cover object-center  "
@@ -68,6 +71,7 @@ export default function Navbar() {
                      alt="User"
                   />
                </div>
+               </Link>
 
                {/* hamburger menu */}
                <div className="w-6 xl:w-8 aspect-square object-cover sm:hidden">
@@ -75,7 +79,9 @@ export default function Navbar() {
                </div>
                <div
                   className={`absolute bg-transparent backdrop-brightness-50 backdrop-blur-xl w-1/2 h-screen flex justify-center transition-all ease-in-out duration-300 z-20 sm:hidden ${
-                     isMenuActive ? "right-0 transition-all ease-in-out duration-300" : " hidden transition-all ease-in-out duration-300"
+                     isMenuActive
+                        ? "right-0 transition-all ease-in-out duration-300"
+                        : " hidden transition-all ease-in-out duration-300"
                   } top-16`}
                >
                   <div className="mt-20 flex flex-col gap-10">
