@@ -94,7 +94,7 @@ export default function LowerHeroSection() {
                </div>
 
                <div className=" col-span-1 flex flex-col justify-center items-start gap-5">
-                  <div className=" text-4xl sm:text-3xl xl:text-5xl font-semibold font-serif flex flex-col gap-1 w-full items-center sm:items-start">
+                  <div className=" text-4xl sm:text-3xl xl:text-5xl font-semibold font-serif flex flex-col gap-1 w-full ">
                      <p>Premium</p>
                      <p>Quality Clothes</p>
                      <p>for All Seasons</p>

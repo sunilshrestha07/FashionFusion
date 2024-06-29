@@ -2,13 +2,17 @@
 
 import { paddingForpage } from "@/app/sizeDeclare";
 import Recommendation from "@/components/Recommendation";
-import { BuyInterface } from "@/types/declareTypes";
+import { AddToCart, BuyInterface } from "@/types/declareTypes";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { addItemToCart } from "@/app/redux/Cartslice";
+
 
 export default function AboutDress() {
+   const dispatch=useDispatch()
    const specificDress = {
       name: "charcol rainy floaa",
       price: 900,
@@ -82,6 +86,18 @@ export default function AboutDress() {
       }
       console.log(formData);
    };
+
+
+   const handleAddToCart = () => {
+      const { id, name, price } = specificDress;
+      const quantity = 1; // Assuming adding one item to cart
+      const totalPrice = price * quantity;
+   
+      const newItem: AddToCart = { id, name, price, quantity, totalPrice };
+      dispatch(addItemToCart(newItem));
+
+   }
+   
 
    return (
       <>
@@ -256,7 +272,7 @@ export default function AboutDress() {
                                        >
                                           Buy Now
                                        </button>
-                                       <button className=" bg-black text-white hover:text-black hover:bg-white outline outline-1 outline-black text-base lg:text-xl font-semibold px-7 py-2  ">
+                                       <button className=" bg-black text-white hover:text-black hover:bg-white outline outline-1 outline-black text-base lg:text-xl font-semibold px-7 py-2  " onClick={handleAddToCart}>
                                           Add To Cart
                                        </button>
                                     </div>

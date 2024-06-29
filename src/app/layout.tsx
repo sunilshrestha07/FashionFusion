@@ -1,28 +1,31 @@
-import type { Metadata } from "next";
+"use client";
+
 import { Quicksand } from "next/font/google";
+import { usePathname } from "next/navigation";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import FooterCard from "@/components/FooterCard";
+import ReduxProvider from "./redux/reduxProvider";
 
 const quicksand = Quicksand({ subsets: ["latin"] });
-
-export const metadata: Metadata = {
-  title: "FashionFusion",
-  description: "Where elegance meets innovation. Discover your style with our curated collection of the latest trends, designed to inspire and empower your unique fashion journey.",
-};
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const pathname = usePathname(); 
+  const hideFooterRoutes = ["/login", "/signup"]; 
+
   return (
     <html lang="en">
       <body className={quicksand.className}>
-        <Navbar/>
-        {children}
-        <FooterCard/>
-        </body>
+        <ReduxProvider>
+          <Navbar />
+          {children}
+          {!hideFooterRoutes.includes(pathname) && <FooterCard />}
+        </ReduxProvider>
+      </body>
     </html>
   );
 }

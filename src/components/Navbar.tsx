@@ -1,10 +1,14 @@
 "use client";
 
+import { RootState } from "@/app/redux/store";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 
 export default function Navbar() {
+   const CartItems= useSelector((state:RootState)=>state.saved.items)
+   const totalItemInCart = CartItems.reduce((total, item) => total + item.quantity, 0);
    const [isMenuActive, setIsMenuActive] = useState<boolean>(false);
    const pathname = usePathname();
    const menu = [
@@ -55,12 +59,13 @@ export default function Navbar() {
             {/* profile and cart section */}
             <div className="flex gap-6 sm:gap-8 col-span-2 sm:col-span-1 items-center w-full h-full  justify-end">
                <Link href="/cart">
-                  <div className="w-6  xl:w-8 aspect-square rounded-full overflow-hidden object-cover">
+                  <div className="w-6  xl:w-8 aspect-square rounded-full  object-cover relative">
                      <img
                         className="w-full h-full object-cover object-center"
                         src="/icons/bag.png"
                         alt="Bag"
                      />
+                     <p className=" absolute -top-1 -right-1 bg-red-500 text-white rounded-full text-base w-5 h-5 flex justify-center items-center  font-semibold">{totalItemInCart}</p>
                   </div>
                </Link>
                <Link href="/signup">

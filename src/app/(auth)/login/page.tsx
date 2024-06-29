@@ -3,21 +3,21 @@
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
-import { SignUpInterface } from "@/types/declareTypes";
+import { LoginInterface } from "@/types/declareTypes";
 
-export default function Signup() {
-   const [formData, setFormData] = useState<SignUpInterface[]>([]);
-   const handelSignupChnage = (e: React.ChangeEvent<HTMLInputElement>) => {
+export default function Login() {
+   const [formData, setFormData] = useState<LoginInterface[]>([]);
+   const handelLoginChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setFormData({ ...formData, [e.target.id]: e.target.value });
    };
 
-   const handelSignupSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+   const handelLoginSubmit = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       console.log(formData);
    };
    return (
       <>
-         <div className=" mt-4 sm:mt-0">
+         <div className="">
             <div className=" relative">
                <div className=" w-full h-screen-navbar overflow-hidden object-cover ">
                   <Image
@@ -31,26 +31,14 @@ export default function Signup() {
                </div>
                <div className="lg:w-1/2 xl:w-2/6 aspect-square md:aspect-[9/10] xl:aspect-[9/12] absolute top-[50%] right-[50%] translate-x-[50%] translate-y-[-50%] bg-white rounded-3xl">
                   <div className=" flex flex-col font-semibold text-xl sm:text-2xl md:text-3xl text-center py-5 sm:py-7 lg:py-10">
-                     Sign up today to start planning
-                     <span> your next adventure</span>
+                     Welcome back.
+                     <span>Log in and start exploring.</span>
                   </div>
                   <div className=" px-10 lg:mt-10">
                      <form
                         className="flex flex-col gap-6"
-                        onSubmit={handelSignupSubmit}
+                        onSubmit={handelLoginSubmit}
                      >
-                        <div className=" flex flex-col">
-                           <label className="font-medium" htmlFor="">
-                              Username
-                           </label>
-                           <input
-                              className=" outline-1 outline outline-gray-500 px-5 py-2 font-medium text-xl rounded-lg"
-                              type="text"
-                              name=""
-                              id="Username"
-                              onChange={handelSignupChnage}
-                           />
-                        </div>
                         <div className=" flex flex-col">
                            <label className="font-medium" htmlFor="">
                               Email
@@ -60,19 +48,19 @@ export default function Signup() {
                               type="email"
                               name=""
                               id="email"
-                              onChange={handelSignupChnage}
+                              onChange={handelLoginChange}
                            />
                         </div>
                         <div className=" flex flex-col">
                            <label className="font-medium" htmlFor="">
-                           Password
+                              Password
                            </label>
                            <input
                               className=" outline-1 outline outline-gray-500 px-5 py-2 font-medium text-xl rounded-lg"
                               type="password"
                               name=""
                               id="password"
-                              onChange={handelSignupChnage}
+                              onChange={handelLoginChange}
                            />
                         </div>
                         <div className=" flex justify-center mt-5">
@@ -86,15 +74,22 @@ export default function Signup() {
                      </form>
                      <div className="">
                         <p className="text-center mt-5">
-                           Already have an account?{" "}
-                           <span className=" font-semibold">
-                              <Link href="/login">Login</Link>
+                           <span className=" font-semibold opacity-60">
+                              <Link href="/login">Forgot your password?</Link>
                            </span>
                         </p>
                      </div>
-                     <div className=" pb-3">
+                     <div className="">
                         <p className="text-center mt-5">
-                           By signing up, you agree to our{" "}
+                           Don't have an account?{" "}
+                           <span className=" font-semibold">
+                              <Link href="/signup">Sign up</Link>
+                           </span>
+                        </p>
+                     </div>
+                     <div className="  sm:pb-0">
+                        <p className="text-center mt-5">
+                        By continuing to use FashionFusion, you agree to our all{" "}
                            <span className=" font-semibold">
                               Terms and Conditions
                            </span>
