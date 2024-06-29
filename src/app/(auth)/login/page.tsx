@@ -81,7 +81,7 @@ export default function Login() {
                      </div>
                      <div className="">
                         <p className="text-center mt-5">
-                           Don't have an account?{" "}
+                           Don&apos;t have an account?{" "}
                            <span className=" font-semibold">
                               <Link href="/signup">Sign up</Link>
                            </span>

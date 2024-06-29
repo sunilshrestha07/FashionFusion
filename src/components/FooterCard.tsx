@@ -56,21 +56,30 @@ export default function FooterCard() {
                   </p>
                   <div className=" flex gap-3 mt-1">
                      <div className=" w-7 aspect-square rounded-full overflow-hidden">
-                        <img
+                        <Image
+                           width={100}
+                           height={100}
+                           quality={90}
                            className="w-full h-full object-cover object-center"
                            src="/icons/tiktok.png"
                            alt=""
                         />
                      </div>
                      <div className=" w-7 aspect-square rounded-full overflow-hidden">
-                        <img
+                        <Image
+                           width={100}
+                           height={100}
+                           quality={90}
                            className="w-full h-full object-cover object-center"
-                           src="/icons/instagram.png"
+                           src="/icons/facebook.png"
                            alt=""
                         />
                      </div>
                      <div className=" w-7 aspect-square rounded-full overflow-hidden">
-                        <img
+                        <Image
+                           width={100}
+                           height={100}
+                           quality={90}
                            className="w-full h-full object-cover object-center"
                            src="/icons/instagram.png"
                            alt=""
