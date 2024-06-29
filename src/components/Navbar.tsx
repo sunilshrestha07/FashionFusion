@@ -65,9 +65,9 @@ export default function Navbar() {
                <Link href="/cart">
                   <div className="w-6  xl:w-8 aspect-square rounded-full  object-cover relative">
                      <Image
-                        width={100}
-                        height={100}
-                        quality={100}
+                        width={90}
+                        height={90}
+                        quality={90}
                         className="w-full h-full object-cover object-center"
                         src="/icons/bag.png"
                         alt="Bag"
@@ -80,9 +80,9 @@ export default function Navbar() {
                <Link href="/signup">
                   <div className="w-6  xl:w-8 aspect-square rounded-full overflow-hidden object-cover">
                      <Image
-                        width={100}
-                        height={100}
-                        quality={100}
+                        width={90}
+                        height={90}
+                        quality={90}
                         className="w-full h-full object-cover object-center  "
                         src="/icons/user.png"
                         alt="User"
@@ -93,9 +93,9 @@ export default function Navbar() {
                {/* hamburger menu */}
                <div className="w-6 xl:w-8 aspect-square object-cover sm:hidden">
                   <Image
-                     width={100}
-                     height={100}
-                     quality={100}
+                     width={90}
+                     height={90}
+                     quality={90}
                      src="/icons/menu.png"
                      alt=""
                      onClick={handelHamClick}
