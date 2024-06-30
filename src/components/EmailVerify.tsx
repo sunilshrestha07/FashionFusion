@@ -94,7 +94,7 @@ export default function EmailVerify() {
                                     <span className="loader"></span>
                                  </div>
                               ) : (
-                                 "Sign up"
+                                 "Verify"
                               )}
                            </button>
                         </div>

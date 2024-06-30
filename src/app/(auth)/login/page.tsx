@@ -97,7 +97,7 @@ export default function Login() {
                                     <span className="loader"></span>
                                  </div>
                               ) : (
-                                 "Sign up"
+                                 "Login"
                               )}
                            </button>
                         </div>
