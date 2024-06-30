@@ -1,4 +1,4 @@
-import EmailVerify from '@/components/emailVerify'
+import EmailVerify from '@/components/EmailVerify' 
 import React, { Suspense } from 'react'
 
 export default function page() {
