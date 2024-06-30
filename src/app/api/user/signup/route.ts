@@ -30,7 +30,7 @@ export async function POST(request: Request) {
 
         await user.save();
 
-        sendMail({email,userName, verificationCode});
+        await sendMail({email,userName, verificationCode});
 
         return NextResponse.json({success:true,message:"User created successfully",user:user},{status:200})
     } catch (error) {
