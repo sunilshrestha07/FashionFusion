@@ -15,7 +15,7 @@ const connection: connectionObject = {};
     }
 
     try {
-        const db = await mongoose.connect("mongodb+srv://suneelshrestha9:socialmedia07@fashionfusion.txzfpvi.mongodb.net/?retryWrites=true&w=majority&appName=FashionFusion" || '');
+        const db = await mongoose.connect(process.env.MONGODB_URI || '');
         connection.isConnected = db.connections[0].readyState;
     } catch (error) {
         console.log("Error connection db:", error);
