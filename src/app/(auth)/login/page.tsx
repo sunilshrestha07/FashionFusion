@@ -29,7 +29,7 @@ export default function Login() {
       } catch (error:any) {
          setIsLoading(false);
          if(axios.isAxiosError(error)){
-            toast.error(error.response?.data?.message)
+            toast.error(error.response?.data?.message || "An unknown error occurred during login")
          }else{
             toast.error("An unknown error occurred during login")
          }
