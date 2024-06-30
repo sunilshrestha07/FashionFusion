@@ -12,7 +12,7 @@ export async function POST(request:Request) {
             return NextResponse.json({success:false,message:"All fields are required"},{status:400})
         }
 
-        const validUser = await User.findOne({email})
+        const validUser = await User.findOne({email,isVerified:true})
         if(!validUser){
             return NextResponse.json({success:false,message:"User not found"},{status:404})
         }
