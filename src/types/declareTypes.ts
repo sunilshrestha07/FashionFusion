@@ -24,5 +24,6 @@ export interface LoginInterface{
     password:string
 }
 export interface VerifyInterface{
-    code:string
+    email:string
+    verificationCode:string
 }

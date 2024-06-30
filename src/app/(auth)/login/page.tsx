@@ -4,16 +4,37 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 import { LoginInterface } from "@/types/declareTypes";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 export default function Login() {
+   const router = useRouter();
    const [formData, setFormData] = useState<LoginInterface[]>([]);
+   const [isLoading, setIsLoading] = useState<boolean>(false);
+
    const handelLoginChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setFormData({ ...formData, [e.target.id]: e.target.value });
    };
 
-   const handelLoginSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+   const handelLoginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      console.log(formData);
+      setIsLoading(true);
+      try {
+         const res = await axios.post("/api/user/login", formData);
+         if (res.status === 200) {
+            router.push("/");
+            setIsLoading(false);
+         }
+      } catch (error:any) {
+         setIsLoading(false);
+         if(axios.isAxiosError(error)){
+            toast.error(error.response?.data?.message)
+         }else{
+            toast.error("An unknown error occurred during login")
+         }
+
+      }
    };
    return (
       <>
@@ -66,9 +87,18 @@ export default function Login() {
                         <div className=" flex justify-center mt-5">
                            <button
                               type="submit"
-                              className=" font-semibold text-xl  px-10 py-2 rounded-lg bg-black  text-white"
+                              className={`font-semibold text-xl  px-10 py-2 rounded-lg bg-black  text-white ${
+                                 isLoading ? "cursor-not-allowed" : ""
+                              }`}
+                              disabled={isLoading}
                            >
-                              Sign up
+                              {isLoading ? (
+                                 <div className=" flex justify-center items-center px-3 py-">
+                                    <span className="loader"></span>
+                                 </div>
+                              ) : (
+                                 "Sign up"
+                              )}
                            </button>
                         </div>
                      </form>
@@ -89,7 +119,8 @@ export default function Login() {
                      </div>
                      <div className="  sm:pb-0">
                         <p className="text-center mt-5">
-                        By continuing to use FashionFusion, you agree to our all{" "}
+                           By continuing to use FashionFusion, you agree to our
+                           all{" "}
                            <span className=" font-semibold">
                               Terms and Conditions
                            </span>
