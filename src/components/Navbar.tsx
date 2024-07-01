@@ -9,17 +9,26 @@ import { useSelector } from "react-redux";
 
 export default function Navbar() {
    const CartItems = useSelector((state: RootState) => state.saved.items);
+   const currentUser = useSelector(
+      (state: RootState) => state.user.currentUser
+   );
    const totalItemInCart = CartItems.reduce(
       (total, item) => total + item.quantity,
       0
    );
    const [isMenuActive, setIsMenuActive] = useState<boolean>(false);
+   const [isProfielLinkOpen, setIsProfielLinkOpen] = useState<boolean>(false);
    const pathname = usePathname();
    const menu = [
       { name: "Home", href: "/" },
       { name: "Sales", href: "/dress/sales" },
       { name: "Male", href: "/dress/male" },
       { name: "Female", href: "/dress/female" },
+   ];
+
+   const ProfileLink = [
+      { name: "Dashboard", href: "/dashboard" },
+      { name: "Logout", href: "/logout" },
    ];
 
    const handelHamClick = () => {
@@ -78,19 +87,31 @@ export default function Navbar() {
                      </p>
                   </div>
                </Link>
-               <Link href="/signup">
-                  <div className="w-6  xl:w-8 aspect-square rounded-full overflow-hidden object-cover">
-                     <Image
-                        width={80}
-                        height={80}
-                        quality={80}
-                        priority={true}
-                        className="w-full h-full object-cover object-center  "
-                        src="/icons/user.png"
-                        alt="User"
-                     />
+               {currentUser ? (
+                  <div className="">
+                     <Link href="/dashboard">
+                        <div className="w-7  xl:w-9 aspect-square rounded-full overflow-hidden object-cover">
+                           <img src={currentUser.avatar} alt="" />
+                        </div>
+                     </Link>
                   </div>
-               </Link>
+               ) : (
+                  <div className="">
+                     <Link href="/signup">
+                        <div className="w-6  xl:w-8 aspect-square rounded-full overflow-hidden object-cover">
+                           <Image
+                              width={80}
+                              height={80}
+                              quality={80}
+                              priority={true}
+                              className="w-full h-full object-cover object-center  "
+                              src="/icons/user.png"
+                              alt="User"
+                           />
+                        </div>
+                     </Link>
+                  </div>
+               )}
 
                {/* hamburger menu */}
                <div className="w-6 xl:w-8 aspect-square object-cover sm:hidden">

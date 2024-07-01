@@ -35,11 +35,15 @@ export async function POST(request: Request) {
           verificationCode: null,
           verificationExpires: null,
         })
-  
+        
+
+        const { password: pass, ...rest } = verifiedUser.toObject();
+
         const token = jwt.sign({ userId: verifiedUser._id}, process.env.JWT_SECRET!, { expiresIn: "24h" });
         const response = NextResponse.json({
             message: "verified successfully",
             success: true,
+            user: rest
         });
 
         response.cookies.set("token", token, {

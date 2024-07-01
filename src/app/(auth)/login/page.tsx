@@ -7,8 +7,13 @@ import { LoginInterface } from "@/types/declareTypes";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { loginSuccess } from "@/app/redux/UserSlice";
+import { loginFail } from "@/app/redux/UserSlice";
+
 
 export default function Login() {
+   const dispatch = useDispatch()
    const router = useRouter();
    const [formData, setFormData] = useState<LoginInterface[]>([]);
    const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -25,9 +30,11 @@ export default function Login() {
          if (res.status === 200) {
             router.push("/");
             setIsLoading(false);
+            dispatch(loginSuccess(res.data.user))
          }
       } catch (error:any) {
          setIsLoading(false);
+         dispatch(loginFail(error))
          if(axios.isAxiosError(error)){
             toast.error(error.response?.data?.message || "An unknown error occurred during login")
          }else{

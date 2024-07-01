@@ -2,10 +2,12 @@ import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import storage from 'redux-persist/lib/storage';
 import { persistReducer, persistStore } from 'redux-persist';
 import savedReducer from './Cartslice'
+import userReducer from './UserSlice'
 
 // Combine your reducers into a root reducer
 const rootReducer = combineReducers({
     saved: savedReducer,
+    user: userReducer
 });
 
 // Configuration for Redux Persist
