@@ -7,7 +7,7 @@ import Sale from "@/components/Sale";
 export default function Home() {
    return (
       <main>
-         <div className="">
+         <div className=" ">
             <div className=" w-full aspect-[9/12] sm:aspect-[15/11] md:aspect-[15/10] lg:aspect-[15/7] object-cover overflow-hidden relative">
                <Image
                   className="w-full h-full object-cover object-right sm:object-center"

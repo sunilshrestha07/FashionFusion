@@ -11,11 +11,11 @@ export default function LowerHeroSection() {
       <>
          <div className="bg-orange-100">
             <div
-               className={`grid grid-rows-2 sm:grid-rows-none sm:grid-cols-2 gap-4 sm:gap-6 md:gap-8 ${paddingForpage}`}
+               className={`grid  sm:grid-cols-2 gap-4 sm:gap-6 md:gap-8 ${paddingForpage} w-full`}
             >
-               <div className=" col-span-1 w-full aspect-square  flex justify-center items-center">
+               <div className=" col-span-1  w-full aspect-square  flex justify-center items-center">
                   <div className=" flex justify-center items-center ">
-                     <div className="w-2/3 sm:w-1/2 aspect-[9/13] rounded-3xl  relative z-10">
+                     <div className="w-1/2 aspect-[9/13] rounded-3xl  relative z-10  ">
                         <div className="w-full h-full rounded-3xl overflow-hidden z-50">
                            <Image
                               className="w-full h-full object-cover object-center z-50"
@@ -93,7 +93,7 @@ export default function LowerHeroSection() {
                   </div>
                </div>
 
-               <div className=" col-span-1 flex flex-col justify-center items-start gap-5">
+               <div className=" col-span-1 flex flex-col justify-center items-start gap-5  w-full ">
                   <div className=" text-4xl sm:text-3xl xl:text-5xl font-semibold font-serif flex flex-col gap-1 w-full ">
                      <p>Premium</p>
                      <p>Quality Clothes</p>
@@ -124,7 +124,7 @@ export default function LowerHeroSection() {
                </div>
             </div>
 
-            <div className={`sm:mt-5 ${paddingForpage}`}>
+            <div className={`sm:mt-5 ${paddingForpage} `}>
                <div className="flex flex-col gap-3 mb-16">
                   <div className="text-4xl sm:text-3xl xl:text-4xl font-semibold font-serif flex flex-col text-center">
                      <p>Experience the Best in Comfort & Style</p>

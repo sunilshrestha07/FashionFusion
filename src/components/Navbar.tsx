@@ -37,7 +37,7 @@ export default function Navbar() {
    };
 
    return (
-      <nav className="px-4 py-4 sm:px-5 sm:py-2 md:px-10 md:py-3 lg:px-24 lg:py-5 sticky top-0 left-1 w-full bg-white z-40">
+      <nav className="px-4 py-4 sm:px-5 sm:py-2 md:px-10 md:py-3 lg:px-24 lg:py-5 sticky top-0 left-1 w-full bg-white z-40 hid">
          <div className="grid grid-cols-4 sm:grid-cols-8 items-center">
             {/* logo section */}
             <div className="col-span-2 ">
