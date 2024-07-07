@@ -7,8 +7,8 @@ import { NextResponse } from "next/server";
 export async function POST(request:Request) {
     await dbConnect();
     try {
-        const {name,description,price,rating,size,color,discount,gender,category,stoke} = await request.json();
-        if(!name || !description || !price || !rating || !size || !color || !discount || !gender || !category || !stoke){
+        const {name,description,price,discount,category,image, sale} = await request.json();
+        if(!name || !description || !price  || !discount ||  !category || !image || !sale){
             return NextResponse.json({success:false,message:"All fields are required"},{status:400})
         }
 
@@ -16,13 +16,10 @@ export async function POST(request:Request) {
             name,
             description,
             price,
-            rating,
-            size,
-            color,
             discount,
-            gender,
             category,
-            stoke
+            image,
+            sale
         })
 
         await dress.save();

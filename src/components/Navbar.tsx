@@ -26,11 +26,6 @@ export default function Navbar() {
       { name: "Female", href: "/dress/female" },
    ];
 
-   const ProfileLink = [
-      { name: "Dashboard", href: "/dashboard" },
-      { name: "Logout", href: "/logout" },
-   ];
-
    const handelHamClick = () => {
       setIsMenuActive(!isMenuActive);
       document.body.style.overflow = isMenuActive ? "auto" : "hidden";

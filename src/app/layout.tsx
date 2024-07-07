@@ -17,7 +17,7 @@ export default function RootLayout({
    children: React.ReactNode;
 }>) {
    const pathname = usePathname();
-   const hideFooterRoutes = ["/login", "/signup", "/verify", "/dashboard"];
+   const hideFooterRoutes = ["/login", "/signup", "/verify", "/dashboard","/post"];
 
    return (
       <html lang="en">

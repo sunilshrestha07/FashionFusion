@@ -39,7 +39,7 @@ h1 {
   --navbar-height: 80px; /* Adjust this value to match your navbar height */
 }
 
-.h-screen-navbar {
+.h-screen-navbar{
   height: calc(100vh - var(--navbar-height));
 }
 

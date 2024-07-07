@@ -2,7 +2,6 @@ import { paddingForpage } from "@/app/sizeDeclare";
 import Crousel from "@/components/Crousel";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
 
 export default function Dress() {
    const femaleCollection = [
@@ -42,7 +41,7 @@ export default function Dress() {
          image: "/images/men6.jpg",
          rating: 4.5,
       },
-   ];
+   ]; 
 
    const filledStarSrc = "/icons/ystar.png";
    const emptyStarSrc = "/icons/star.png";

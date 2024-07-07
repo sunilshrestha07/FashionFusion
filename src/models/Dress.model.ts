@@ -17,36 +17,12 @@ const DressSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
-    color: [
-        {
-            type: String,
-            required: true,
-        }
-    ],
-    size: [
-        {
-            type: String,
-            required: true,
-        }
-    ],
-    rating: {
-        type: Number,
-        required: true,
-    },
     discount: {
         type: Number,
         required: true,
     },
     category: {
         type: String,
-        required: true,
-    },
-    gender: {
-        type: String,
-        required: true,
-    },
-    stoke: {
-        type: Number,
         required: true,
     },
     sale:{
