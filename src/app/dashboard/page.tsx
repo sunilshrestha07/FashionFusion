@@ -130,7 +130,7 @@ export default function Dashboard() {
                         </thead>
                         <tbody className="bg-red-500">
                            {data.map((order, index) => (
-                              <tr className="bg-white even:bg-gray-50 hover:bg-gray-100 text-sm sm:text-base">
+                              <tr className="bg-white even:bg-gray-50 hover:bg-gray-100 text-sm sm:text-base" key={index}>
                                  <td className=" px-3 sm:px-4 py-3 border border-gray-200">
                                     {order.id}
                                  </td>
