@@ -1,47 +1,25 @@
+"use client";
+
 import { paddingForpage } from "@/app/sizeDeclare";
 import Crousel from "@/components/Crousel";
+import { getDressInterface } from "@/types/declareTypes";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function Dress() {
-   const femaleCollection = [
-      {
-         name: "Hump tum zumzum tees",
-         price: "$100",
-         image: "/images/men1.jpg",
-         rating: 4,
-      },
-      {
-         name: "Hump tum zumzum tees",
-         price: "$100",
-         image: "/images/men2.jpg",
-         rating: 4.5,
-      },
-      {
-         name: "Hump tum zumzum tees",
-         price: "$100",
-         image: "/images/men3.jpg",
-         rating: 5,
-      },
-      {
-         name: "Hump tum zumzum tees",
-         price: "$100",
-         image: "/images/men4.jpg",
-         rating: 3.5,
-      },
-      {
-         name: "Hump bump pop top tees tumtu",
-         price: "$100",
-         image: "/images/model.jpg",
-         rating: 4.5,
-      },
-      {
-         name: "Hump bump pop top tees tumtu",
-         price: "$100",
-         image: "/images/men6.jpg",
-         rating: 4.5,
-      },
-   ]; 
+   const [allData,setAllData]=useState<getDressInterface[]>([])
+
+   const fetchData = async () => {
+      const res = await fetch("/api/dress");
+      const data = await res.json();
+      setAllData(data.dress);
+   }
+
+   
+   useEffect(() => {
+      fetchData();
+   }, [])
 
    const filledStarSrc = "/icons/ystar.png";
    const emptyStarSrc = "/icons/star.png";
@@ -73,12 +51,12 @@ export default function Dress() {
                <div className="">
                   <div className=" ">
                      <div className=" grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-16">
-                        {femaleCollection.map((item, index) => (
+                        {allData.length > 0 && allData.map((item) => (
                            <div
                               className=" col-span-1 shadow-product rounded-lg"
-                              key={index}
+                              key={item._id}
                            >
-                              <Link href={`/dress/${index}`}>
+                              <Link href={`/dress/${item._id}`}>
                                  <div className=" w-full bg-gray-100 flex flex-col p-2 rounded-lg">
                                     <div className=" w-full aspect-[9/11] rounded-lg overflow-hidden">
                                        <Image

@@ -1,59 +1,25 @@
+"use client";
+
 import { paddingForpage } from "@/app/sizeDeclare";
+import { getDressInterface } from "@/types/declareTypes";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 export default function Sales() {
-   const femaleCollection = [
-      {
-         name: "Hump tum zumzum tees",
-         price: "$100",
-         image: "/images/women5.jpg",
-         rating: 4,
-      },
-      {
-         name: "Hump tum zumzum tees",
-         price: "$100",
-         image: "/images/women4.jpg",
-         rating: 4.5,
-      },
-      {
-         name: "Hump tum zumzum tees",
-         price: "$100",
-         image: "/images/men6.jpg",
-         rating: 5,
-      },
-      {
-         name: "Hump tum zumzum tees",
-         price: "$100",
-         image: "/images/men4.jpg",
-         rating: 3.5,
-      },
-      {
-         name: "Hump bump pop top tees tumtu",
-         price: "$100",
-         image: "/images/model.jpg",
-         rating: 4.5,
-      },
-      {
-         name: "Hump bump pop top tees tumtu",
-         price: "$100",
-         image: "/images/women6.jpg",
-         rating: 4.5,
-      },
-      {
-         name: "Hump bump pop top tees",
-         price: "$100",
-         image: "/images/lay.jpg",
-         rating: 2.5,
-      },
-      {
-         name: "Hump bump pop top tees",
-         price: "$100",
-         image: "/images/land3.jpg",
-         rating: 2.5,
-      },
-   ];
+   const [saleData,setSaleData]=useState<getDressInterface[]>([])
+
+   const fetchData = async () => {
+      const res = await fetch("/api/dress");
+      const data = await res.json();
+      const saleItem = data.dress.filter((item : getDressInterface)=>item.sale === true)
+      setSaleData(saleItem);
+   }
+
+   
+   useEffect(() => {
+      fetchData();
+   }, [])
 
    const filledStarSrc = "/icons/ystar.png";
    const emptyStarSrc = "/icons/star.png";
@@ -102,7 +68,7 @@ export default function Sales() {
                      </div>
                   <div className=" my-10">
                      <div className=" grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-16">
-                        {femaleCollection.map((item, index) => (
+                        {saleData.length > 0 && saleData.map((item, index) => (
                            <div
                               className=" col-span-1 shadow-product rounded-lg"
                               key={index}

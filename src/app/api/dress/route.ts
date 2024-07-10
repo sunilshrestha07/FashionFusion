@@ -39,7 +39,7 @@ export async function GET(request:Request) {
             return NextResponse.json({success:false,message:"Dress not found"},{status:404})
         }
 
-        return NextResponse.json({success:true,dress:dress},{status:200})
+        return NextResponse.json({dress},{status:200})
     } catch (error) {
         return NextResponse.json({success:false,message:"Error fetching dress"},{status:500})
     }

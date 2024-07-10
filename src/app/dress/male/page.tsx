@@ -1,58 +1,25 @@
+"use client";
+
 import { paddingForpage } from "@/app/sizeDeclare";
+import { getDressInterface } from "@/types/declareTypes";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 export default function Female() {
-   const femaleCollection = [
-      {
-         name: "Hump tum zumzum tees",
-         price: "$100",
-         image: "/images/men1.jpg",
-         rating: 4,
-      },
-      {
-         name: "Hump tum zumzum tees",
-         price: "$100",
-         image: "/images/men2.jpg",
-         rating: 4.5,
-      },
-      {
-         name: "Hump tum zumzum tees",
-         price: "$100",
-         image: "/images/men3.jpg",
-         rating: 5,
-      },
-      {
-         name: "Hump tum zumzum tees",
-         price: "$100",
-         image: "/images/men4.jpg",
-         rating: 3.5,
-      },
-      {
-         name: "Hump bump pop top tees tumtu",
-         price: "$100",
-         image: "/images/model.jpg",
-         rating: 4.5,
-      },
-      {
-         name: "Hump bump pop top tees tumtu",
-         price: "$100",
-         image: "/images/men6.jpg",
-         rating: 4.5,
-      },{
-         name: "Hump bump pop top tees",
-         price: "$100",
-         image: "/images/summermen.jpg",
-         rating: 2.5,
-      },
-      {
-         name: "Hump bump pop top tees",
-         price: "$100",
-         image: "/images/template2.jpg",
-         rating: 2.5,
-      },
-   ];
+   const [maleData,setMaleData]=useState<getDressInterface[]>([])
+
+   const fetchData = async () => {
+      const res = await fetch("/api/dress");
+      const data = await res.json();
+      const maleItem = data.dress.filter((item : getDressInterface)=>item.category === "male")
+      setMaleData(maleItem);
+   }
+
+   
+   useEffect(() => {
+      fetchData();
+   }, [])
 
    const filledStarSrc = "/icons/ystar.png";
    const emptyStarSrc = "/icons/star.png";
@@ -100,7 +67,7 @@ export default function Female() {
                      </div>
                   <div className=" my-10">
                      <div className=" grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-16">
-                        {femaleCollection.map((item, index) => (
+                        {maleData.length > 0 && maleData.map((item, index) => (
                            <div
                               className=" col-span-1 shadow-product rounded-lg"
                               key={index}

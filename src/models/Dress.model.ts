@@ -28,6 +28,10 @@ const DressSchema = new mongoose.Schema({
     sale:{
         type: Boolean,
         default: false
+    },
+    rating:{
+        type: Number,
+        default: 4
     }
 }, {timestamps:true});
 

@@ -17,6 +17,7 @@ export function middleware(request: NextRequest) {
   return NextResponse.next(); // Proceed as usual if none of the conditions match
 }
 
+
 export const config = {
   matcher: [
     '/dashboard',

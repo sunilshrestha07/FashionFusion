@@ -6,13 +6,13 @@ export interface BuyInterface{
     size:string,
     color:string,
 }
-export interface AddToCart{id: string;
+export interface AddToCart{
+    _id: string;
     price: number;
     quantity: number;
     totalPrice: number;
     name: string;
 }
-
 
 export interface SignUpInterface{
     name:string,
@@ -26,4 +26,26 @@ export interface LoginInterface{
 export interface VerifyInterface{
     email:string
     verificationCode:string
+}
+export interface dressInterface{
+    name:string
+    description:string
+    price:number
+    discount:number
+    category:string
+    image:string
+    sale:string
+}
+
+export interface getDressInterface{
+    _id:string
+    name:string
+    description:string
+    price:number
+    discount:number
+    category:string
+    image:string
+    sale:boolean
+    rating:number
+
 }

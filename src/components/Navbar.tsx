@@ -22,8 +22,7 @@ export default function Navbar() {
    const menu = [
       { name: "Home", href: "/" },
       { name: "Sales", href: "/dress/sales" },
-      { name: "Male", href: "/dress/male" },
-      { name: "Female", href: "/dress/female" },
+      { name: "Shop", href: "/dress" },
    ];
 
    const handelHamClick = () => {

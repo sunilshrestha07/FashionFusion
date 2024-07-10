@@ -99,6 +99,19 @@ export default function Dashboard() {
                         </div>
                      </div>
                   </form>
+                  <div className="mt-10">
+                     {currentUser?.isAdmin ? (
+                        <div className="">
+                           <Link href="/post">
+                              <button className=" bg-black text-white font-serif px-8 py-2 rounded-lg">
+                                 Add Post
+                              </button>
+                           </Link>
+                        </div>
+                     ) : (
+                        <div className=""></div>
+                     )}
+                  </div>
                </div>
 
                <div className=" pb-10 px-4 xl:px-72">
@@ -130,7 +143,10 @@ export default function Dashboard() {
                         </thead>
                         <tbody className="bg-red-500">
                            {data.map((order, index) => (
-                              <tr className="bg-white even:bg-gray-50 hover:bg-gray-100 text-sm sm:text-base" key={index}>
+                              <tr
+                                 className="bg-white even:bg-gray-50 hover:bg-gray-100 text-sm sm:text-base"
+                                 key={index}
+                              >
                                  <td className=" px-3 sm:px-4 py-3 border border-gray-200">
                                     {order.id}
                                  </td>

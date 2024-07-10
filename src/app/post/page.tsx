@@ -2,12 +2,12 @@
 
 import React, { useRef, useState } from "react";
 import { paddingForpage } from "../sizeDeclare";
-import { dressInterface } from "@/declareInterface";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "../firebase";
 import { v4 } from "uuid";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { dressInterface } from "@/types/declareTypes";
 
 export default function Post() {
    const imageRef = useRef<HTMLInputElement | null>(null);
