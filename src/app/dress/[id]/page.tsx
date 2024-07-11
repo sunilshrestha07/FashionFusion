@@ -92,15 +92,17 @@ export default function AboutDress() {
       console.log(formData);
    };
 
-   const handleAddToCart = () => {
-      if (specificDress) {
-         const { _id, name, price } = specificDress;
-         const quantity = 1; // Assuming adding one item to cart
-         const totalPrice = price * quantity;
+   const handleAddToCart = (item: AddToCart) => {
+      // if (specificDress) {
+      //    const { _id, name, price } = specificDress;
+      //    const quantity = 1; // Assuming adding one item to cart
+      //    const totalPrice = price * quantity;
 
-         //  const newItem: AddToCart = { _id, name, price, quantity, totalPrice };
-         //  dispatch(addItemToCart(newItem));
-      }
+      //    //  const newItem: AddToCart = { _id, name, price, quantity, totalPrice };
+      //    //  dispatch(addItemToCart(newItem));
+      // }
+      dispatch(addItemToCart(item));
+      console.log("Item added to cart:", item);
    };
 
    if (!specificDress) {
@@ -227,7 +229,7 @@ export default function AboutDress() {
                                        <button
                                           type="button"
                                           className="bg-black text-white hover:text-black hover:bg-white outline outline-1 outline-black text-base lg:text-xl font-semibold px-7 py-2"
-                                          onClick={handleAddToCart}
+                                          onClick={()=>handleAddToCart(specificDress)}
                                        >
                                           Add To Cart
                                        </button>

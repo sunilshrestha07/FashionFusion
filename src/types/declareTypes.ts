@@ -9,9 +9,8 @@ export interface BuyInterface{
 export interface AddToCart{
     _id: string;
     price: number;
-    quantity: number;
-    totalPrice: number;
     name: string;
+    image: string;
 }
 
 export interface SignUpInterface{
