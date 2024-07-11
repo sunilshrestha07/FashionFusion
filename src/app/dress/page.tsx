@@ -41,6 +41,14 @@ export default function Dress() {
       }
       return stars;
    };
+
+   function ScrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    
+      useEffect(() => {
+        ScrollToTop();
+      }, []);
    return (
       <>
          <div className="">

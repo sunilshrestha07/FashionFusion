@@ -100,6 +100,14 @@ export default function AboutDress() {
     return <div>Loading...</div>;
   }
 
+  function ScrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  
+    useEffect(() => {
+      ScrollToTop();
+    }, [specificDress]);
+
   return (
     <>
       <div className="">
@@ -126,7 +134,7 @@ export default function AboutDress() {
                   <div className="grid grid-rows-2 sm:grid-rows-none sm:grid-cols-5 gap-6">
                     <div className="row-span-1 sm:col-span-2 w-full aspect-[9/12] sm:w-10/12 xl:aspect-[9/11] overflow-hidden">
                       <Image
-                        className="w-full h-full object-cover object-center"
+                        className="w-full h-full object-cover object-top"
                         src={specificDress.image}
                         alt="Dress image"
                         width={600}
@@ -191,7 +199,7 @@ export default function AboutDress() {
                         <div className="flex gap-6 text-base md:text-xl xl:text-2xl font-semibold">
                           <p>NPR:</p>
                           <p className="opacity-60 line-through">
-                            {specificDress.price}.00
+                            {specificDress.price}
                           </p>
                           <p className="">
                             {afterDiscountPrice(specificDress.price, specificDress.discount)}

@@ -67,12 +67,12 @@ export default function Female() {
                      </div>
                   <div className=" my-10">
                      <div className=" grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-16">
-                        {maleData.length > 0 && maleData.map((item, index) => (
+                        {maleData.length > 0 && maleData.map((item) => (
                            <div
                               className=" col-span-1 shadow-product rounded-lg"
-                              key={index}
+                              key={item._id}
                            >
-                              <Link href={`/dress/${index}`}>
+                              <Link href={`/dress/${item._id}`}>
                                  <div className=" w-full bg-gray-100 flex flex-col p-2 rounded-lg">
                                     <div className=" w-full aspect-[9/11] rounded-lg overflow-hidden">
                                        <Image

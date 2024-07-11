@@ -50,7 +50,8 @@ export default function Recommendation({ Category }: { Category: string }) {
             </div>
             <div className="my-10">
               <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-16">
-                {recommendation.map((item) => (
+                {recommendation.splice(0,4)
+                .map((item) => (
                   <div className="col-span-1 shadow-product rounded-lg" key={item._id}>
                     <Link href={`/dress/${item._id}`}>
                       <div className="w-full bg-gray-100 flex flex-col p-2 rounded-lg">
