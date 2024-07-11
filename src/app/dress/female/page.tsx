@@ -41,6 +41,14 @@ export default function Female() {
       }
       return stars;
    };
+
+   function ScrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    
+      useEffect(() => {
+        ScrollToTop();
+      }, [femaleData]);
    return (
       <>
          <div className=" bg-orange-50">

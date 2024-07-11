@@ -41,6 +41,14 @@ export default function Sales() {
       }
       return stars;
    };
+
+   function ScrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    
+      useEffect(() => {
+        ScrollToTop();
+      }, [saleData]);
    return (
       <>
          <div className=" bg-gray-200">
