@@ -29,6 +29,14 @@ export default function Sale() {
       fetchSaleItems();
    }, []);
 
+   if(!allData){
+      return <div>
+         <div className="">
+            <div className=" animate-pulse w-full h-28 bg-slate-200"></div>
+         </div>
+      </div>
+   }
+
    return (
       <div className={`${paddingForpage} bg-blue-50`}>
          <div>

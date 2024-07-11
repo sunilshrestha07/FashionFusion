@@ -3,6 +3,7 @@ import { getDressInterface } from "@/types/declareTypes";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
+import Sceleton from "./Sceleton";
 
 export default function Recommendation({ Category }: { Category: string }) {
   const [recommendation, setRecommendation] = useState<getDressInterface[]>([]);
@@ -11,7 +12,6 @@ export default function Recommendation({ Category }: { Category: string }) {
    const res = await fetch("/api/dress");
    const data = await res.json();
    const recommendationItem = data.dress.filter((item : getDressInterface)=>item.category === Category)
-   console.log(recommendationItem)
    setRecommendation(recommendationItem);
   };
 
@@ -39,6 +39,12 @@ export default function Recommendation({ Category }: { Category: string }) {
     }
     return stars;
   };
+  
+  if(!recommendation){
+    return <div>
+      No product
+    </div>
+  }
 
   return (
     <>
