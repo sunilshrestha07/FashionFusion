@@ -3,6 +3,7 @@
 import { paddingForpage } from "@/app/sizeDeclare";
 import Crousel from "@/components/Crousel";
 import { getDressInterface } from "@/types/declareTypes";
+import { blurDataUrl } from "@/utils/BlurDataUrl";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -74,6 +75,8 @@ export default function Dress() {
                                           width={400}
                                           height={500}
                                           quality={70}
+                                          placeholder="blur"
+                                          blurDataURL={blurDataUrl}
                                        />
                                     </div>
                                     <div className=" font-semibold text-xl opacity-90 truncate mb-3 flex flex-col gap-1">

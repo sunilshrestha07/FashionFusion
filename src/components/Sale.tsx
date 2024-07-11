@@ -2,6 +2,7 @@
 
 import { paddingForpage } from "@/app/sizeDeclare";
 import { getDressInterface } from "@/types/declareTypes";
+import { blurDataUrl } from "@/utils/BlurDataUrl";
 import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
@@ -56,6 +57,8 @@ export default function Sale() {
                                  width={500}
                                  height={600}
                                  quality={70}
+                                 placeholder="blur"
+                                 blurDataURL={blurDataUrl}
                               />
                            </div>
                            <div className="text-xl text-center">
