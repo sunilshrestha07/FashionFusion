@@ -35,18 +35,18 @@ export default function AboutDress() {
     color: "",
   });
 
-  useEffect(() => {
-    if (specificDress) {
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        name: specificDress.name,
-        productId: specificDress._id,
-        price: specificDress.price,
-        size: selectedSize,
-        color: selectedColor,
-      }));
-    }
-  }, [specificDress, selectedColor, selectedSize]);
+  // useEffect(() => {
+  //   if (specificDress) {
+  //     setFormData((prevFormData) => ({
+  //       ...prevFormData,
+  //       name: specificDress.name,
+  //       productId: specificDress._id,
+  //       price: specificDress.price,
+  //       size: selectedSize,
+  //       color: selectedColor,
+  //     }));
+  //   }
+  // }, [specificDress, selectedColor, selectedSize]);
 
   const filledStarSrc = "/icons/ystar.png";
   const emptyStarSrc = "/icons/star.png";
