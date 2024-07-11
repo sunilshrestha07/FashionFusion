@@ -14,6 +14,15 @@ export default function AboutDress() {
   const dispatch = useDispatch();
   const { id } = useParams();
   const [specificDress, setSpecificDress] = useState<getDressInterface | null>(null);
+  const [selectedColor, setSelectedColor] = useState<string>("");
+  const [selectedSize, setSelectedSize] = useState<string>("");
+  const [formData, setFormData] = useState<BuyInterface>({
+    name: "",
+    productId: "",
+    price: 0,
+    size: "",
+    color: "",
+  });
 
   const fetchData = async () => {
     const res = await fetch(`/api/dress/${id}`);
@@ -25,28 +34,22 @@ export default function AboutDress() {
     fetchData();
   }, [id]);
 
-  const [selectedColor, setSelectedColor] = useState<string>("");
-  const [selectedSize, setSelectedSize] = useState<string>("");
-  const [formData, setFormData] = useState<BuyInterface>({
-    name: "",
-    productId: "",
-    price: 0,
-    size: "",
-    color: "",
-  });
+  useEffect(() => {
+    if (specificDress) {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        name: specificDress.name,
+        productId: specificDress._id,
+        price: specificDress.price,
+        size: selectedSize,
+        color: selectedColor,
+      }));
+    }
+  }, [specificDress, selectedColor, selectedSize]);
 
-  // useEffect(() => {
-  //   if (specificDress) {
-  //     setFormData((prevFormData) => ({
-  //       ...prevFormData,
-  //       name: specificDress.name,
-  //       productId: specificDress._id,
-  //       price: specificDress.price,
-  //       size: selectedSize,
-  //       color: selectedColor,
-  //     }));
-  //   }
-  // }, [specificDress, selectedColor, selectedSize]);
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [specificDress]);
 
   const filledStarSrc = "/icons/ystar.png";
   const emptyStarSrc = "/icons/star.png";
@@ -94,19 +97,9 @@ export default function AboutDress() {
     }
   };
 
-
-
   if (!specificDress) {
     return <div>Loading...</div>;
   }
-
-  function ScrollToTop() {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-  
-    useEffect(() => {
-      ScrollToTop();
-    }, [specificDress]);
 
   return (
     <>
