@@ -23,6 +23,7 @@ export default function AboutDress() {
       null
    );
    const [selectedSize, setSelectedSize] = useState<string>("");
+   const [isDataLoading, setIsDataLoading] = useState<boolean>(false);
    const [formData, setFormData] = useState<BuyInterface>({
       name: "",
       productId: "",
@@ -32,9 +33,11 @@ export default function AboutDress() {
    });
 
    const fetchData = async () => {
+      setIsDataLoading(true);
       const res = await fetch(`/api/dress/${id}`);
       const data = await res.json();
       setSpecificDress(data.dress);
+      setIsDataLoading(false);
    };
 
    useEffect(() => {
@@ -129,49 +132,54 @@ export default function AboutDress() {
                            </Link>
                         </div>
                         <div className="">
-                           <div className="grid grid-rows-2 sm:grid-rows-none sm:grid-cols-5 gap-6">
-                              <div className="row-span-1 sm:col-span-2 w-full aspect-[9/12] sm:w-10/12 xl:aspect-[9/11] overflow-hidden">
-                                    <Image
-                                       className="w-full h-full object-cover object-top"
-                                       src={specificDress.image}
-                                       alt="Dress image"
-                                       width={500}
-                                       height={700}
-                                       quality={75}
-                                       placeholder="blur"
-                                       blurDataURL={blurDataUrl}
-                                    />
+                           {isDataLoading ? (
+                              <div className="">
+                                 <Sceleton />
                               </div>
-                              <div className="row-span-1 sm:col-span-3 flex flex-col justify-between">
-                                 <div className="flex flex-col gap-6 sm:gap-2 md:gap-3">
-                                    <div className="">
-                                       <p className="text-2xl md:text-3xl xl:text-4xl font-semibold capitalize">
-                                          {specificDress.name}
-                                       </p>
-                                       <div className="flex gap-5 items-center md:mt-2">
-                                          <div className="flex gap-1 items-center">
-                                             {generateStars(
-                                                specificDress.rating
-                                             )}
+                           ) : (
+                              <div className="">
+                                 <div className="grid grid-rows-2 sm:grid-rows-none sm:grid-cols-5 gap-6">
+                                    <div className="row-span-1 sm:col-span-2 w-full aspect-[9/12] sm:w-10/12 xl:aspect-[9/11] overflow-hidden">
+                                       <Image
+                                          src={specificDress.image}
+                                          alt="Dress image"
+                                          width={500}
+                                          height={700}
+                                          quality={70}
+                                          placeholder="blur"
+                                          blurDataURL={blurDataUrl}
+                                       />
+                                    </div>
+                                    <div className="row-span-1 sm:col-span-3 flex flex-col justify-between">
+                                       <div className="flex flex-col gap-6 sm:gap-2 md:gap-3">
+                                          <div className="">
+                                             <p className="text-2xl md:text-3xl xl:text-4xl font-semibold capitalize">
+                                                {specificDress.name}
+                                             </p>
+                                             <div className="flex gap-5 items-center md:mt-2">
+                                                <div className="flex gap-1 items-center">
+                                                   {generateStars(
+                                                      specificDress.rating
+                                                   )}
+                                                </div>
+                                                <div className="">
+                                                   <p className="font-semibold text-xl">
+                                                      {specificDress.rating}
+                                                   </p>
+                                                </div>
+                                             </div>
                                           </div>
                                           <div className="">
-                                             <p className="font-semibold text-xl">
-                                                {specificDress.rating}
+                                             <p className="text-base sm:text-base xl:text-xl font-medium">
+                                                {specificDress.description}
                                              </p>
                                           </div>
-                                       </div>
-                                    </div>
-                                    <div className="">
-                                       <p className="text-base sm:text-base xl:text-xl font-medium">
-                                          {specificDress.description}
-                                       </p>
-                                    </div>
-                                    <div className="flex gap-16 lg:mt-4 mb-4">
-                                       <div className="">
-                                          <p className="text-sm sm:text-xl xl:text-2xl font-semibold">
-                                             Available Sizes:
-                                          </p>
-                                          {/* <div className="flex gap-4">
+                                          <div className="flex gap-16 lg:mt-4 mb-4">
+                                             <div className="">
+                                                <p className="text-sm sm:text-xl xl:text-2xl font-semibold">
+                                                   Available Sizes:
+                                                </p>
+                                                {/* <div className="flex gap-4">
                                              {specificDress.size.map((size, index) => (
                                                 <div key={index}>
                                                    <label>
@@ -194,40 +202,46 @@ export default function AboutDress() {
                                                 </div>
                                              ))}
                                           </div> */}
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <div className="flex flex-col gap-5">
+                                          <div className="flex gap-6 text-base md:text-xl xl:text-2xl font-semibold">
+                                             <p>NPR:</p>
+                                             <p className="opacity-60 line-through">
+                                                {specificDress.price}
+                                             </p>
+                                             <p className="">
+                                                {afterDiscountPrice(
+                                                   specificDress.price,
+                                                   specificDress.discount
+                                                )}
+                                             </p>
+                                          </div>
+                                          <div className="flex sm:gap-5 lg:gap-10 justify-between sm:justify-start">
+                                             <button
+                                                type="submit"
+                                                className="bg-black text-white hover:text-black hover:bg-white outline outline-1 outline-black text-base lg:text-xl font-semibold px-7 py-2"
+                                             >
+                                                Buy Now
+                                             </button>
+                                             <button
+                                                type="button"
+                                                className="bg-black text-white hover:text-black hover:bg-white outline outline-1 outline-black text-base lg:text-xl font-semibold px-7 py-2"
+                                                onClick={() =>
+                                                   handleAddToCart(
+                                                      specificDress
+                                                   )
+                                                }
+                                             >
+                                                Add To Cart
+                                             </button>
+                                          </div>
                                        </div>
                                     </div>
                                  </div>
-                                 <div className="flex flex-col gap-5">
-                                    <div className="flex gap-6 text-base md:text-xl xl:text-2xl font-semibold">
-                                       <p>NPR:</p>
-                                       <p className="opacity-60 line-through">
-                                          {specificDress.price}
-                                       </p>
-                                       <p className="">
-                                          {afterDiscountPrice(
-                                             specificDress.price,
-                                             specificDress.discount
-                                          )}
-                                       </p>
-                                    </div>
-                                    <div className="flex sm:gap-5 lg:gap-10 justify-between sm:justify-start">
-                                       <button
-                                          type="submit"
-                                          className="bg-black text-white hover:text-black hover:bg-white outline outline-1 outline-black text-base lg:text-xl font-semibold px-7 py-2"
-                                       >
-                                          Buy Now
-                                       </button>
-                                       <button
-                                          type="button"
-                                          className="bg-black text-white hover:text-black hover:bg-white outline outline-1 outline-black text-base lg:text-xl font-semibold px-7 py-2"
-                                          onClick={()=>handleAddToCart(specificDress)}
-                                       >
-                                          Add To Cart
-                                       </button>
-                                    </div>
-                                 </div>
                               </div>
-                           </div>
+                           )}
                         </div>
                      </div>
                   </div>
