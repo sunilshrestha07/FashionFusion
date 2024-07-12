@@ -16,9 +16,7 @@ export default function Sales() {
       setIsDataLoading(true);
       const res = await fetch("/api/dress");
       const data = await res.json();
-      const saleItem = data.dress.filter(
-         (item: getDressInterface) => item.sale === true
-      );
+      const saleItem = data.dress.filter((item: getDressInterface) => item.sale === true);
       setIsDataLoading(false);
       setSaleData(saleItem);
    };

@@ -107,6 +107,8 @@ export default function AboutDress() {
       );
    }
 
+   const size = ["S", "M", "L", "XL"];
+
    return (
       <>
          <div className=" ">
@@ -179,29 +181,39 @@ export default function AboutDress() {
                                                 <p className="text-sm sm:text-xl xl:text-2xl font-semibold">
                                                    Available Sizes:
                                                 </p>
-                                                {/* <div className="flex gap-4">
-                                             {specificDress.size.map((size, index) => (
-                                                <div key={index}>
-                                                   <label>
-                                                      <input
-                                                         className="hidden"
-                                                         type="radio"
-                                                         name="size"
-                                                         value={size}
-                                                         checked={selectedSize === size}
-                                                         onChange={() => setSelectedSize(size)}
-                                                      />
-                                                      <div
-                                                         className={`h-5 w-5 p-2 mt-2 rounded-full flex justify-center items-center bg-gray-500 text-white font-semibold text-sm cursor-pointer hover:outline-2 hover:outline outline-black ${
-                                                            selectedSize === size ? "outline outline-2" : ""
-                                                         }`}
-                                                      >
-                                                         {size}
+                                                <div className="flex gap-4">
+                                                   {size.map((size, index) => (
+                                                      <div key={index}>
+                                                         <label>
+                                                            <input
+                                                               className="hidden"
+                                                               type="radio"
+                                                               name="size"
+                                                               value={size}
+                                                               checked={
+                                                                  selectedSize ===
+                                                                  size
+                                                               }
+                                                               onChange={() =>
+                                                                  setSelectedSize(
+                                                                     size
+                                                                  )
+                                                               }
+                                                            />
+                                                            <div
+                                                               className={`h-6 w-6 p-2 mt-2 rounded-full flex justify-center items-center bg-gray-500 text-white font-semibold text-sm cursor-pointer hover:outline-2 hover:outline outline-black ${
+                                                                  selectedSize ===
+                                                                  size
+                                                                     ? "outline outline-2"
+                                                                     : ""
+                                                               }`}
+                                                            >
+                                                               {size}
+                                                            </div>
+                                                         </label>
                                                       </div>
-                                                   </label>
+                                                   ))}
                                                 </div>
-                                             ))}
-                                          </div> */}
                                              </div>
                                           </div>
                                        </div>
