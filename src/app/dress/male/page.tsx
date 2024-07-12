@@ -1,6 +1,7 @@
 "use client";
 
 import { paddingForpage } from "@/app/sizeDeclare";
+import Dressloding from "@/components/Dressloding";
 import { getDressInterface } from "@/types/declareTypes";
 import { blurDataUrl } from "@/utils/BlurDataUrl";
 import Image from "next/image";
@@ -8,19 +9,23 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 export default function Female() {
-   const [maleData,setMaleData]=useState<getDressInterface[]>([])
+   const [maleData, setMaleData] = useState<getDressInterface[]>([]);
+   const [isDataLoading, setIsDataLoading] = useState<boolean>(false);
 
    const fetchData = async () => {
+      setIsDataLoading(true);
       const res = await fetch("/api/dress");
       const data = await res.json();
-      const maleItem = data.dress.filter((item : getDressInterface)=>item.category === "male")
+      const maleItem = data.dress.filter(
+         (item: getDressInterface) => item.category === "male"
+      );
+      setIsDataLoading(false);
       setMaleData(maleItem);
-   }
+   };
 
-   
    useEffect(() => {
       fetchData();
-   }, [])
+   }, []);
 
    const filledStarSrc = "/icons/ystar.png";
    const emptyStarSrc = "/icons/star.png";
@@ -44,12 +49,12 @@ export default function Female() {
    };
 
    function ScrollToTop() {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-    
-      useEffect(() => {
-        ScrollToTop();
-      }, [maleData]);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+   }
+
+   useEffect(() => {
+      ScrollToTop();
+   }, [maleData]);
    return (
       <>
          <div className=" bg-blue-50">
@@ -64,56 +69,66 @@ export default function Female() {
                      </div>
                   </div>
                   <div className="mt-5">
-                        <Link href="/dress">
-                           <Image
-                              width={40}
-                              height={40}
-                              className="w-7 aspect-square object-cover object-center"
-                              src="/icons/backbtn.png"
-                              alt=""
-                           />
-                        </Link>
-                     </div>
+                     <Link href="/dress">
+                        <Image
+                           width={40}
+                           height={40}
+                           className="w-7 aspect-square object-cover object-center"
+                           src="/icons/backbtn.png"
+                           alt=""
+                        />
+                     </Link>
+                  </div>
                   <div className=" my-10">
-                     <div className=" grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-16">
-                        {maleData.length > 0 && maleData.map((item) => (
-                           <div
-                              className=" col-span-1 shadow-product rounded-lg"
-                              key={item._id}
-                           >
-                              <Link href={`/dress/${item._id}`}>
-                                 <div className=" w-full bg-gray-100 flex flex-col p-2 rounded-lg">
-                                    <div className=" w-full aspect-[9/11] rounded-lg overflow-hidden">
-                                       <Image
-                                          className="w-full h-full object-cover object-top hover:scale-110 transition ease-in-out duration-300"
-                                          src={item.image}
-                                          alt={item.name}
-                                          width={400}
-                                          height={500}
-                                          quality={70}
-                                          placeholder="blur"
-                                          blurDataURL={blurDataUrl}
-                                       />
-                                    </div>
-                                    <div className=" font-semibold text-xl opacity-90 truncate mb-3 flex flex-col gap-1">
-                                       <p>{item.name}</p>
-                                       <div className=" flex justify-between">
-                                          <div className="">
-                                             <div className=" flex gap-4 items-center">
-                                                <div className=" flex gap-1">
-                                                   {generateStars(item.rating)}
+                     {isDataLoading ? (
+                        <div className="">
+                           <Dressloding />
+                           <Dressloding />
+                        </div>
+                     ) : (
+                        <div className=" grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-16">
+                           {maleData.length > 0 &&
+                              maleData.map((item) => (
+                                 <div
+                                    className=" col-span-1 shadow-product rounded-lg"
+                                    key={item._id}
+                                 >
+                                    <Link href={`/dress/${item._id}`}>
+                                       <div className=" w-full bg-gray-100 flex flex-col p-2 rounded-lg">
+                                          <div className=" w-full aspect-[9/11] rounded-lg overflow-hidden">
+                                             <Image
+                                                className="w-full h-full object-cover object-top hover:scale-110 transition ease-in-out duration-300"
+                                                src={item.image}
+                                                alt={item.name}
+                                                width={400}
+                                                height={500}
+                                                quality={60}
+                                                placeholder="blur"
+                                                blurDataURL={blurDataUrl}
+                                             />
+                                          </div>
+                                          <div className=" font-semibold text-xl opacity-90 truncate mb-3 flex flex-col gap-1">
+                                             <p>{item.name}</p>
+                                             <div className=" flex justify-between">
+                                                <div className="">
+                                                   <div className=" flex gap-4 items-center">
+                                                      <div className=" flex gap-1">
+                                                         {generateStars(
+                                                            item.rating
+                                                         )}
+                                                      </div>
+                                                      <p>{item.rating}</p>
+                                                   </div>
                                                 </div>
-                                                <p>{item.rating}</p>
+                                                <p className="">{item.price}</p>
                                              </div>
                                           </div>
-                                          <p className="">{item.price}</p>
                                        </div>
-                                    </div>
+                                    </Link>
                                  </div>
-                              </Link>
-                           </div>
-                        ))}
-                     </div>
+                              ))}
+                        </div>
+                     )}
                   </div>
                </div>
             </div>

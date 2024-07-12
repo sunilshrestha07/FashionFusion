@@ -93,16 +93,7 @@ export default function AboutDress() {
    };
 
    const handleAddToCart = (item: AddToCart) => {
-      // if (specificDress) {
-      //    const { _id, name, price } = specificDress;
-      //    const quantity = 1; // Assuming adding one item to cart
-      //    const totalPrice = price * quantity;
-
-      //    //  const newItem: AddToCart = { _id, name, price, quantity, totalPrice };
-      //    //  dispatch(addItemToCart(newItem));
-      // }
       dispatch(addItemToCart(item));
-      console.log("Item added to cart:", item);
    };
 
    if (!specificDress) {
@@ -144,9 +135,9 @@ export default function AboutDress() {
                                        className="w-full h-full object-cover object-top"
                                        src={specificDress.image}
                                        alt="Dress image"
-                                       width={600}
-                                       height={800}
-                                       quality={100}
+                                       width={500}
+                                       height={700}
+                                       quality={75}
                                        placeholder="blur"
                                        blurDataURL={blurDataUrl}
                                     />
