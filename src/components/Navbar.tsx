@@ -82,7 +82,7 @@ export default function Navbar() {
                   </div>
                </Link>
                {currentUser ? (
-                  <div className="">
+                  <div className=" relative">
                      <Link href="/dashboard">
                         <div className="w-7  xl:w-9 aspect-square rounded-full overflow-hidden object-cover">
                            <img src={currentUser.avatar} alt="" />

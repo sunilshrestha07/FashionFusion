@@ -96,6 +96,13 @@ export default function Dashboard() {
                                  </div>
                               </Link>
                            </div>
+                           <div className="w-full">
+                              <Link href="/">
+                                 <div className="bg-white text-red-500 font-semibold px-3 sm:px-6 py-2 rounded-lg hover:text-black hover:bg-red-200 outline outline-1 outline-black w-full text-center">
+                                    Logout
+                                 </div>
+                              </Link>
+                           </div>
                         </div>
                      </div>
                   </form>

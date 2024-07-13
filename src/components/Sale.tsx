@@ -8,6 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import Saleloading from "./Saleloading";
+import Sceleton from "./Sceleton";
 
 export default function Sale() {
    const [allData, setAllData] = useState<getDressInterface[]>([]);
@@ -24,10 +25,11 @@ export default function Sale() {
             const saleItems = data.filter(
                (item: getDressInterface) => item.sale === true
             );
-            setIsDataLoading(false);
             setAllData(saleItems);
+            setIsDataLoading(false);
          }
       } catch (error) {
+         setIsDataLoading(true);
          console.log("Error fetching data: ", error);
       }
    };
@@ -54,7 +56,7 @@ export default function Sale() {
             </div>
             <div className="">
                {isDataLoading ? (
-                  <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-8 sm:gap-14 md:gap-10 lg:gap-24">
+                  <div className="">
                      <Saleloading />
                   </div>
                ) : (

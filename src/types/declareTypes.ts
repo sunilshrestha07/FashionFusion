@@ -48,3 +48,12 @@ export interface getDressInterface{
     rating:number
 
 }
+
+export interface reviewInterface{
+    postId:string
+    rating:number
+    comment:string
+    userId:string
+    userImage:string
+    userName:string
+}

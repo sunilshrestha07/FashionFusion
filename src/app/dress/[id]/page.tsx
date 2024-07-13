@@ -15,6 +15,7 @@ import { useDispatch } from "react-redux";
 import { addItemToCart } from "@/app/redux/Cartslice";
 import Sceleton from "@/components/Sceleton";
 import { blurDataUrl } from "@/utils/BlurDataUrl";
+import Reviews from "@/components/Reviews";
 
 export default function AboutDress() {
    const dispatch = useDispatch();
@@ -259,8 +260,14 @@ export default function AboutDress() {
                   </div>
                </div>
             </form>
-            <div className="">
-               <Recommendation Category={specificDress.category} />
+            <div className=" flex flex-col">
+               <div className="">
+                  <Reviews postReview={specificDress} />
+               </div>
+
+               <div className="">
+                  <Recommendation Category={specificDress.category} />
+               </div>
             </div>
          </div>
       </>
