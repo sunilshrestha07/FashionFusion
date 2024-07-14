@@ -57,3 +57,14 @@ export interface reviewInterface{
     userImage:string
     userName:string
 }
+
+export interface getReviewInterface{
+    _id:string
+    postId:string
+    rating:number
+    comment:string
+    userId:string
+    userImage:string
+    userName:string
+    createdAt:string
+}

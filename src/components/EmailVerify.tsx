@@ -6,20 +6,24 @@ import { VerifyInterface } from "@/types/declareTypes";
 import { useRouter, useSearchParams } from "next/navigation";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { loginFail, loginSuccess } from "@/app/redux/UserSlice";
 
 export default function EmailVerify() {
    const router = useRouter();
    const searchParams = useSearchParams();
    const email = searchParams.get("email");
    const [isLoading, setIsLoading] = useState<boolean>(false);
-
+   const dispatch = useDispatch();
    const [formData, setFormData] = useState<VerifyInterface>({
       email: email || "",
       verificationCode: "",
    });
+
    const handelVerifyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setFormData({ ...formData, [e.target.id]: e.target.value });
    };
+
 
    const handelVerifySubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
@@ -27,11 +31,13 @@ export default function EmailVerify() {
       try {
          const res = await axios.post("/api/user/verify", formData);
          if (res.status === 200) {
+            dispatch(loginSuccess(res.data.user));
             router.push("/");
             setIsLoading(false);
          }
       } catch (error: any) {
          setIsLoading(false);
+         dispatch(loginFail(error));
          console.error("verification failed", error);
          if (axios.isAxiosError(error)) {
             toast.error(

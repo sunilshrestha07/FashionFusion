@@ -84,11 +84,11 @@ export default function Sale() {
                                     </p>
                                  </div>
                               </Link>
-                              <div className="flex justify-center mt-2">
+                              {/* <div className="flex justify-center mt-2">
                                  <button className="bg-black text-white font-semibold px-6 py-2 hover:scale-105">
                                     Add To Cart
                                  </button>
-                              </div>
+                              </div> */}
                            </div>
                         ))}
                   </div>

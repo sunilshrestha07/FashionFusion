@@ -1,14 +1,21 @@
 "use client";
 
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import Link from "next/link";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
+import { logout } from "../redux/UserSlice";
 
 export default function Dashboard() {
    const currentUser = useSelector(
       (state: RootState) => state.user.currentUser
    );
+
+   const router = useRouter();
+   const dispatch = useDispatch();
 
    const data = [
       {
@@ -33,6 +40,19 @@ export default function Dashboard() {
          status: "pending",
       },
    ];
+
+   const handelogOut = async () => {
+      try {
+         const res = await axios.post("/api/user/logout");
+         if (res.status === 200) {
+            router.push("/login");
+            dispatch(logout());
+         }
+      } catch (error) {
+         console.log("error logiing out");
+         toast.error("Error logging out");
+      }
+   };
    return (
       <>
          <div className="  ">
@@ -97,11 +117,12 @@ export default function Dashboard() {
                               </Link>
                            </div>
                            <div className="w-full">
-                              <Link href="/">
-                                 <div className="bg-white text-red-500 font-semibold px-3 sm:px-6 py-2 rounded-lg hover:text-black hover:bg-red-200 outline outline-1 outline-black w-full text-center">
-                                    Logout
-                                 </div>
-                              </Link>
+                              <div
+                                 className="bg-white text-red-500 font-semibold px-3 sm:px-6 py-2 rounded-lg hover:text-black hover:bg-red-200 outline outline-1 outline-black w-full text-center cursor-pointer"
+                                 onClick={handelogOut}
+                              >
+                                 Logout
+                              </div>
                            </div>
                         </div>
                      </div>
