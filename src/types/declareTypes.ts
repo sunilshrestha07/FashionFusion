@@ -68,3 +68,10 @@ export interface getReviewInterface{
     userName:string
     createdAt:string
 }
+
+export interface userProfile{
+    userName?:string
+    email?:string
+    avatar?:string
+    password?:string
+}

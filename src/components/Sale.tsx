@@ -25,6 +25,15 @@ export default function Sale() {
             const saleItems = data.filter(
                (item: getDressInterface) => item.sale === true
             );
+            // Shuffle the array
+            for (let i = saleItems.length - 1; i > 0; i--) {
+               const j = Math.floor(Math.random() * (i + 1));
+               [saleItems[i], saleItems[j]] = [
+                  saleItems[j],
+                  saleItems[i],
+               ];
+            }
+
             setAllData(saleItems);
             setIsDataLoading(false);
          }
