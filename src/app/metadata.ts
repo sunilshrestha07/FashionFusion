@@ -1,4 +1,3 @@
-// src/app/metadata.ts
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -8,11 +7,4 @@ export const metadata: Metadata = {
   icons: {
     icon: "/favicon.ico",
   },
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 1,
-  },
-  themeColor: "#ffffff",
-  
 };

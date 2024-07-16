@@ -38,7 +38,7 @@ export default function Home() {
                      <div className="">
                         <Link href="/dress/male">
                            <button className=" bg-gray-300 text-black px-10 sm:px-12 py-2 sm:py-3 text-xl font-semibold border-[1px] border-white hover:text-white hover:bg-black ">
-                              male
+                              Male
                            </button>
                         </Link>
                      </div>

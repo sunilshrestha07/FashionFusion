@@ -1,20 +1,22 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import Image from "next/image";
 import Link from "next/link";
-import { buyDressInterface, getDressInterface } from "@/types/declareTypes";
+import { buyDressInterface } from "@/types/declareTypes";
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { paddingForCart } from "@/app/sizeDeclare";
+import LoginMessage from "@/components/LoginMessage";
 
 export default function Cart() {
    const { id } = useParams();
    const router = useRouter();
    const [isUploading, setIsUploading] = useState<boolean>(false);
    const currentUser = useSelector((state: any) => state.user.currentUser);
+   const [showLoginMessage, setShowLoginMessage] = useState<boolean>(false);
    const [orderDress, setOrderDress] = useState<buyDressInterface>({
       _id: "",
       name: "",
@@ -34,7 +36,9 @@ export default function Cart() {
       fetchData();
    }, [id]);
 
-   const price = Math.floor(orderDress?.price - (orderDress?.price * orderDress?.discount) / 100);
+   const price = Math.floor(
+      orderDress?.price - (orderDress?.price * orderDress?.discount) / 100
+   );
 
    const grandTotal = price * quantity;
 
@@ -65,6 +69,14 @@ export default function Cart() {
          console.error("Error creating order", error);
       }
    };
+
+   const handleClick = () => {
+      if (currentUser) {
+        handleOrderSubmit();
+      } else {
+        setShowLoginMessage(!showLoginMessage);
+      }
+    };
 
    return (
       <div className={paddingForCart}>
@@ -104,9 +116,7 @@ export default function Cart() {
                            <td className="text-center w-1/6">
                               {orderDress.name}
                            </td>
-                           <td className="text-center w-1/6">
-                              {price}
-                           </td>
+                           <td className="text-center w-1/6">{price}</td>
                            <td className="text-center w-1/6 ">
                               <div className=" flex w-full">
                                  <div
@@ -156,13 +166,7 @@ export default function Cart() {
                   </div>
                   <div
                      className=""
-                     onClick={
-                        currentUser
-                           ? handleOrderSubmit
-                           : () => {
-                                toast.error("Please login to checkout");
-                             }
-                     }
+                     onClick={handleClick}
                   >
                      <button
                         className={`w-full bg-black text-white py-3 rounded-md outline outline-1 hover:bg-white hover:text-black font-semibold ${
@@ -177,6 +181,14 @@ export default function Cart() {
                            "Checkout"
                         )}
                      </button>
+                     {showLoginMessage && (
+                        <div className="">
+                           <LoginMessage
+                              showLoginMessage={showLoginMessage}
+                              setShowLoginMessage={setShowLoginMessage}
+                           />
+                        </div>
+                     )}
                   </div>
                </div>
             </div>
