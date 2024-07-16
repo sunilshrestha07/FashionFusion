@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import Image from "next/image";
@@ -8,9 +8,16 @@ import { paddingForCart } from "../sizeDeclare";
 import Link from "next/link";
 import { removeItemFromCart } from "../redux/Cartslice";
 import { AddToCart } from "@/types/declareTypes";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 export default function Cart() {
    const cartItems = useSelector((state: RootState) => state.saved.items);
+   const router = useRouter();
+   const [isUploading, setIsUploading] = useState<boolean>(false);
+   const currentUser = useSelector(
+      (state: RootState) => state.user.currentUser
+   );
    const dispatch = useDispatch();
 
    const handleRemoveFromCart = (item: AddToCart) => {
@@ -21,6 +28,33 @@ export default function Cart() {
       (total, item) => total + item.price * item.quantity,
       0
    );
+
+   const handleOrderSubmit = async () => {
+      const orderData = {
+         userId: currentUser?._id,
+         dressName: cartItems.map((item) => item.name).join(", "),
+         userEmail: currentUser?.email,
+         userName: currentUser?.userName,
+         totalPrice: grandTotal,
+         quantity: cartItems.reduce((total, item) => total + item.quantity, 0),
+      };
+      try {
+         setIsUploading(true);
+         console.log(orderData);
+         const res = await axios.post("/api/order", orderData);
+         if (res.status === 200) {
+            setIsUploading(false);
+            router.push("/success")
+            console.log("Order created success", res.data);
+         } else {
+            setIsUploading(false);
+            console.error("Error creating order");
+         }
+      } catch (error) {
+         setIsUploading(false);
+         console.error("Error creating order", error);
+      }
+   };
 
    return (
       <div className={paddingForCart}>
@@ -99,8 +133,16 @@ export default function Cart() {
                         <p>Rs: {grandTotal - 100}</p>
                      </div>
                   </div>
-                  <div className="">
-                     <button className="w-full bg-black text-white py-3 rounded-md outline outline-1 hover:bg-white hover:text-black font-semibold">Checkout</button>
+                  <div className="" onClick={handleOrderSubmit}>
+                     <button className={`w-full bg-black text-white py-3 rounded-md outline outline-1 hover:bg-white hover:text-black font-semibold ${isUploading ? "cursor-not-allowed" : ""}`}>
+                     {isUploading ? (
+                                 <div className=" flex justify-center items-center px-3 py-">
+                                    <span className="loaderrr"></span>
+                                 </div>
+                              ) : (
+                                 "Checkout"
+                              )}
+                     </button>
                   </div>
                </div>
             </div>

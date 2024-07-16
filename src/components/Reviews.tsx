@@ -235,7 +235,7 @@ export default function Reviews({
                   ))}
                </div>
             ) : (
-               <div>No reviews!</div>
+               <div></div>
             )}
          </div>
       </div>
