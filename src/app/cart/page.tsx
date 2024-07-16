@@ -10,6 +10,7 @@ import { removeItemFromCart } from "../redux/Cartslice";
 import { AddToCart } from "@/types/declareTypes";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 export default function Cart() {
    const cartItems = useSelector((state: RootState) => state.saved.items);
@@ -133,7 +134,7 @@ export default function Cart() {
                         <p>Rs: {grandTotal - 100}</p>
                      </div>
                   </div>
-                  <div className="" onClick={handleOrderSubmit}>
+                  <div className="" onClick={currentUser ? handleOrderSubmit : () => {toast.error("Please login to checkout") }}>
                      <button className={`w-full bg-black text-white py-3 rounded-md outline outline-1 hover:bg-white hover:text-black font-semibold ${isUploading ? "cursor-not-allowed" : ""}`}>
                      {isUploading ? (
                                  <div className=" flex justify-center items-center px-3 py-">
