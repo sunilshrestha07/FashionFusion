@@ -9,7 +9,7 @@ import {
 } from "@/types/declareTypes";
 import Image from "next/image";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { addItemToCart } from "@/app/redux/Cartslice";
@@ -23,6 +23,7 @@ export default function AboutDress() {
    const [specificDress, setSpecificDress] = useState<getDressInterface | null>(
       null
    );
+   const router = useRouter()
    const [selectedSize, setSelectedSize] = useState<string>("");
    const [isDataLoading, setIsDataLoading] = useState<boolean>(false);
    const [formData, setFormData] = useState<BuyInterface>({
@@ -30,7 +31,6 @@ export default function AboutDress() {
       productId: "",
       price: 0,
       size: "",
-      color: "",
    });
 
    const fetchData = async () => {
@@ -89,11 +89,16 @@ export default function AboutDress() {
 
    const handleBuy = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      if (!formData.color || !formData.size) {
-         alert("Please select color and size");
+      if (!formData.size) {
+         alert("Please select  size");
          return;
       }
-      console.log(formData);
+      try {
+         router.push(`/buy/${formData.productId}`);
+      } catch (error) {
+         
+         console.log(error);
+      }
    };
 
    const handleAddToCart = (item: AddToCart) => {

@@ -3,7 +3,6 @@ export interface BuyInterface {
    productId: string;
    price: number;
    size: string;
-   color: string;
 }
 export interface AddToCart {
    _id: string;
@@ -92,4 +91,11 @@ export interface getOrderInterface {
    userName: string;
    userEmail: string;
    status: string;
+}
+
+export interface buyDressInterface {
+   _id: string;
+   name: string;
+   price: number;
+   image: string;
 }
