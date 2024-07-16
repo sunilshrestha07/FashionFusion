@@ -203,15 +203,17 @@ export default function Reviews({
                      >
                         <div className="flex flex-row justify-start items-center gap-2">
                            {review.userImage ? (
-                              <Image
-                                 className="h-12 lg:h-14 aspect-square rounded-full object-cover"
-                                 src={review.userImage}
-                                 alt="User Image"
-                                 width={100}
-                                 height={100}
-                                 quality={40}
-                                 priority={true}
-                              />
+                              <div className=" w-12 aspect-square overflow-hidden rounded-full">
+                                 <Image
+                                    className="h-12 lg:h-14 aspect-square rounded-full object-cover"
+                                    src={review.userImage}
+                                    alt="User Image"
+                                    width={100}
+                                    height={100}
+                                    quality={40}
+                                    priority={true}
+                                 />
+                              </div>
                            ) : (
                               <div className=" bg-blue-600 flex justify-center items-center h-12 lg:h-14 aspect-square rounded-full">
                                  <p className=" font-semibold text-sm sm:text-base text-white">
