@@ -7,6 +7,7 @@ import {
 } from "@/types/declareTypes";
 import axios from "axios";
 import moment from "moment";
+import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -202,10 +203,14 @@ export default function Reviews({
                      >
                         <div className="flex flex-row justify-start items-center gap-2">
                            {review.userImage ? (
-                              <img
+                              <Image
                                  className="h-12 lg:h-14 aspect-square rounded-full object-cover"
                                  src={review.userImage}
-                                 alt={review.userName}
+                                 alt="User Image"
+                                 width={100}
+                                 height={100}
+                                 quality={40}
+                                 priority={true}
                               />
                            ) : (
                               <div className=" bg-blue-600 flex justify-center items-center h-12 lg:h-14 aspect-square rounded-full">

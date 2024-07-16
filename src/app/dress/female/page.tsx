@@ -11,6 +11,9 @@ import React, { useEffect, useState } from "react";
 export default function Female() {
    const [femaleData, setFemaleData] = useState<getDressInterface[]>([]);
    const [isDataLoading, setIsDataLoading] = useState<boolean>(false);
+   const [currentPage, setCurrentPage] = useState<number>(1);
+
+   const itemsPerPage = 8;
 
    const fetchData = async () => {
       setIsDataLoading(true);
@@ -55,6 +58,17 @@ export default function Female() {
    useEffect(() => {
       ScrollToTop();
    }, [femaleData]);
+
+   const totalPages = Math.ceil(femaleData.length / itemsPerPage);
+   const currentData = femaleData.slice(
+      (currentPage - 1) * itemsPerPage,
+      currentPage * itemsPerPage
+   );
+
+   const handlePageChange = (newPage: number) => {
+      setCurrentPage(newPage);
+      ScrollToTop();
+   };
    return (
       <>
          <div className=" bg-orange-50">
@@ -86,47 +100,74 @@ export default function Female() {
                            <Dressloding />
                         </div>
                      ) : (
-                        <div className=" grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-16">
-                           {femaleData.length > 0 &&
-                              femaleData.map((item) => (
-                                 <div
-                                    className=" col-span-1 shadow-product rounded-lg"
-                                    key={item._id}
-                                 >
-                                    <Link href={`/dress/${item._id}`}>
-                                       <div className=" w-full bg-gray-100 flex flex-col p-2 rounded-lg">
-                                          <div className=" w-full aspect-[9/11] rounded-lg overflow-hidden">
-                                             <Image
-                                                className="w-full h-full object-cover object-top hover:scale-110 transition duration-300 ease-in-out"
-                                                src={item.image}
-                                                alt={item.name}
-                                                width={400}
-                                                height={500}
-                                                quality={60}
-                                                placeholder="blur"
-                                                blurDataURL={blurDataUrl}
-                                             />
-                                          </div>
-                                          <div className=" font-semibold text-xl opacity-90 truncate mb-3 flex flex-col gap-1">
-                                             <p>{item.name}</p>
-                                             <div className=" flex justify-between">
-                                                <div className="">
-                                                   <div className=" flex gap-4 items-center">
-                                                      <div className=" flex gap-1">
-                                                         {generateStars(
-                                                            item.rating
-                                                         )}
+                        <div className="">
+                           <div className=" grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-16">
+                              {femaleData.length > 0 &&
+                                 femaleData.map((item) => (
+                                    <div
+                                       className=" col-span-1 shadow-product rounded-lg"
+                                       key={item._id}
+                                    >
+                                       <Link href={`/dress/${item._id}`}>
+                                          <div className=" w-full bg-gray-100 flex flex-col p-2 rounded-lg">
+                                             <div className=" w-full aspect-[9/11] rounded-lg overflow-hidden">
+                                                <Image
+                                                   className="w-full h-full object-cover object-top hover:scale-110 transition duration-300 ease-in-out"
+                                                   src={item.image}
+                                                   alt={item.name}
+                                                   width={400}
+                                                   height={500}
+                                                   quality={60}
+                                                   placeholder="blur"
+                                                   blurDataURL={blurDataUrl}
+                                                />
+                                             </div>
+                                             <div className=" font-semibold text-xl opacity-90 truncate mb-3 flex flex-col gap-1">
+                                                <p>{item.name}</p>
+                                                <div className=" flex justify-between">
+                                                   <div className="">
+                                                      <div className=" flex gap-4 items-center">
+                                                         <div className=" flex gap-1">
+                                                            {generateStars(
+                                                               item.rating
+                                                            )}
+                                                         </div>
+                                                         <p>{item.rating}</p>
                                                       </div>
-                                                      <p>{item.rating}</p>
                                                    </div>
+                                                   <p className="">
+                                                      {item.price}
+                                                   </p>
                                                 </div>
-                                                <p className="">{item.price}</p>
                                              </div>
                                           </div>
-                                       </div>
-                                    </Link>
-                                 </div>
-                              ))}
+                                       </Link>
+                                    </div>
+                                 ))}
+                           </div>
+                           <div className="flex justify-between mt-8 font-semibold">
+                              <button
+                                 className="px-4 py-2 mx-1 bg-black text-white  rounded"
+                                 onClick={() =>
+                                    handlePageChange(currentPage - 1)
+                                 }
+                                 disabled={currentPage === 1}
+                              >
+                                 Previous
+                              </button>
+                              <span className="px-4 py-2 mx-1">
+                                 {currentPage} / {totalPages}
+                              </span>
+                              <button
+                                 className="px-4 py-2 mx-1 bg-black text-white rounded"
+                                 onClick={() =>
+                                    handlePageChange(currentPage + 1)
+                                 }
+                                 disabled={currentPage === totalPages}
+                              >
+                                 Next
+                              </button>
+                           </div>
                         </div>
                      )}
                   </div>

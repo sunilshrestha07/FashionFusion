@@ -12,6 +12,7 @@ import { getOrderInterface, userProfile } from "@/types/declareTypes";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "../firebase";
 import { v4 } from "uuid";
+import Image from "next/image";
 
 export default function Dashboard() {
    const currentUser = useSelector(
@@ -183,9 +184,13 @@ export default function Dashboard() {
                            ) : (
                               <div className=" w-full h-full">
                                  {currentUser?.avatar ? (
-                                    <img
-                                       className=" w-full h-full object-cover object-center"
-                                       src={currentUser?.avatar}
+                                    <Image
+                                       className="w-full h-full object-cover object-center"
+                                       width={150}
+                                       height={150}
+                                       quality={40}
+                                       priority={true}
+                                       src={currentUser.avatar}
                                        alt=""
                                     />
                                  ) : (

@@ -12,6 +12,9 @@ import { useEffect, useState } from "react";
 export default function Dress() {
    const [allData, setAllData] = useState<getDressInterface[]>([]);
    const [isDataLoading, setIsDataLoading] = useState<boolean>(false);
+   const [currentPage, setCurrentPage] = useState<number>(1);
+
+   const itemsPerPage = 8;
 
    function ScrollToTop() {
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -51,6 +54,14 @@ export default function Dress() {
       return stars;
    };
 
+   const totalPages = Math.ceil(allData.length / itemsPerPage);
+   const currentData = allData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
+   const handlePageChange = (newPage: number) => {
+      setCurrentPage(newPage);
+      ScrollToTop();
+   };
+
    return (
       <>
          <div className="">
@@ -67,8 +78,8 @@ export default function Dress() {
                   ) : (
                      <div className=" ">
                         <div className=" grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-16">
-                           {allData.length > 0 &&
-                              allData.map((item) => (
+                           {currentData.length > 0 &&
+                              currentData.map((item) => (
                                  <div
                                     className=" col-span-1 shadow-product rounded-lg"
                                     key={item._id}
@@ -107,6 +118,23 @@ export default function Dress() {
                                     </Link>
                                  </div>
                               ))}
+                        </div>
+                        <div className="flex justify-between mt-8 font-semibold">
+                           <button
+                              className="px-4 py-2 mx-1 bg-black text-white  rounded"
+                              onClick={() => handlePageChange(currentPage - 1)}
+                              disabled={currentPage === 1}
+                           >
+                              Previous
+                           </button>
+                           <span className="px-4 py-2 mx-1">{currentPage} / {totalPages}</span>
+                           <button
+                              className="px-4 py-2 mx-1 bg-black text-white rounded"
+                              onClick={() => handlePageChange(currentPage + 1)}
+                              disabled={currentPage === totalPages}
+                           >
+                              Next
+                           </button>
                         </div>
                      </div>
                   )}
