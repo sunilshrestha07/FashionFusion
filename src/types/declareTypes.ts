@@ -82,3 +82,14 @@ export interface orderInterface {
    userName: string;
    userEmail: string;
 }
+
+export interface getOrderInterface {
+   _id: string;
+   userId: string;
+   dressName: string;
+   totalPrice: number;
+   quantity: number;
+   userName: string;
+   userEmail: string;
+   status: string;
+}

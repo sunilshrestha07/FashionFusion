@@ -176,7 +176,7 @@ export default function Reviews({
                            : (e) => {
                                 e.preventDefault();
                                 toast.info("Login first");
-                            }
+                             }
                      }
                      disabled={isUploading}
                   >
@@ -201,11 +201,21 @@ export default function Reviews({
                         key={review._id}
                      >
                         <div className="flex flex-row justify-start items-center gap-2">
-                           <img
-                              className="h-12 lg:h-14 aspect-square rounded-full object-cover"
-                              src={review.userImage}
-                              alt={review.userName}
-                           />
+                           {review.userImage ? (
+                              <img
+                                 className="h-12 lg:h-14 aspect-square rounded-full object-cover"
+                                 src={review.userImage}
+                                 alt={review.userName}
+                              />
+                           ) : (
+                              <div className=" bg-blue-600 flex justify-center items-center h-12 lg:h-14 aspect-square rounded-full">
+                                 <p className=" font-semibold text-sm sm:text-base text-white">
+                                    {currentUser?.userName
+                                       .slice(0, 2)
+                                       .toUpperCase()}
+                                 </p>
+                              </div>
+                           )}
                            <div className="font-Lora">
                               <p className="font-medium text-base lg:text-xl">
                                  {review.userName}

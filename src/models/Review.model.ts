@@ -22,7 +22,6 @@ const ReviewSchema = new mongoose.Schema({
     },
     userImage: {
         type: String,
-        required: true
     }
 },{timestamps: true});
 

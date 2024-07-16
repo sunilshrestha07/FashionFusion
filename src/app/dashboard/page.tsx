@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import Link from "next/link";
@@ -8,7 +8,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { logout, updateSuccess } from "../redux/UserSlice";
-import { userProfile } from "@/types/declareTypes";
+import { getOrderInterface, userProfile } from "@/types/declareTypes";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "../firebase";
 import { v4 } from "uuid";
@@ -25,6 +25,10 @@ export default function Dashboard() {
    const [imageUrl, setImageUrl] = useState<string | null>(null);
    const [profileData, setProfileData] = useState<userProfile>({});
    const [isUploading, setIsUploading] = useState<boolean>(false);
+   const [orders, setOrders] = useState<getOrderInterface[]>([]);
+   const [isEditing, setIsEditing] = useState<boolean>(false);
+   const [editignId, setEditingId] = useState<string>("");
+   const [orderStatus, setOrderStatus] = useState<string>("");
 
    const handelprofileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0];
@@ -34,29 +38,22 @@ export default function Dashboard() {
       }
    };
 
-   const data = [
-      {
-         id: "1",
-         orderItem: "shirt",
-         quantity: 2,
-         total: 300,
-         status: "pending",
-      },
-      {
-         id: "1",
-         orderItem: "shirt",
-         quantity: 2,
-         total: 300,
-         status: "pending",
-      },
-      {
-         id: "1",
-         orderItem: "shirt",
-         quantity: 2,
-         total: 300,
-         status: "pending",
-      },
-   ];
+   const fetchData = async () => {
+      const res = await fetch("/api/order");
+      const data = await res.json();
+      if (!currentUser?.isAdmin) {
+         const userOrders = data.orders.filter(
+            (order: getOrderInterface) => order.userId === currentUser?._id
+         );
+         setOrders(userOrders);
+      } else {
+         setOrders(data.orders);
+      }
+   };
+
+   useEffect(() => {
+      fetchData();
+   }, []);
 
    const handelogOut = async () => {
       try {
@@ -126,16 +123,42 @@ export default function Dashboard() {
          }
       }
    };
+
+   const handelEditing = (id: string, status: string) => {
+      setEditingId(id);
+      setOrderStatus(orderStatus);
+   };
+
+   const handelStatusUpdate = async () => {
+      setEditingId("");
+      try {
+         const res = await axios.put(`/api/order/${editignId}`, {
+            status: orderStatus,
+         });
+         if (res.status === 200) {
+            toast.success("Order status updated");
+            fetchData();
+            console.log(res.data.orders);
+         }
+      } catch (error) {
+         toast.error("Error updating order status");
+         console.log("Error updating order status:", error);
+      }
+   };
+
+   const handelCancelEditing = () => {
+      setEditingId("");
+   };
    return (
       <>
-         <div className="  ">
+         <div className=" ">
             <div className=" h-full flex flex-col gap-16 xl:gap-20 py-10">
                <div className="px-7 xl:px-72 ">
                   <form
                      className=" grid sm:grid-cols-2"
                      onSubmit={handelProfileSubmit}
                   >
-                     <div className="col-span-1 w-full flex flex-col sm:flex-row justify-center items-center gap-5 py-4 sm;px-5">
+                     <div className="col-span-1 w-full flex flex-col sm:flex-row justify-center items-center gap-5 py-4 sm:px-5 ">
                         <input
                            type="file"
                            accept="image/*"
@@ -154,11 +177,23 @@ export default function Dashboard() {
                                  alt=""
                               />
                            ) : (
-                              <img
-                                 className=" w-full h-full object-cover object-center"
-                                 src={currentUser?.avatar}
-                                 alt=""
-                              />
+                              <div className=" w-full h-full">
+                                 {currentUser?.avatar ? (
+                                    <img
+                                       className=" w-full h-full object-cover object-center"
+                                       src={currentUser?.avatar}
+                                       alt=""
+                                    />
+                                 ) : (
+                                    <div className=" bg-blue-600 w-full h-full flex justify-center items-center">
+                                       <p className=" font-semibold text-3xl sm:text-4xl text-white ">
+                                          {currentUser?.userName
+                                             .slice(0, 2)
+                                             .toUpperCase()}
+                                       </p>
+                                    </div>
+                                 )}
+                              </div>
                            )}
                         </div>
                         <div className=" font-medium text-base w-full  ">
@@ -201,24 +236,21 @@ export default function Dashboard() {
                            <div className=" w-full ">
                               <button
                                  type="submit"
-                                 className={`bg-black text-white font-semibold px-3 sm:px-6 py-2 rounded-lg hover:text-black hover:bg-white outline outline-1 outline-black w-full ${isUploading ? "cursor-not-allowed bg-white" : ""}`}
+                                 className={`bg-black text-white font-semibold px-3 sm:px-6 py-2 rounded-lg hover:text-black hover:bg-white outline outline-1 outline-black w-full ${
+                                    isUploading
+                                       ? "cursor-not-allowed bg-white"
+                                       : ""
+                                 }`}
                               >
                                  {isUploading ? (
-                                 <div className=" flex justify-center items-center px-3">
-                                    <span className="loaderr"></span>
-                                 </div>
-                              ) : (
-                                 "Update profile"
-                              )}
+                                    <div className=" flex justify-center items-center px-3">
+                                       <span className="loaderr"></span>
+                                    </div>
+                                 ) : (
+                                    "Update profile"
+                                 )}
                               </button>
                            </div>
-                           {/* <div className="w-full">
-                              <Link href="/">
-                                 <div className="bg-black text-white font-semibold px-3 sm:px-6 py-2 rounded-lg hover:text-black hover:bg-white outline outline-1 outline-black w-full text-center">
-                                    Change Password
-                                 </div>
-                              </Link>
-                           </div> */}
                            <div className="w-full">
                               <div
                                  className="bg-white text-red-500 font-semibold px-3 sm:px-6 py-2 rounded-lg hover:text-black hover:bg-red-200 outline outline-1 outline-black w-full text-center cursor-pointer"
@@ -230,9 +262,9 @@ export default function Dashboard() {
                         </div>
                      </div>
                   </form>
-                  <div className="mt-10">
+                  <div className="">
                      {currentUser?.isAdmin ? (
-                        <div className="">
+                        <div className="mt-10">
                            <Link href="/post">
                               <button className=" bg-black text-white font-serif px-8 py-2 rounded-lg">
                                  Add Post
@@ -245,59 +277,153 @@ export default function Dashboard() {
                   </div>
                </div>
 
-               <div className=" pb-10 px-4 xl:px-72">
+               <div className=" pb-10 px-2 xl:px-72 ">
                   <div className="">
                      <p className=" text-2xl font-semibold my-3 sm:my-5">
                         My Orders
                      </p>
                   </div>
-                  <div className="orders-table w-full ">
-                     <table className="min-w-full border-collapse border border-gray-200">
-                        <thead className=" text-sm sm:text-base">
-                           <tr className="bg-gray-100">
-                              <th className=" px-3 sm:px-4 py-3 border border-gray-200 text-left">
-                                 Order ID
-                              </th>
-                              <th className=" px-3 sm:px-4 py-3 border border-gray-200 text-left">
-                                 Order Item
-                              </th>
-                              <th className=" px-3 sm:px-4 py-3 border border-gray-200 text-left">
-                                 Quantity
-                              </th>
-                              <th className=" px-3 sm:px-4 py-3 border border-gray-200 text-left">
-                                 Total
-                              </th>
-                              <th className=" px-3 sm:px-4 py-3 border border-gray-200 text-left">
-                                 Status
-                              </th>
-                           </tr>
-                        </thead>
-                        <tbody className="bg-red-500">
-                           {data.map((order, index) => (
-                              <tr
-                                 className="bg-white even:bg-gray-50 hover:bg-gray-100 text-sm sm:text-base"
-                                 key={index}
-                              >
-                                 <td className=" px-3 sm:px-4 py-3 border border-gray-200">
-                                    {order.id}
-                                 </td>
-                                 <td className=" px-3 sm:px-4 py-3 border border-gray-200">
-                                    {order.orderItem}
-                                 </td>
-                                 <td className=" px-3 sm:px-4 py-3 border border-gray-200">
-                                    {order.quantity}
-                                 </td>
-                                 <td className=" px-3 sm:px-4 py-3 border border-gray-200">
-                                    {order.total}
-                                 </td>
-                                 <td className=" px-3 sm:px-4 py-3 border border-gray-200">
-                                    {order.status}
-                                 </td>
-                              </tr>
-                           ))}
-                        </tbody>
-                     </table>
-                  </div>
+                  {orders.length > 0 ? (
+                     <div className=" bg-blue-500">
+                        <div className="orders-table w-full ">
+                           <table className="min-w-full border-collapse border border-gray-200 ">
+                              <thead className=" text-sm sm:text-base">
+                                 <tr className="bg-gray-100">
+                                    <th className=" px-3 sm:px-4 py-3 border border-gray-200 text-left">
+                                       SN
+                                    </th>
+                                    <th className=" px-3 sm:px-4 py-3 border border-gray-200 text-left">
+                                       Order Item
+                                    </th>
+                                    <th className=" px-3 sm:px-4 py-3 border border-gray-200 text-left">
+                                       Qty
+                                    </th>
+                                    <th className=" px-3 sm:px-4 py-3 border border-gray-200 text-left">
+                                       Total
+                                    </th>
+                                    <th className=" px-3 sm:px-4 py-3 border border-gray-200 text-left">
+                                       Status
+                                    </th>
+                                    {currentUser?.isAdmin ? (
+                                       <th className=" px-3 sm:px-4 py-3 border border-gray-200 text-left">
+                                          Action
+                                       </th>
+                                    ) : (
+                                       <div className=""></div>
+                                    )}
+                                 </tr>
+                              </thead>
+                              <tbody className="">
+                                 {orders.map((order, index) => (
+                                    <tr
+                                       className="bg-white even:bg-gray-50 hover:bg-gray-100 text-sm sm:text-base"
+                                       key={order._id}
+                                    >
+                                       <td className=" px-3 sm:px-4 py-3 border border-gray-200">
+                                          {index + 1}
+                                       </td>
+                                       <td className=" px-3 sm:px-4 py-3 border border-gray-200">
+                                          {order.dressName}
+                                       </td>
+                                       <td className=" px-3 sm:px-4 py-3 border border-gray-200">
+                                          {order.quantity}
+                                       </td>
+                                       <td className=" px-3 sm:px-4 py-3 border border-gray-200">
+                                          {order.totalPrice}
+                                       </td>
+                                       <td className=" px-3 sm:px-4 py-3 border border-gray-200">
+                                          {editignId === order._id ? (
+                                             <select
+                                                id="status"
+                                                onChange={(e) =>
+                                                   setOrderStatus(
+                                                      e.target.value
+                                                   )
+                                                }
+                                                className="w-full outline-none "
+                                             >
+                                                {[
+                                                   "Pending",
+                                                   "Placed",
+                                                   "Shipped",
+                                                   "Delivered",
+                                                ]
+                                                   .filter(
+                                                      (status) =>
+                                                         status !== order.status
+                                                   )
+                                                   .map((status) => (
+                                                      <option
+                                                         key={status}
+                                                         value={status}
+                                                      >
+                                                         {status}
+                                                      </option>
+                                                   ))}
+                                             </select>
+                                          ) : (
+                                             <p>{order.status}</p>
+                                          )}
+                                       </td>
+                                       {currentUser?.isAdmin ? (
+                                          <td className="  sm:px-4 py-3 border border-gray-200 ">
+                                             {editignId === order._id ? (
+                                                <div className=" flex flex-col sm:flex-row gap-4 sm:gap-3">
+                                                   <div
+                                                      className=" flex justify-center items-center"
+                                                      onClick={
+                                                         handelStatusUpdate
+                                                      }
+                                                   >
+                                                      <img
+                                                         className=" w-7 sm:w-6 aspect-square object-contain "
+                                                         src="/icons/tick.png"
+                                                         alt=" save icon"
+                                                      />
+                                                   </div>
+                                                   <div className=" flex justify-center items-center">
+                                                      <img
+                                                         className=" w-7 sm:w-6 aspect-square object-contain "
+                                                         src="/icons/delete.png"
+                                                         alt=" cancel icon"
+                                                         onClick={
+                                                            handelCancelEditing
+                                                         }
+                                                      />
+                                                   </div>
+                                                </div>
+                                             ) : (
+                                                <div
+                                                   className=" flex justify-center items-center cursor-pointer"
+                                                   onClick={() =>
+                                                      handelEditing(
+                                                         order._id,
+                                                         order.status
+                                                      )
+                                                   }
+                                                >
+                                                   <img
+                                                      className="w-5 aspect-square object-contain "
+                                                      src="/icons/edit.png"
+                                                      alt="edit icon"
+                                                   />
+                                                </div>
+                                             )}
+                                          </td>
+                                       ) : (
+                                          <div className=""></div>
+                                       )}
+                                    </tr>
+                                 ))}
+                              </tbody>
+                           </table>
+                        </div>
+                     </div>
+                  ) : (
+                     <div className="">
+                        <p>You have no orders</p>
+                     </div>
+                  )}
                </div>
             </div>
          </div>

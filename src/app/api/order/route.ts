@@ -29,3 +29,21 @@ export async function POST(request: Request) {
         return NextResponse.json({ success: false, message: "Error creating order", error }, { status: 500 });
     }
 }
+
+
+//fetch orders
+export async function GET(request: Request) {
+    await dbConnect();
+    try {
+        const orders = await Order.find()
+        if(!orders){
+            return NextResponse.json({success:false,message:"No orders found"},{status:404})
+        }
+
+        return NextResponse.json({orders},{status:200})
+    } catch (error) {
+        return NextResponse.json({success:false,message:"Error fetching orders"},{status:500})
+    }
+    
+}
+

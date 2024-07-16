@@ -85,7 +85,21 @@ export default function Navbar() {
                   <div className=" relative">
                      <Link href="/dashboard">
                         <div className="w-7  xl:w-9 aspect-square rounded-full overflow-hidden object-cover">
-                           <img src={currentUser.avatar} alt="" />
+                        {currentUser.avatar ? (
+                           <Image
+                           width={80}
+                           height={80}
+                           quality={70}
+                           priority={true}
+                           className="w-full h-full object-cover object-center  "
+                           src={currentUser?.avatar}
+                           alt="User image"
+                        />
+                        ):(
+                           <div className=" bg-blue-600 w-full h-full flex justify-center items-center">
+                              <p className=" font-semibold text-sm sm:text-base text-white">{currentUser?.userName.slice(0,2).toUpperCase()}</p>
+                           </div>
+                        )}
                         </div>
                      </Link>
                   </div>
