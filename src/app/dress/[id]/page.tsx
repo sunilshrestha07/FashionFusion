@@ -16,6 +16,7 @@ import { addItemToCart } from "@/app/redux/Cartslice";
 import Sceleton from "@/components/Sceleton";
 import { blurDataUrl } from "@/utils/BlurDataUrl";
 import Reviews from "@/components/Reviews";
+import { toast } from "react-toastify";
 
 export default function AboutDress() {
    const dispatch = useDispatch();
@@ -90,7 +91,7 @@ export default function AboutDress() {
    const handleBuy = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       if (!formData.size) {
-         alert("Please select  size");
+         toast.info("Please select size");
          return;
       }
       try {

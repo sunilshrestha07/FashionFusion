@@ -34,7 +34,7 @@ export default function Cart() {
       fetchData();
    }, [id]);
 
-   const price = orderDress?.price - (orderDress?.price * orderDress?.discount) / 100;
+   const price = Math.floor(orderDress?.price - (orderDress?.price * orderDress?.discount) / 100);
 
    const grandTotal = price * quantity;
 
