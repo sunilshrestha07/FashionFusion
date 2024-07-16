@@ -1,7 +1,5 @@
-// pages/_document.tsx
-
 import Document, { Html, Head, Main, NextScript } from 'next/document';
-import { metadata } from '../metadata';
+
 
 const description = "Where elegance meets innovation. Discover your style with our curated collection of the latest trends, designed to inspire and empower your unique fashion journey.";
 const keywords = "FashionFusion, fashion, fashion trends, fashion style, fashion inspiration, fashion blog, fashion store, fashion ecommerce, suneelshrestha, suneel, sunil";
@@ -20,22 +18,17 @@ class MyDocument extends Document {
           
           {/* Open Graph tags */}
           <meta property="og:title" content={title} />
+          <link rel="icon" type="image/svg+xml" href="@/public/next.svg" />
           <meta property="og:description" content={description} />
-          <meta property="og:image" content="https://example.com/your-image.jpg" /> {/* Replace with actual image URL */}
+          <meta property="og:image" content="@/public/vercel.svg" /> {/* Replace with actual image URL */}
           <meta property="og:image:width" content="1200" />
           <meta property="og:image:height" content="630" />
           <meta property="og:type" content="website" />
-          <meta property="og:url" content="https://yourwebsite.com" /> {/* Replace with actual website URL */}
+          <meta property="og:url" content="https://fashion-fusion-sage.vercel.app/" /> {/* Replace with actual website URL */}
           
-          {/* Twitter meta tags */}
-          <meta name="twitter:card" content="summary_large_image" />
-          <meta name="twitter:site" content="@yourtwitterhandle" /> {/* Replace with actual Twitter handle */}
-          <meta name="twitter:title" content={title} />
-          <meta name="twitter:description" content={description} />
-          <meta name="twitter:image" content="https://example.com/your-image.jpg" /> {/* Replace with actual image URL */}
 
           {/* Favicon */}
-          <link rel="icon" href="/favicon.ico" /> {/* Replace with actual favicon path */}
+          <link rel="icon" href="../favicon.ico" /> {/* Replace with actual favicon path */}
         </Head>
         <body>
           <Main />
