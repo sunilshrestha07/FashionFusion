@@ -20,7 +20,8 @@ import { toast } from "react-toastify";
 
 export default function AboutDress() {
    const dispatch = useDispatch();
-   const { id } = useParams();
+   const params = useParams();
+   const id = params ? params.id : null;
    const [specificDress, setSpecificDress] = useState<getDressInterface | null>(
       null
    );
