@@ -20,6 +20,7 @@ export default function Cart() {
       name: "",
       price: 0,
       image: "",
+      discount: 0,
    });
    const [quantity, setQuantity] = useState<number>(1);
 
@@ -33,7 +34,9 @@ export default function Cart() {
       fetchData();
    }, [id]);
 
-   const grandTotal = orderDress?.price * quantity;
+   const price = orderDress?.price - (orderDress?.price * orderDress?.discount) / 100;
+
+   const grandTotal = price * quantity;
 
    const handleOrderSubmit = async () => {
       const orderData = {
@@ -41,8 +44,8 @@ export default function Cart() {
          dressName: orderDress?.name,
          userEmail: currentUser?.email,
          userName: currentUser?.userName,
-          totalPrice: grandTotal,
-          quantity:quantity
+         totalPrice: grandTotal,
+         quantity: quantity,
       };
       console.log(orderData);
       try {
@@ -101,17 +104,30 @@ export default function Cart() {
                               {orderDress.name}
                            </td>
                            <td className="text-center w-1/6">
-                              {orderDress.price}
+                              {price}
                            </td>
                            <td className="text-center w-1/6 ">
-                            <div className=" flex w-full">
-                                <div className=" outline outline-1 font-semibold w-1/3 aspect-video flex justify-center items-center cursor-pointer" onClick={()=>setQuantity(quantity-1)}>-</div>
-                                <div className=" outline outline-1  w-1/3 aspect-video flex justify-center items-center"> {quantity}</div>
-                                <div className=" outline outline-1 font-semibold w-1/3 aspect-video flex justify-center items-center cursor-pointer" onClick={()=>setQuantity(quantity+1)}>+</div>
-                            </div>
+                              <div className=" flex w-full">
+                                 <div
+                                    className=" outline outline-1 font-semibold w-1/3 aspect-video flex justify-center items-center cursor-pointer"
+                                    onClick={() => setQuantity(quantity - 1)}
+                                 >
+                                    -
+                                 </div>
+                                 <div className=" outline outline-1  w-1/3 aspect-video flex justify-center items-center">
+                                    {" "}
+                                    {quantity}
+                                 </div>
+                                 <div
+                                    className=" outline outline-1 font-semibold w-1/3 aspect-video flex justify-center items-center cursor-pointer"
+                                    onClick={() => setQuantity(quantity + 1)}
+                                 >
+                                    +
+                                 </div>
+                              </div>
                            </td>
                            <td className="text-center w-1/6">
-                              {orderDress.price * quantity}
+                              {price * quantity}
                            </td>
                         </tr>
                      </tbody>

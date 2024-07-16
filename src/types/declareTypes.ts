@@ -98,4 +98,5 @@ export interface buyDressInterface {
    name: string;
    price: number;
    image: string;
+   discount: number;
 }
