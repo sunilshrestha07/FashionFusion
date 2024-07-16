@@ -12,7 +12,8 @@ import { paddingForCart } from "@/app/sizeDeclare";
 import LoginMessage from "@/components/LoginMessage";
 
 export default function Cart() {
-   const { id } = useParams();
+   const params = useParams();
+   const id = params ? params.id : null;
    const router = useRouter();
    const [isUploading, setIsUploading] = useState<boolean>(false);
    const currentUser = useSelector((state: any) => state.user.currentUser);
@@ -27,9 +28,11 @@ export default function Cart() {
    const [quantity, setQuantity] = useState<number>(1);
 
    const fetchData = async () => {
-      const res = await fetch(`/api/dress/${id}`);
-      const data = await res.json();
-      setOrderDress(data.dress);
+      if (id) {
+         const res = await fetch(`/api/dress/${id}`);
+         const data = await res.json();
+         setOrderDress(data.dress);
+      }
    };
 
    useEffect(() => {
@@ -72,17 +75,17 @@ export default function Cart() {
 
    const handleClick = () => {
       if (currentUser) {
-        handleOrderSubmit();
+         handleOrderSubmit();
       } else {
-        setShowLoginMessage(!showLoginMessage);
+         setShowLoginMessage(!showLoginMessage);
       }
-    };
+   };
 
    return (
       <div className={paddingForCart}>
          {orderDress && orderDress ? (
             <div className="grid md:grid-cols-9 gap-16 md:gap-5 w-full bg-gray-200">
-               <div className="col-span-6 w-full h-auto sm:h-80  outline outline-1 outline-gray-200 overflow-y-scroll">
+               <div className="col-span-6 w-full h-auto sm:h-80 outline outline-1 outline-gray-200 overflow-y-scroll">
                   <table className="w-full text-xs sm:text-sm xl:text-base">
                      <thead className="">
                         <tr>
@@ -161,7 +164,7 @@ export default function Cart() {
                      </div>
                      <div className=" flex justify-between px-2 font-medium sm:text-xl xl:text-2xl bg-gray-50 py-3 rounded-md">
                         <p>Grand Total:</p>
-                        <p>Rs: {grandTotal - 100}</p>
+                        <p>Rs: {grandTotal + 100}</p>
                      </div>
                   </div>
                   <div
