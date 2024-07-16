@@ -93,8 +93,9 @@ export default function Cart() {
                                        className="w-full h-full object-cover object-top"
                                        src={orderDress.image}
                                        alt="product image"
-                                       width={100}
-                                       height={100}
+                                       width={50}
+                                       height={50}
+                                       priority={true}
                                        quality={40}
                                     />
                                  </div>

@@ -29,6 +29,7 @@ export default function Dashboard() {
    const [isEditing, setIsEditing] = useState<boolean>(false);
    const [editignId, setEditingId] = useState<string>("");
    const [orderStatus, setOrderStatus] = useState<string>("");
+   const [isFetching, setIsFetching] = useState<boolean>(false);
 
    const handelprofileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0];
@@ -39,14 +40,17 @@ export default function Dashboard() {
    };
 
    const fetchData = async () => {
+      setIsFetching(true);
       const res = await fetch("/api/order");
       const data = await res.json();
       if (!currentUser?.isAdmin) {
          const userOrders = data.orders.filter(
             (order: getOrderInterface) => order.userId === currentUser?._id
          );
+         setIsFetching(false);
          setOrders(userOrders);
       } else {
+         setIsFetching(false);
          setOrders(data.orders);
       }
    };
@@ -277,154 +281,163 @@ export default function Dashboard() {
                   </div>
                </div>
 
-               <div className=" pb-10 px-2 xl:px-72 ">
-                  <div className="">
-                     <p className=" text-2xl font-semibold my-3 sm:my-5">
-                        My Orders
-                     </p>
+               {isFetching ? (
+                  <div className="pb-10 px-2 xl:px-72 mt-5">
+                     <div className="bg-gray-300 animate-pulse w-full aspect-[16/3]"></div>
                   </div>
-                  {orders.length > 0 ? (
-                     <div className=" bg-blue-500">
-                        <div className="orders-table w-full ">
-                           <table className="min-w-full border-collapse border border-gray-200 ">
-                              <thead className=" text-sm sm:text-base">
-                                 <tr className="bg-gray-100">
-                                    <th className=" px-3 sm:px-4 py-3 border border-gray-200 text-left">
-                                       SN
-                                    </th>
-                                    <th className=" px-3 sm:px-4 py-3 border border-gray-200 text-left">
-                                       Order Item
-                                    </th>
-                                    <th className=" px-3 sm:px-4 py-3 border border-gray-200 text-left">
-                                       Qty
-                                    </th>
-                                    <th className=" px-3 sm:px-4 py-3 border border-gray-200 text-left">
-                                       Total
-                                    </th>
-                                    <th className=" px-3 sm:px-4 py-3 border border-gray-200 text-left">
-                                       Status
-                                    </th>
-                                    {currentUser?.isAdmin ? (
-                                       <th className=" px-3 sm:px-4 py-3 border border-gray-200 text-left">
-                                          Action
-                                       </th>
-                                    ) : (
-                                       <div className=""></div>
-                                    )}
-                                 </tr>
-                              </thead>
-                              <tbody className="">
-                                 {orders.map((order, index) => (
-                                    <tr
-                                       className="bg-white even:bg-gray-50 hover:bg-gray-100 text-sm sm:text-base"
-                                       key={order._id}
-                                    >
-                                       <td className=" px-3 sm:px-4 py-3 border border-gray-200">
-                                          {index + 1}
-                                       </td>
-                                       <td className=" px-3 sm:px-4 py-3 border border-gray-200">
-                                          {order.dressName}
-                                       </td>
-                                       <td className=" px-3 sm:px-4 py-3 border border-gray-200">
-                                          {order.quantity}
-                                       </td>
-                                       <td className=" px-3 sm:px-4 py-3 border border-gray-200">
-                                          {order.totalPrice}
-                                       </td>
-                                       <td className=" px-3 sm:px-4 py-3 border border-gray-200">
-                                          {editignId === order._id ? (
-                                             <select
-                                                id="status"
-                                                onChange={(e) =>
-                                                   setOrderStatus(
-                                                      e.target.value
-                                                   )
-                                                }
-                                                className="w-full outline-none "
-                                             >
-                                                {[
-                                                   "Pending",
-                                                   "Placed",
-                                                   "Shipped",
-                                                   "Delivered",
-                                                ]
-                                                   .filter(
-                                                      (status) =>
-                                                         status !== order.status
-                                                   )
-                                                   .map((status) => (
-                                                      <option
-                                                         key={status}
-                                                         value={status}
-                                                      >
-                                                         {status}
-                                                      </option>
-                                                   ))}
-                                             </select>
-                                          ) : (
-                                             <p>{order.status}</p>
-                                          )}
-                                       </td>
-                                       {currentUser?.isAdmin ? (
-                                          <td className="  sm:px-4 py-3 border border-gray-200 ">
-                                             {editignId === order._id ? (
-                                                <div className=" flex flex-col sm:flex-row gap-4 sm:gap-3">
-                                                   <div
-                                                      className=" flex justify-center items-center"
-                                                      onClick={
-                                                         handelStatusUpdate
-                                                      }
-                                                   >
-                                                      <img
-                                                         className=" w-7 sm:w-6 aspect-square object-contain "
-                                                         src="/icons/tick.png"
-                                                         alt=" save icon"
-                                                      />
-                                                   </div>
-                                                   <div className=" flex justify-center items-center">
-                                                      <img
-                                                         className=" w-7 sm:w-6 aspect-square object-contain "
-                                                         src="/icons/delete.png"
-                                                         alt=" cancel icon"
-                                                         onClick={
-                                                            handelCancelEditing
-                                                         }
-                                                      />
-                                                   </div>
-                                                </div>
-                                             ) : (
-                                                <div
-                                                   className=" flex justify-center items-center cursor-pointer"
-                                                   onClick={() =>
-                                                      handelEditing(
-                                                         order._id,
-                                                         order.status
-                                                      )
-                                                   }
-                                                >
-                                                   <img
-                                                      className="w-5 aspect-square object-contain "
-                                                      src="/icons/edit.png"
-                                                      alt="edit icon"
-                                                   />
-                                                </div>
-                                             )}
-                                          </td>
-                                       ) : (
-                                          <div className=""></div>
-                                       )}
-                                    </tr>
-                                 ))}
-                              </tbody>
-                           </table>
+               ) : (
+                  <div className="">
+                     <div className=" pb-10 px-2 xl:px-72 ">
+                        <div className="">
+                           <p className=" text-2xl font-semibold my-3 sm:my-5">
+                              My Orders
+                           </p>
                         </div>
+                        {orders.length > 0 ? (
+                           <div className=" bg-blue-500">
+                              <div className="orders-table w-full ">
+                                 <table className="min-w-full border-collapse border border-gray-200 ">
+                                    <thead className=" text-sm sm:text-base">
+                                       <tr className="bg-gray-100">
+                                          <th className=" px-3 sm:px-4 py-3 border border-gray-200 text-left">
+                                             SN
+                                          </th>
+                                          <th className=" px-3 sm:px-4 py-3 border border-gray-200 text-left">
+                                             Order Item
+                                          </th>
+                                          <th className=" px-3 sm:px-4 py-3 border border-gray-200 text-left">
+                                             Qty
+                                          </th>
+                                          <th className=" px-3 sm:px-4 py-3 border border-gray-200 text-left">
+                                             Total
+                                          </th>
+                                          <th className=" px-3 sm:px-4 py-3 border border-gray-200 text-left">
+                                             Status
+                                          </th>
+                                          {currentUser?.isAdmin ? (
+                                             <th className=" px-3 sm:px-4 py-3 border border-gray-200 text-left">
+                                                Action
+                                             </th>
+                                          ) : (
+                                             <div className=""></div>
+                                          )}
+                                       </tr>
+                                    </thead>
+                                    <tbody className="">
+                                       {orders.map((order, index) => (
+                                          <tr
+                                             className="bg-white even:bg-gray-50 hover:bg-gray-100 text-sm sm:text-base"
+                                             key={order._id}
+                                          >
+                                             <td className=" px-3 sm:px-4 py-3 border border-gray-200">
+                                                {index + 1}
+                                             </td>
+                                             <td className=" px-3 sm:px-4 py-3 border border-gray-200">
+                                                {order.dressName}
+                                             </td>
+                                             <td className=" px-3 sm:px-4 py-3 border border-gray-200">
+                                                {order.quantity}
+                                             </td>
+                                             <td className=" px-3 sm:px-4 py-3 border border-gray-200">
+                                                {order.totalPrice}
+                                             </td>
+                                             <td className=" px-3 sm:px-4 py-3 border border-gray-200">
+                                                {editignId === order._id ? (
+                                                   <select
+                                                      id="status"
+                                                      onChange={(e) =>
+                                                         setOrderStatus(
+                                                            e.target.value
+                                                         )
+                                                      }
+                                                      className="w-full outline-none "
+                                                   >
+                                                      {[
+                                                         "Pending",
+                                                         "Placed",
+                                                         "Shipped",
+                                                         "Delivered",
+                                                      ]
+                                                         .filter(
+                                                            (status) =>
+                                                               status !==
+                                                               order.status
+                                                         )
+                                                         .map((status) => (
+                                                            <option
+                                                               key={status}
+                                                               value={status}
+                                                            >
+                                                               {status}
+                                                            </option>
+                                                         ))}
+                                                   </select>
+                                                ) : (
+                                                   <p>{order.status}</p>
+                                                )}
+                                             </td>
+                                             {currentUser?.isAdmin ? (
+                                                <td className="  sm:px-4 py-3 border border-gray-200 ">
+                                                   {editignId === order._id ? (
+                                                      <div className=" flex flex-col sm:flex-row gap-4 sm:gap-3">
+                                                         <div
+                                                            className=" flex justify-center items-center"
+                                                            onClick={
+                                                               handelStatusUpdate
+                                                            }
+                                                         >
+                                                            <img
+                                                               className=" w-7 sm:w-6 aspect-square object-contain "
+                                                               src="/icons/tick.png"
+                                                               alt=" save icon"
+                                                            />
+                                                         </div>
+                                                         <div className=" flex justify-center items-center">
+                                                            <img
+                                                               className=" w-7 sm:w-6 aspect-square object-contain "
+                                                               src="/icons/delete.png"
+                                                               alt=" cancel icon"
+                                                               onClick={
+                                                                  handelCancelEditing
+                                                               }
+                                                            />
+                                                         </div>
+                                                      </div>
+                                                   ) : (
+                                                      <div
+                                                         className=" flex justify-center items-center cursor-pointer"
+                                                         onClick={() =>
+                                                            handelEditing(
+                                                               order._id,
+                                                               order.status
+                                                            )
+                                                         }
+                                                      >
+                                                         <img
+                                                            className="w-5 aspect-square object-contain "
+                                                            src="/icons/edit.png"
+                                                            alt="edit icon"
+                                                         />
+                                                      </div>
+                                                   )}
+                                                </td>
+                                             ) : (
+                                                <div className=""></div>
+                                             )}
+                                          </tr>
+                                       ))}
+                                    </tbody>
+                                 </table>
+                              </div>
+                           </div>
+                        ) : (
+                           <div className="">
+                              <p>You have no orders</p>
+                           </div>
+                        )}
                      </div>
-                  ) : (
-                     <div className="">
-                        <p>You have no orders</p>
-                     </div>
-                  )}
-               </div>
+                  </div>
+               )}
             </div>
          </div>
       </>
