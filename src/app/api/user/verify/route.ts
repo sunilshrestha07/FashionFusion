@@ -18,7 +18,7 @@ export async function POST(request: Request) {
           return NextResponse.json({message:"user not fould"},{status: 404})
         }
   
-        if (user.verified) {
+        if (user.isVerified) {
           return NextResponse.json({message:"user is already veriied"},{status: 404})
         }
   

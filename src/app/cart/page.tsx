@@ -11,14 +11,14 @@ import { AddToCart } from "@/types/declareTypes";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import LoginMessage from "@/components/LoginMessage";
+import { toast } from "react-toastify";
 
 export default function Cart() {
    const cartItems = useSelector((state: RootState) => state.saved.items);
    const router = useRouter();
-   const [isUploading, setIsUploading] = useState<boolean>(false);
-   const currentUser = useSelector(
-      (state: RootState) => state.user.currentUser
-   );
+   const [isUploadingCOD, setIsUploadingCOD] = useState<boolean>(false);
+   const [isUploadingEsewa, setIsUploadingEsewa] = useState<boolean>(false);
+   const currentUser = useSelector((state: RootState) => state.user.currentUser);
    const [showLoginMessage, setShowLoginMessage] = useState<boolean>(false);
    const dispatch = useDispatch();
 
@@ -41,26 +41,111 @@ export default function Cart() {
          quantity: cartItems.reduce((total, item) => total + item.quantity, 0),
       };
       try {
-         setIsUploading(true);
-         console.log(orderData);
+         setIsUploadingCOD(true);
          const res = await axios.post("/api/order", orderData);
+         setIsUploadingCOD(false);
          if (res.status === 200) {
-            setIsUploading(false);
             router.push("/success");
-            console.log("Order created success", res.data);
+            toast.success("Order created successfully!");
          } else {
-            setIsUploading(false);
-            console.error("Error creating order");
+            toast.error("Error creating order");
          }
       } catch (error) {
-         setIsUploading(false);
-         console.error("Error creating order", error);
+         setIsUploadingCOD(false);
+         toast.error("Error creating order");
       }
    };
 
    const handleClick = () => {
       if (currentUser) {
          handleOrderSubmit();
+      } else {
+         setShowLoginMessage(!showLoginMessage);
+      }
+   };
+
+   const createForm = (params: Record<string, string>) => {
+      const form = document.createElement("form");
+      form.action = "https://rc-epay.esewa.com.np/api/epay/main/v2/form";
+      form.method = "POST";
+
+      Object.keys(params).forEach((key) => {
+         const input = document.createElement("input");
+         input.type = "hidden";
+         input.name = key;
+         input.value = params[key];
+         form.appendChild(input);
+      });
+
+      document.body.appendChild(form);
+      form.submit();
+   };
+
+   const handleEsewaPayOrder = async () => {
+      try {
+         const res = await axios.post("/api/esewa", {
+            amount: grandTotal.toString(),
+         });
+
+         
+            const paymentParams = {
+               amount: grandTotal.toString(),
+               tax_amount: "0",
+               total_amount: grandTotal.toString(),
+               transaction_uuid: res.data.dataToSend.uuid,
+               product_code: "EPAYTEST",
+               product_service_charge: "0",
+               product_delivery_charge: "0",
+               success_url: "https://fashion-fusion-sage.vercel.app/dress",
+               failure_url: "https://fashion-fusion-sage.vercel.app/cart",
+               signed_field_names: "total_amount,transaction_uuid,product_code",
+               signature: res.data.dataToSend.signature,
+            };
+            
+            const form = document.createElement("form");
+            form.action = "https://rc-epay.esewa.com.np/api/epay/main/v2/form";
+            form.method = "POST";
+
+            Object.keys(paymentParams).forEach((key) => {
+               const input = document.createElement("input");
+               input.type = "hidden";
+               input.name = key;
+               input.value = paymentParams[key as keyof typeof paymentParams];
+               form.appendChild(input);
+            });
+
+            document.body.appendChild(form);
+
+            form.submit();
+            const orderData = {
+               userId: currentUser?._id,
+               dressName: cartItems.map((item) => item.name).join(", "),
+               userEmail: currentUser?.email,
+               userName: currentUser?.userName,
+               totalPrice: grandTotal,
+               quantity: cartItems.reduce((total, item) => total + item.quantity, 0),
+            };
+            try {
+               const res = await axios.post("/api/order", orderData);
+               if (res.status === 200) {
+                  router.push("/success");
+                  console.log("Order created success", res.data);
+               } else {
+                  console.error("Error creating order");
+               }
+            } catch (error) {
+               console.error("Error creating order", error);
+            }
+         
+      } catch (error) {
+         console.log("Error esewa payment order", error);
+         toast.error("Error esewa payment order");
+      }
+   };
+
+   const handleBuyWithEsewa = () => {
+      if (currentUser) {
+         handleEsewaPayOrder();
       } else {
          setShowLoginMessage(!showLoginMessage);
       }
@@ -88,9 +173,9 @@ export default function Cart() {
                               key={index}
                               className="justify-center bg-gray-50 my-5 border-gray-200 border-2"
                            >
-                              <td className="w-1/6 ">
-                                 <div className=" w-full flex justify-center">
-                                    <div className="w-12 h-12 sm:w-16 sm:h-16 overflow-hidden ">
+                              <td className="w-1/6">
+                                 <div className="w-full flex justify-center">
+                                    <div className="w-12 h-12 sm:w-16 sm:h-16 overflow-hidden">
                                        <Image
                                           className="w-full h-full object-cover object-top"
                                           src={item.image}
@@ -103,16 +188,12 @@ export default function Cart() {
                                  </div>
                               </td>
                               <td className="text-center w-1/6">{item.name}</td>
-                              <td className="text-center w-1/6">
-                                 {item.price}
-                              </td>
-                              <td className="text-center w-1/6">
-                                 {item.quantity}
-                              </td>
+                              <td className="text-center w-1/6">{item.price}</td>
+                              <td className="text-center w-1/6">{item.quantity}</td>
                               <td className="text-center w-1/6">
                                  {item.price * item.quantity}
                               </td>
-                              <td className="text-center w-1/12 p-o">
+                              <td className="text-center w-1/12 p-0">
                                  <img
                                     className="w-4 sm:w-5 aspect-square cursor-pointer"
                                     src="/icons/delete.png"
@@ -127,9 +208,7 @@ export default function Cart() {
                </div>
                <div className="col-span-6 md:col-span-3 bg-gray-200 w-full px-4 py-2 rounded-md flex flex-col gap-4">
                   <div className="w-full text-center mt-3">
-                     <p className="text-xl sm:text-3xl font-semibold">
-                        Cart Total
-                     </p>
+                     <p className="text-xl sm:text-3xl font-semibold">Cart Total</p>
                   </div>
                   <div className="flex flex-col gap-1">
                      <div className="flex justify-between px-2 font-medium sm:text-xl xl:text-2xl bg-gray-50 py-3 rounded-md">
@@ -145,29 +224,54 @@ export default function Cart() {
                         <p>Rs: {grandTotal + 100}</p>
                      </div>
                   </div>
-                  <div className="" onClick={handleClick}>
+                  <div onClick={handleClick}>
                      <button
                         className={`w-full bg-black text-white py-3 rounded-md outline outline-1 hover:bg-white hover:text-black font-semibold ${
-                           isUploading ? "cursor-not-allowed" : ""
+                           isUploadingCOD ? "cursor-not-allowed" : ""
                         }`}
                      >
-                        {isUploading ? (
-                           <div className="flex justify-center items-center px-3 py-">
-                              <span className="loaderrr"></span>
+                        {isUploadingCOD ? (
+                           <div className="flex justify-center items-center px-3">
+                              <span className="loader"></span>
                            </div>
                         ) : (
-                           "Checkout"
+                           "Cash on delivery"
                         )}
                      </button>
+                     {showLoginMessage && (
+                        <div>
+                           <LoginMessage
+                              showLoginMessage={showLoginMessage}
+                              setShowLoginMessage={setShowLoginMessage}
+                           />
+                        </div>
+                     )}
                   </div>
-                  {showLoginMessage && (
-                     <div className="">
-                        <LoginMessage
-                           showLoginMessage={showLoginMessage}
-                           setShowLoginMessage={setShowLoginMessage}
-                        />
-                     </div>
-                  )}
+
+                  <div onClick={handleBuyWithEsewa}>
+                     <button
+                        type="submit"
+                        className={`w-full bg-green-400 text-black py-3 rounded-md outline outline-1 hover:bg-white hover:text-black font-semibold ${
+                           isUploadingEsewa ? "cursor-not-allowed" : ""
+                        }`}
+                     >
+                        {isUploadingEsewa ? (
+                           <div className="flex justify-center items-center px-3">
+                              <span className="loader"></span>
+                           </div>
+                        ) : (
+                           "Pay with Esewa"
+                        )}
+                     </button>
+                     {showLoginMessage && (
+                        <div>
+                           <LoginMessage
+                              showLoginMessage={showLoginMessage}
+                              setShowLoginMessage={setShowLoginMessage}
+                           />
+                        </div>
+                     )}
+                  </div>
                </div>
             </div>
          ) : (
