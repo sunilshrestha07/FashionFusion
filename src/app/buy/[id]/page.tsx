@@ -88,8 +88,8 @@ export default function Cart() {
                product_code: "EPAYTEST",
                product_service_charge: "0",
                product_delivery_charge: "0",
-               success_url: "https://fashion-fusion-sage.vercel.app/dress",
-               failure_url: "https://fashion-fusion-sage.vercel.app/cart",
+               success_url: "https://fashion-fusion-suneel.vercel.app/dress",
+               failure_url: "https://fashion-fusion-suneel.vercel.app/cart",
                signed_field_names: "total_amount,transaction_uuid,product_code",
                signature: res.data.dataToSend.signature,
             };
