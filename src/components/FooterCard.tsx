@@ -5,7 +5,7 @@ import React from "react";
 export default function FooterCard() {
    return (
       <div>
-         <div className="">
+         <div className=" ">
             <div className=" w-full aspect-[10/8] sm:aspect-[16/6] lg:aspect-[16/5] relative">
                <Image
                   className="w-full h-full object-cover object-center"

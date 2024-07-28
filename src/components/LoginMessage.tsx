@@ -44,10 +44,9 @@ export default function LoginMessage() {
   };
 
   return (
-    <div className="">
-       (
-        <div className="fixed top-0 left-0 w-full h-screen flex justify-center items-center bg-transparent backdrop-blur-xl z-50">
-          <div className="w-10/12 sm:w-1/2 xl:w-1/3 bg-gray-100 rounded-lg flex flex-col justify-center items-center py-4 relative">
+    <div className="  ">
+        <div className="fixed top-[15%] w-[80%] md:w-[40%] lg:w-[30%] left-[50%] translate-x-[-50%] flex justify-center items-center z-50 bg-transparent backdrop-blur-xl">
+          <div className="w-[100%] md:w-[100%] lg:w-[100%] bg-gray-100 rounded-lg flex flex-col justify-center items-center py-4 relative">
             <div className="my-5">
               <p className="font-semibold text-4xl text-center">Hello there!</p>
               <p className="text-center font-medium">Login to your account</p>
@@ -96,7 +95,7 @@ export default function LoginMessage() {
             </div>
           </div>
         </div>
-      )
+
     </div>
   );
 }
