@@ -76,7 +76,7 @@ export default function LoginMessage() {
                   >
                     {isLoading ? (
                       <div className="flex justify-center items-center px-3 py-">
-                        <span className="loaderr"></span>
+                        <span className="loaderrr"></span>
                       </div>
                     ) : (
                       "Login"
