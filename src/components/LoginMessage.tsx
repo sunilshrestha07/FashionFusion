@@ -9,12 +9,7 @@ import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { loginFail, loginSuccess } from "@/app/redux/UserSlice";
 
-interface LoginMessageProps {
-  showLoginMessage: boolean;
-  setShowLoginMessage: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-export default function LoginMessage({ showLoginMessage, setShowLoginMessage }: LoginMessageProps) {
+export default function LoginMessage() {
   const [formData, setFormData] = useState<LoginInterface>({ email: "", password: "" });
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
@@ -33,7 +28,7 @@ export default function LoginMessage({ showLoginMessage, setShowLoginMessage }: 
         router.push("/cart");
         setIsLoading(false);
         dispatch(loginSuccess(res.data.user));
-        setShowLoginMessage(false); // Close the modal on successful login
+        window.location.reload();
       }
     } catch (error: any) {
       setIsLoading(false);
@@ -48,13 +43,9 @@ export default function LoginMessage({ showLoginMessage, setShowLoginMessage }: 
     }
   };
 
-  const handleShowModal = () => {
-    setShowLoginMessage(false); // Close the modal
-  };
-
   return (
     <div className="">
-      {showLoginMessage && (
+       (
         <div className="fixed top-0 left-0 w-full h-screen flex justify-center items-center bg-transparent backdrop-blur-xl z-50">
           <div className="w-10/12 sm:w-1/2 xl:w-1/3 bg-gray-100 rounded-lg flex flex-col justify-center items-center py-4 relative">
             <div className="my-5">
@@ -86,7 +77,7 @@ export default function LoginMessage({ showLoginMessage, setShowLoginMessage }: 
                   >
                     {isLoading ? (
                       <div className="flex justify-center items-center px-3 py-">
-                        <span className="loader"></span>
+                        <span className="loaderr"></span>
                       </div>
                     ) : (
                       "Login"
@@ -101,18 +92,11 @@ export default function LoginMessage({ showLoginMessage, setShowLoginMessage }: 
                     </Link>
                   </div>
                 </div>
-                <div className="absolute top-7 right-7" onClick={handleShowModal}>
-                  <img
-                    src="/icons/close.png"
-                    alt=""
-                    className="w-5 aspect-square object-contain cursor-pointer"
-                  />
-                </div>
               </form>
             </div>
           </div>
         </div>
-      )}
+      )
     </div>
   );
 }

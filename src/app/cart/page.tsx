@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import Image from "next/image";
@@ -16,7 +16,8 @@ import { toast } from "react-toastify";
 export default function Cart() {
    const cartItems = useSelector((state: RootState) => state.saved.items);
    const router = useRouter();
-   const [isUploadingCOD, setIsUploadingCOD] = useState<boolean>(false);
+   const loginMessageRef = useRef<HTMLDivElement>(null);
+   const [isUploading, setIsUploading] = useState<boolean>(false);
    const [isUploadingEsewa, setIsUploadingEsewa] = useState<boolean>(false);
    const currentUser = useSelector((state: RootState) => state.user.currentUser);
    const [showLoginMessage, setShowLoginMessage] = useState<boolean>(false);
@@ -41,9 +42,9 @@ export default function Cart() {
          quantity: cartItems.reduce((total, item) => total + item.quantity, 0),
       };
       try {
-         setIsUploadingCOD(true);
+         setIsUploading(true);
          const res = await axios.post("/api/order", orderData);
-         setIsUploadingCOD(false);
+         setIsUploading(false);
          if (res.status === 200) {
             router.push("/success");
             toast.success("Order created successfully!");
@@ -51,7 +52,7 @@ export default function Cart() {
             toast.error("Error creating order");
          }
       } catch (error) {
-         setIsUploadingCOD(false);
+         setIsUploading(false);
          toast.error("Error creating order");
       }
    };
@@ -151,6 +152,27 @@ export default function Cart() {
       }
    };
 
+
+   //handel click outside the message
+   const handleClickOutside = (event: MouseEvent) => {
+      if (loginMessageRef.current && !loginMessageRef.current.contains(event.target as Node)) {
+        setShowLoginMessage(false);
+        document.body.style.overflow = "auto";
+      }
+    };
+  
+    useEffect(() => {
+      if (showLoginMessage) {
+        document.addEventListener("click", handleClickOutside);
+      } else {
+        document.removeEventListener("click", handleClickOutside);
+      }
+  
+      return () => {
+        document.removeEventListener("click", handleClickOutside);
+      };
+    }, [showLoginMessage]);
+
    return (
       <div className={paddingForCart}>
          {cartItems.length > 0 ? (
@@ -224,36 +246,35 @@ export default function Cart() {
                         <p>Rs: {grandTotal + 100}</p>
                      </div>
                   </div>
-                  <div onClick={handleClick}>
+                  <div >
                      <button
                         className={`w-full bg-black text-white py-3 rounded-md outline outline-1 hover:bg-white hover:text-black font-semibold ${
-                           isUploadingCOD ? "cursor-not-allowed" : ""
+                           isUploading ? "cursor-not-allowed" : ""
                         }`}
+                        onClick={handleClick}
                      >
-                        {isUploadingCOD ? (
+                        {isUploading ? (
                            <div className="flex justify-center items-center px-3">
-                              <span className="loader"></span>
+                              <span className="loaderr"></span>
                            </div>
                         ) : (
                            "Cash on delivery"
                         )}
                      </button>
                      {showLoginMessage && (
-                        <div>
-                           <LoginMessage
-                              showLoginMessage={showLoginMessage}
-                              setShowLoginMessage={setShowLoginMessage}
-                           />
+                        <div ref={loginMessageRef}>
+                           <LoginMessage/>
                         </div>
                      )}
                   </div>
 
-                  <div onClick={handleBuyWithEsewa}>
+                  <div >
                      <button
                         type="submit"
                         className={`w-full bg-green-400 text-black py-3 rounded-md outline outline-1 hover:bg-white hover:text-black font-semibold ${
                            isUploadingEsewa ? "cursor-not-allowed" : ""
                         }`}
+                        onClick={handleBuyWithEsewa}
                      >
                         {isUploadingEsewa ? (
                            <div className="flex justify-center items-center px-3">
@@ -264,11 +285,8 @@ export default function Cart() {
                         )}
                      </button>
                      {showLoginMessage && (
-                        <div>
-                           <LoginMessage
-                              showLoginMessage={showLoginMessage}
-                              setShowLoginMessage={setShowLoginMessage}
-                           />
+                        <div ref={loginMessageRef}>
+                           <LoginMessage/>
                         </div>
                      )}
                   </div>
