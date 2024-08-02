@@ -87,9 +87,9 @@ export default function Sale() {
                                     />
                                  </div>
                                  <div className="text-xl text-center">
-                                    <p className="font-bold">{item.name}</p>
+                                    <p className="font-bold capitalize ">{item.name}</p>
                                     <p className="font-bold opacity-80">
-                                       {item.price}
+                                       NPR: {item.price}
                                     </p>
                                  </div>
                               </Link>

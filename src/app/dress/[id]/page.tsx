@@ -105,6 +105,7 @@ export default function AboutDress() {
 
    const handleAddToCart = (item: AddToCart) => {
       dispatch(addItemToCart(item));
+      toast.success("Item added to cart");
    };
 
    if (!specificDress) {
