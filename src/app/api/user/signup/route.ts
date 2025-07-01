@@ -43,7 +43,7 @@ export async function POST(request: Request) {
             );
         }
 
-        // If the user does not exist, create a new user
+        // If the user does not exist, create a new user changes
         const newUser = new User({
             userName,
             email,
