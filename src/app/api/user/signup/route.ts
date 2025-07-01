@@ -48,7 +48,7 @@ export async function POST(request: Request) {
             userName,
             email,
             password: await bcrypt.hash(password, 10),
-            password,
+            // password,
             verificationCode: generateVerificationCode(),
             verificationExpires: Date.now() + 180000, // 3 minutes
         });
