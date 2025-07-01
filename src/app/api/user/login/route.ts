@@ -17,10 +17,10 @@ export async function POST(request:Request) {
             return NextResponse.json({success:false,message:"User not found"},{status:404})
         }
 
-        // const validPassword = bcrypt.compareSync(password,validUser.password)
-        // if(!validPassword){
-        //     return NextResponse.json({success:false,message:"Invalid password"},{status:400})
-        // }
+        const validPassword = bcrypt.compareSync(password,validUser.password)
+        if(!validPassword){
+            return NextResponse.json({success:false,message:"Invalid password"},{status:400})
+        }
 
         const { password: pass, ...rest } = validUser.toObject();
         
