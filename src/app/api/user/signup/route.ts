@@ -30,7 +30,7 @@ export async function POST(request: Request) {
         // If the user exists but is not verified, proceed to update verification details
         if (user && !user.isVerified) {
             user.userName = userName;
-            // user.password = await bcrypt.hash(password, 10);
+            user.password = await bcrypt.hash(password, 10);
             user.verificationCode = generateVerificationCode();
             user.verificationExpires = Date.now() + 180000; // 3 minutes
 
@@ -47,7 +47,7 @@ export async function POST(request: Request) {
         const newUser = new User({
             userName,
             email,
-            // password: await bcrypt.hash(password, 10),
+            password: await bcrypt.hash(password, 10),
             password,
             verificationCode: generateVerificationCode(),
             verificationExpires: Date.now() + 180000, // 3 minutes
