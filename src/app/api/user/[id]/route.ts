@@ -15,23 +15,20 @@ export async function PUT(request: Request, {params}: {params: {id: string}}) {
 
     const {userName, email, password, avatar} = await request.json();
 
-    const hashedPassword = bcrypt.hashSync(password, 10);
+    const updateFields: any = {
+      userName,
+      email,
+      avatar,
+    };
 
-    const updatedUser = await User.findByIdAndUpdate(
-      _id,
-      {
-        $set: {
-          userName,
-          email,
-          password: hashedPassword,
-          avatar,
-        },
-      },
-      {new: true} // This option returns the updated document
-    );
+    if (password) {
+      updateFields.password = bcrypt.hashSync(password, 10);
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(_id, {$set: updateFields}, {new: true});
 
     return NextResponse.json({success: true, message: 'User updated successfully', user: updatedUser}, {status: 200});
-  } catch (error) {
-    return NextResponse.json({success: false, message: 'Error updating user'}, {status: 500});
+  } catch (error: any) {
+    return NextResponse.json({success: false, message: `Error updating user  ${error.message}`}, {status: 500});
   }
 }
