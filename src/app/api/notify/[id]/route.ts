@@ -4,9 +4,8 @@ import {NextResponse} from 'next/server';
 import * as admin from 'firebase-admin';
 import FcmToken from '@/models/FcmToken.model';
 
-const serviceAccount = require('@/lib/service-account.json');
-
 if (!admin.apps.length) {
+  const serviceAccount = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON || '{}');
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
   });
