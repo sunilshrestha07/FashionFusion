@@ -1,5 +1,3 @@
-// lib/sendFCMNotification.ts
-
 import * as admin from 'firebase-admin';
 import FcmToken from '@/models/FcmToken.model';
 import dbConnect from '@/lib/db'; // Ensure DB is connected if required
