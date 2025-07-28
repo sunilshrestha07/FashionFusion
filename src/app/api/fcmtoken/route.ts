@@ -22,7 +22,7 @@ export async function POST(request: Request) {
       });
       await newRecord.save();
 
-      return NextResponse.json({message: 'New FCM token created', data: newRecord}, {status: 201});
+      return NextResponse.json({message: 'New FCM token created', data: newRecord}, {status: 200});
     } else {
       // Update the record - add new token if not present
       const updatedFcm = await FcmToken.updateOne({email}, {$set: {fcmToken: fcmToken}}, {new: true});
