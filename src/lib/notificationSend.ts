@@ -15,10 +15,10 @@ type NotificationPayload = {
   image?: string;
 };
 
-export async function sendFCMToUser(userId: string, payload: NotificationPayload) {
+export async function sendFCMToUser(email: string, payload: NotificationPayload) {
   await dbConnect();
 
-  const existingRecord = await FcmToken.findOne({userId});
+  const existingRecord = await FcmToken.findOne({email});
   if (!existingRecord) {
     return {success: false, message: 'No FCM token found for this user'};
   }

@@ -60,20 +60,7 @@ export async function POST(request: Request) {
         maxAge: 200 * 60 * 60,
       });
 
-      // send the notification to the user to change the password
-      // get the fcm token for that user
-      const specificUser = await FcmToken.findOne(newUser._id);
-      const fcmToken = specificUser.fcmToken;
-      if (fcmToken !== null) {
-        await sendFCMToUser(newUser._id, {
-          title: 'Don’t forget to set your password!',
-          body: 'You signed in with Google — create your own password to keep your account secure.',
-        });
-      }
-
       return response;
-
-      // return NextResponse.json({success: true, message: 'User created successfully', user: newUser}, {status: 200});
     }
   } catch (error) {
     return NextResponse.json({success: false, message: 'Error creating user', error}, {status: 500});

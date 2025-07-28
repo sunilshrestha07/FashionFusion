@@ -5,19 +5,19 @@ import {NextResponse} from 'next/server';
 export async function POST(request: Request) {
   await dbConnect();
   try {
-    const {userId, fcmToken} = await request.json();
+    const {email, fcmToken} = await request.json();
 
-    if (!userId || !fcmToken) {
+    if (!email || !fcmToken) {
       return NextResponse.json({message: 'All fields are required'}, {status: 400});
     }
 
     // Check if entry already exists
-    const existingRecord = await FcmToken.findOne({userId: userId});
+    const existingRecord = await FcmToken.findOne({email: email});
 
     if (!existingRecord) {
       // Create a new record
       const newRecord = new FcmToken({
-        userId,
+        email,
         fcmToken,
       });
       await newRecord.save();
@@ -25,7 +25,7 @@ export async function POST(request: Request) {
       return NextResponse.json({message: 'New FCM token created', data: newRecord}, {status: 201});
     } else {
       // Update the record - add new token if not present
-      const updatedFcm = await FcmToken.updateOne({userId}, {$set: {fcmToken: fcmToken}}, {new: true});
+      const updatedFcm = await FcmToken.updateOne({email}, {$set: {fcmToken: fcmToken}}, {new: true});
       return NextResponse.json({message: 'FCM token updated'}, {status: 200});
     }
   } catch (error) {

@@ -14,8 +14,7 @@ export async function PUT(request: Request, {params}: {params: {id: string}}) {
     if (!specificOrder) {
       return NextResponse.json({success: false, message: 'No orders found'}, {status: 404});
     } else {
-      const userId = specificOrder['userId'];
-      const image = specificOrder[''];
+      const email = specificOrder['userEmail'];
       const orders = await Order.findByIdAndUpdate(
         id,
         {
@@ -28,7 +27,7 @@ export async function PUT(request: Request, {params}: {params: {id: string}}) {
         return NextResponse.json({success: false, message: 'No orders found'}, {status: 404});
       }
 
-      await sendFCMToUser(userId, {title: 'Order Status Update', body: `Good news! Your delivery status changed to ${status}`, image});
+      await sendFCMToUser(email, {title: 'Order Status Update', body: `Good news! Your delivery status changed to ${status}`});
       return NextResponse.json({message: 'Order status updated', orders}, {status: 200});
     }
   } catch (error) {
