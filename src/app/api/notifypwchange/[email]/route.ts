@@ -5,7 +5,7 @@ export async function POST(request: Request, {params}: {params: {email: string}}
   const email = params.email;
   try {
     await sendFCMToUser(email, {
-      title: 'Don’t forget to set your password!',
+      title: 'Don’t forget to update your password!',
       body: 'You signed in with Google — create your own password to keep your account secure.',
     });
 
