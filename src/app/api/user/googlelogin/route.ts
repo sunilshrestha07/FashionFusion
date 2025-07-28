@@ -52,13 +52,17 @@ export async function POST(request: Request) {
       const response = NextResponse.json({
         message: 'Login successfully',
         success: true,
-        user: rest,
+        isNewuser: rest,
       });
 
       response.cookies.set('token', token, {
         httpOnly: true,
         maxAge: 200 * 60 * 60,
       });
+
+      setTimeout(() => {
+        console.log('suuuuuuuu');
+      }, 4000);
 
       return response;
     }
