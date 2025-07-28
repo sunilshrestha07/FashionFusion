@@ -3,6 +3,9 @@ import {NextResponse} from 'next/server';
 import bcrypt from 'bcryptjs';
 import User from '@/models/User.model';
 import jwt from 'jsonwebtoken';
+import {sendFCMToUser} from '@/lib/notificationSend';
+import {sendOrderMail} from '@/utils/sendOrderMail';
+import FcmToken from '@/models/FcmToken.model';
 
 export async function POST(request: Request) {
   await dbConnect();
@@ -56,6 +59,17 @@ export async function POST(request: Request) {
         httpOnly: true,
         maxAge: 200 * 60 * 60,
       });
+
+      // send the notification to the user to change the password
+      // get the fcm token for that user
+      const specificUser = await FcmToken.findOne(newUser._id);
+      const fcmToken = specificUser.fcmToken;
+      if (fcmToken !== null) {
+        await sendFCMToUser(newUser._id, {
+          title: 'Don’t forget to set your password!',
+          body: 'You signed in with Google — create your own password to keep your account secure.',
+        });
+      }
 
       return response;
 
