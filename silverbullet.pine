@@ -1,0 +1,352 @@
+//@version=5
+strategy("Enhanced ICT Silver Bullet - XAUUSD", overlay=true,
+         default_qty_type=strategy.percent_of_equity,
+         default_qty_value=10,
+         max_lines_count=500,
+         max_labels_count=500,
+         pyramiding=0,
+         dynamic_requests=true)
+
+// ═══════════════════════════════════════════════════════════
+// INPUTS
+// ═══════════════════════════════════════════════════════════
+showLevels = input.bool(true, "Show Session Levels", group="Display")
+showFVG = input.bool(true, "Show Fair Value Gaps", group="Display")
+showOB = input.bool(true, "Show Order Blocks", group="Display")
+showTradeZones = input.bool(true, "Show TP/SL Zones", group="Display")
+
+rrRatio = input.float(2.5, "Risk:Reward Ratio", minval=1.0, maxval=5.0, step=0.1, group="Risk Management")
+minRR = input.float(2.0, "Minimum RR to Enter", minval=1.0, step=0.1, group="Risk Management")
+stopLossBuffer = input.int(10, "Stop Loss Buffer (pips)", minval=5, maxval=50, group="Risk Management")
+
+useDailyBias = input.bool(true, "Use Daily Bias Filter", group="Filters")
+useFibOTE = input.bool(true, "Require OTE Entry (0.62-0.79)", group="Filters")
+requireMSS = input.bool(true, "Require Market Structure Shift", group="Filters")
+minConfluences = input.int(3, "Minimum Confluences Required", minval=2, maxval=5, group="Filters")
+
+timezone = input.string("America/New_York", "Timezone", group="Settings")
+
+// ═══════════════════════════════════════════════════════════
+// TIME & SESSION LOGIC
+// ═══════════════════════════════════════════════════════════
+t = timestamp(year, month, dayofmonth, hour, minute)
+currentHour = hour(t, timezone)
+currentMinute = minute(t, timezone)
+currentDay = dayofweek(t, timezone)
+
+// Session definitions (NY Time)
+asiaStart = 20, asiaEnd = 24  // 8 PM - 12 AM
+londonStart = 2, londonEnd = 5  // 2 AM - 5 AM
+londonOpenStart = 3, londonOpenEnd = 4  // 3 AM - 4 AM (SB1)
+nyOpenStart = 9, nyOpenEnd = 10  // 9 AM - 10 AM
+nyAMStart = 10, nyAMEnd = 11  // 10 AM - 11 AM (SB2)
+nyPMStart = 14, nyPMEnd = 15  // 2 PM - 3 PM (SB3)
+
+// Silver Bullet Windows
+inSB1 = currentHour >= londonOpenStart and currentHour < londonOpenEnd
+inSB2 = currentHour >= nyAMStart and currentHour < nyAMEnd
+inSB3 = currentHour >= nyPMStart and currentHour < nyPMEnd
+inSilverBullet = inSB1 or inSB2 or inSB3
+
+// Session checks
+inAsia = (currentHour >= asiaStart or currentHour < asiaEnd)
+inLondon = currentHour >= londonStart and currentHour < londonEnd
+
+// ═══════════════════════════════════════════════════════════
+// SESSION HIGH/LOW TRACKING
+// ═══════════════════════════════════════════════════════════
+var float asiaHigh = na, var float asiaLow = na
+var float londonHigh = na, var float londonLow = na
+var float prevDayHigh = na, var float prevDayLow = na
+var int lastDayProcessed = 0
+
+// Reset on new day
+if dayofmonth != lastDayProcessed
+    prevDayHigh := request.security(syminfo.tickerid, "D", high[1])
+    prevDayLow := request.security(syminfo.tickerid, "D", low[1])
+    asiaHigh := na
+    asiaLow := na
+    londonHigh := na
+    londonLow := na
+    lastDayProcessed := dayofmonth
+
+// Track session highs/lows
+if inAsia
+    asiaHigh := na(asiaHigh) ? high : math.max(asiaHigh, high)
+    asiaLow := na(asiaLow) ? low : math.min(asiaLow, low)
+
+if inLondon
+    londonHigh := na(londonHigh) ? high : math.max(londonHigh, high)
+    londonLow := na(londonLow) ? low : math.min(londonLow, low)
+
+// ═══════════════════════════════════════════════════════════
+// MARKET STRUCTURE (HIGHER HIGHS/LOWER LOWS)
+// ═══════════════════════════════════════════════════════════
+var float[] swingHighs = array.new_float(0)
+var float[] swingLows = array.new_float(0)
+var bool lastMSSBullish = false
+
+// Detect swing points (pivot highs/lows)
+pivotHigh = ta.pivothigh(high, 5, 5)
+pivotLow = ta.pivotlow(low, 5, 5)
+
+if not na(pivotHigh)
+    array.push(swingHighs, pivotHigh)
+    if array.size(swingHighs) > 10
+        array.shift(swingHighs)
+
+if not na(pivotLow)
+    array.push(swingLows, pivotLow)
+    if array.size(swingLows) > 10
+        array.shift(swingLows)
+
+// Market Structure Shift detection
+var bool bullishMSS = false
+var bool bearishMSS = false
+
+var float lastHigh = na, var float prevHigh = na
+var float lastLow = na, var float prevLow = na
+
+if array.size(swingHighs) >= 2
+    lastHigh := array.get(swingHighs, array.size(swingHighs) - 1)
+    prevHigh := array.get(swingHighs, array.size(swingHighs) - 2)
+    if close > lastHigh and lastHigh > prevHigh
+        bullishMSS := true
+        bearishMSS := false
+        lastMSSBullish := true
+
+if array.size(swingLows) >= 2
+    lastLow := array.get(swingLows, array.size(swingLows) - 1)
+    prevLow := array.get(swingLows, array.size(swingLows) - 2)
+    if close < lastLow and lastLow < prevLow
+        bearishMSS := true
+        bullishMSS := false
+        lastMSSBullish := false
+
+// ═══════════════════════════════════════════════════════════
+// LIQUIDITY SWEEPS & REJECTIONS
+// ═══════════════════════════════════════════════════════════
+liquidityBuffer = syminfo.mintick * 20
+
+// Check for liquidity sweeps
+asiaLowSweep = not na(asiaLow) and low <= asiaLow + liquidityBuffer
+asiaHighSweep = not na(asiaHigh) and high >= asiaHigh - liquidityBuffer
+londonLowSweep = not na(londonLow) and low <= londonLow + liquidityBuffer
+londonHighSweep = not na(londonHigh) and high >= londonHigh - liquidityBuffer
+
+// Strong rejections (sweep + close back inside)
+bullishRejection = (asiaLowSweep or londonLowSweep) and close > open and (close - low) > (high - close) * 2
+bearishRejection = (asiaHighSweep or londonHighSweep) and close < open and (high - close) > (close - low) * 2
+
+// ═══════════════════════════════════════════════════════════
+// FAIR VALUE GAPS (FVG)
+// ═══════════════════════════════════════════════════════════
+bullishFVG = low > high[2] and close[1] > open[1]  // Up gap
+bearishFVG = high < low[2] and close[1] < open[1]  // Down gap
+
+fvgTop = bullishFVG ? low : bearishFVG ? low[2] : na
+fvgBottom = bullishFVG ? high[2] : bearishFVG ? high : na
+
+// Plot FVGs
+if showFVG and bullishFVG
+    box.new(bar_index - 2, high[2], bar_index + 10, low,  border_color=color.new(color.green, 60),  bgcolor=color.new(color.green, 90))
+
+if showFVG and bearishFVG
+    box.new(bar_index - 2, low[2], bar_index + 10, high,  border_color=color.new(color.red, 60),  bgcolor=color.new(color.red, 90))
+
+// ═══════════════════════════════════════════════════════════
+// ORDER BLOCKS (OB)
+// ═══════════════════════════════════════════════════════════
+// Last bearish candle before bullish move (bullish OB)
+bullishOB = close[1] < open[1] and close > high[1] and close > open
+// Last bullish candle before bearish move (bearish OB)
+bearishOB = close[1] > open[1] and close < low[1] and close < open
+
+obHigh = bullishOB ? high[1] : bearishOB ? high[1] : na
+obLow = bullishOB ? low[1] : bearishOB ? low[1] : na
+
+// Plot Order Blocks
+if showOB and bullishOB
+    box.new(bar_index - 1, high[1], bar_index + 15, low[1],   border_color=color.new(color.green, 50),   bgcolor=color.new(color.green, 85))
+    label.new(bar_index, low[1], "Bull OB",
+              style=label.style_label_up,
+              color=color.new(color.green, 30),
+              textcolor=color.white, size=size.tiny)
+
+if showOB and bearishOB
+    box.new(bar_index - 1, high[1], bar_index + 15, low[1],  border_color=color.new(color.red, 50),  bgcolor=color.new(color.red, 85))
+    label.new(bar_index, high[1], "Bear OB",
+              style=label.style_label_down,
+              color=color.new(color.red, 30),
+              textcolor=color.white, size=size.tiny)
+
+// ═══════════════════════════════════════════════════════════
+// FIBONACCI OTE (Optimal Trade Entry: 0.62 - 0.79)
+// ═══════════════════════════════════════════════════════════
+var float fibHigh = na
+var float fibLow = na
+var int fibBarsBack = 0
+
+// Update swing high/low for Fib
+if high > ta.highest(high, 20)[1]
+    fibHigh := high
+    fibBarsBack := 0
+if low < ta.lowest(low, 20)[1]
+    fibLow := low
+    fibBarsBack := 0
+
+fibBarsBack += 1
+
+// Calculate Fib retracement level
+fibRange = fibHigh - fibLow
+currentFibLevel = (not na(fibHigh) and not na(fibLow) and fibRange != 0) ? (close - fibLow) / fibRange : na
+
+// OTE zone: 0.62 - 0.79
+inOTEBullish = not na(currentFibLevel) and currentFibLevel >= 0.62 and currentFibLevel <= 0.79 and lastMSSBullish
+inOTEBearish = not na(currentFibLevel) and currentFibLevel >= 0.21 and currentFibLevel <= 0.38 and not lastMSSBullish
+
+// ═══════════════════════════════════════════════════════════
+// DAILY BIAS
+// ═══════════════════════════════════════════════════════════
+dailyOpen = request.security(syminfo.tickerid, "D", open)
+bullishDailyBias = close > dailyOpen
+bearishDailyBias = close < dailyOpen
+
+// ═══════════════════════════════════════════════════════════
+// CONFLUENCE SCORING
+// ═══════════════════════════════════════════════════════════
+calcLongConfluence() =>
+    score = 0
+    score += bullishRejection ? 1 : 0
+    score += bullishFVG ? 1 : 0
+    score += bullishOB ? 1 : 0
+    score += (requireMSS ? bullishMSS : lastMSSBullish) ? 1 : 0
+    score += (useFibOTE ? inOTEBullish : true) ? 1 : 0
+    score += (useDailyBias ? bullishDailyBias : true) ? 1 : 0
+    score
+
+calcShortConfluence() =>
+    score = 0
+    score += bearishRejection ? 1 : 0
+    score += bearishFVG ? 1 : 0
+    score += bearishOB ? 1 : 0
+    score += (requireMSS ? bearishMSS : not lastMSSBullish) ? 1 : 0
+    score += (useFibOTE ? inOTEBearish : true) ? 1 : 0
+    score += (useDailyBias ? bearishDailyBias : true) ? 1 : 0
+    score
+
+longConfluence = calcLongConfluence()
+shortConfluence = calcShortConfluence()
+
+// ═══════════════════════════════════════════════════════════
+// ENTRY CONDITIONS
+// ═══════════════════════════════════════════════════════════
+stopBuffer = stopLossBuffer * syminfo.mintick * 10
+
+// Calculate potential RR before entry
+longStopLevel = ta.lowest(low, 5) - stopBuffer
+longTPLevel(entry) => entry + (entry - longStopLevel) * rrRatio
+longRR = close > longStopLevel ? (longTPLevel(close) - close) / (close - longStopLevel) : 0
+
+shortStopLevel = ta.highest(high, 5) + stopBuffer
+shortTPLevel(entry) => entry - (shortStopLevel - entry) * rrRatio
+shortRR = shortStopLevel > close ? (close - shortTPLevel(close)) / (shortStopLevel - close) : 0
+
+// Final entry conditions
+longSetup = inSilverBullet and longConfluence >= minConfluences and longRR >= minRR
+shortSetup = inSilverBullet and shortConfluence >= minConfluences and shortRR >= minRR
+
+// Prevent conflicting signals
+longCondition = longSetup and not shortSetup and strategy.position_size == 0
+shortCondition = shortSetup and not longSetup and strategy.position_size == 0
+
+// ═══════════════════════════════════════════════════════════
+// TRADE EXECUTION
+// ═══════════════════════════════════════════════════════════
+var float entryPrice = na
+var float stopLoss = na
+var float takeProfit = na
+
+if longCondition
+    entryPrice := close
+    stopLoss := longStopLevel
+    takeProfit := longTPLevel(close)
+
+    strategy.entry("Long", strategy.long, comment="SB Long | Conf:" + str.tostring(longConfluence))
+    strategy.exit("Exit Long", "Long", stop=stopLoss, limit=takeProfit)
+
+    // Visual markers
+    if showTradeZones
+        line.new(bar_index, stopLoss, bar_index + 20, stopLoss,
+                 color=color.new(color.red, 0), width=2, style=line.style_dashed)
+        line.new(bar_index, takeProfit, bar_index + 20, takeProfit,
+                 color=color.new(color.green, 0), width=2, style=line.style_dashed)
+        label.new(bar_index, low, "LONG\nRR:" + str.tostring(longRR, "#.##") + "\nConf:" + str.tostring(longConfluence),
+                  style=label.style_label_up, color=color.new(color.green, 20),
+                  textcolor=color.white, size=size.normal)
+
+if shortCondition
+    entryPrice := close
+    stopLoss := shortStopLevel
+    takeProfit := shortTPLevel(close)
+
+    strategy.entry("Short", strategy.short, comment="SB Short | Conf:" + str.tostring(shortConfluence))
+    strategy.exit("Exit Short", "Short", stop=stopLoss, limit=takeProfit)
+
+    // Visual markers
+    if showTradeZones
+        line.new(bar_index, stopLoss, bar_index + 20, stopLoss,
+                 color=color.new(color.red, 0), width=2, style=line.style_dashed)
+        line.new(bar_index, takeProfit, bar_index + 20, takeProfit,
+                 color=color.new(color.green, 0), width=2, style=line.style_dashed)
+        label.new(bar_index, high, "SHORT\nRR:" + str.tostring(shortRR, "#.##") + "\nConf:" + str.tostring(shortConfluence),
+                  style=label.style_label_down, color=color.new(color.red, 20),
+                  textcolor=color.white, size=size.normal)
+
+// ═══════════════════════════════════════════════════════════
+// PLOT SESSION LEVELS
+// ═══════════════════════════════════════════════════════════
+plot(showLevels and not na(asiaHigh) ? asiaHigh : na, "Asia High",
+     color=color.new(color.orange, 30), linewidth=2, style=plot.style_circles)
+plot(showLevels and not na(asiaLow) ? asiaLow : na, "Asia Low",
+     color=color.new(color.orange, 30), linewidth=2, style=plot.style_circles)
+plot(showLevels and not na(londonHigh) ? londonHigh : na, "London High",
+     color=color.new(color.aqua, 30), linewidth=2, style=plot.style_circles)
+plot(showLevels and not na(londonLow) ? londonLow : na, "London Low",
+     color=color.new(color.aqua, 30), linewidth=2, style=plot.style_circles)
+
+// Highlight Silver Bullet windows
+bgcolor(inSB1 ? color.new(color.blue, 95) : na, title="SB1: London Open")
+bgcolor(inSB2 ? color.new(color.purple, 95) : na, title="SB2: NY AM")
+bgcolor(inSB3 ? color.new(color.fuchsia, 95) : na, title="SB3: NY PM")
+
+// ═══════════════════════════════════════════════════════════
+// INFO TABLE
+// ═══════════════════════════════════════════════════════════
+var table infoTable = table.new(position.top_right, 2, 6,
+                                 bgcolor=color.new(color.black, 85),
+                                 border_width=1)
+
+if barstate.islast and showLevels
+    table.cell(infoTable, 0, 0, "Metric", bgcolor=color.new(color.gray, 70), text_color=color.white)
+    table.cell(infoTable, 1, 0, "Value", bgcolor=color.new(color.gray, 70), text_color=color.white)
+
+    table.cell(infoTable, 0, 1, "Long Conf", text_color=color.white)
+    table.cell(infoTable, 1, 1, str.tostring(longConfluence),
+               text_color=longConfluence >= minConfluences ? color.lime : color.red)
+
+    table.cell(infoTable, 0, 2, "Short Conf", text_color=color.white)
+    table.cell(infoTable, 1, 2, str.tostring(shortConfluence),
+               text_color=shortConfluence >= minConfluences ? color.lime : color.red)
+
+    table.cell(infoTable, 0, 3, "Long RR", text_color=color.white)
+    table.cell(infoTable, 1, 3, str.tostring(longRR, "#.##"),
+               text_color=longRR >= minRR ? color.lime : color.orange)
+
+    table.cell(infoTable, 0, 4, "Short RR", text_color=color.white)
+    table.cell(infoTable, 1, 4, str.tostring(shortRR, "#.##"),
+               text_color=shortRR >= minRR ? color.lime : color.orange)
+
+    table.cell(infoTable, 0, 5, "Daily Bias", text_color=color.white)
+    table.cell(infoTable, 1, 5, bullishDailyBias ? "Bullish" : "Bearish",
+               text_color=bullishDailyBias ? color.lime : color.red)
