@@ -23,7 +23,7 @@ export async function POST(request: Request) {
         await newMemory.save();
 
         return NextResponse.json(
-            { success: true, message: "New memory created successfully", memory: newMemory },
+            { success: true, message: "New memory created successfully", memories: [newMemory] },
             { status: 201 }
         );
     } catch (error) {
