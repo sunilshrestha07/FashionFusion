@@ -2,7 +2,7 @@ import dbConnect from "@/lib/db";
 import NewMemory from "@/models/NewMemory.model";
 import { NextResponse } from "next/server";
 import FcmToken from "@/models/FcmToken.model";
-import { sendNotification } from "../appnotification/route";
+import { sendAppNotification } from "@/lib/appNotificationSend";
 
 export async function POST(request: Request) {
     await dbConnect();
@@ -32,7 +32,7 @@ export async function POST(request: Request) {
         } else {
             // 👇 Send notification to ALL stored tokens at once
             const notificationPromises = existingRecords.map((record) =>
-                sendNotification({
+                sendAppNotification({
                     token: record.fcmToken,
                     title: 'New Memory Added! 😍',
                     body: 'Your memory box just got a little more special. Open to see!',

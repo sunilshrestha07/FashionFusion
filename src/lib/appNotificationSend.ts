@@ -1,5 +1,6 @@
 // lib/sendNotification.ts
 import * as admin from 'firebase-admin';
+import dbConnect from '@/lib/db'; // 👈 add this
 import FcmToken from '@/models/FcmToken.model';
 
 if (!admin.apps.length) {
@@ -12,7 +13,7 @@ if (!admin.apps.length) {
   });
 }
 
-export async function sendNotification({
+export async function sendAppNotification({
   token,
   title,
   body,
@@ -21,25 +22,23 @@ export async function sendNotification({
   token: string;
   title: string;
   body: string;
-  image?: string;
+  image: string;
 }) {
   try {
-    const message = {
+    const response = await admin.messaging().send({
       token,
-      notification: { title, body, image },
-    };
-
-    const response = await admin.messaging().send(message);
+      notification: { title, body, imageUrl: image },
+    });
     return { success: true, messageId: response };
 
   } catch (error: any) {
     const errorCode = error?.errorInfo?.code;
 
-    // 👇 Auto-delete invalid/expired tokens from DB
     if (
       errorCode === 'messaging/registration-token-not-registered' ||
       errorCode === 'messaging/mismatched-credential'
     ) {
+      await dbConnect(); // 👈 add this before DB operation
       console.log(`Removing invalid token: ${token}`);
       await FcmToken.deleteOne({ fcmToken: token });
     } else {
