@@ -1,16 +1,19 @@
 // lib/sendNotification.ts
 import * as admin from 'firebase-admin';
-import dbConnect from '@/lib/db'; // 👈 add this
+import dbConnect from '@/lib/db';
 import FcmToken from '@/models/FcmToken.model';
 
-if (!admin.apps.length) {
-  admin.initializeApp({
-    credential: admin.credential.cert({
-      projectId: process.env.FIREBASE_PROJECT_ID,
-      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-      privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
-    }),
-  });
+function getFirebaseAdmin() {
+  if (!admin.apps.length) {
+    admin.initializeApp({
+      credential: admin.credential.cert({
+        projectId: process.env.FIREBASE_PROJECT_ID as string,
+        clientEmail: process.env.FIREBASE_CLIENT_EMAIL as string,
+        privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n') as string,
+      }),
+    });
+  }
+  return admin;
 }
 
 export async function sendAppNotification({
@@ -22,13 +25,24 @@ export async function sendAppNotification({
   token: string;
   title: string;
   body: string;
-  image: string;
+  image?: string;
 }) {
   try {
-    const response = await admin.messaging().send({
+    const firebaseAdmin = getFirebaseAdmin(); // 👈 lazy init, only runs at runtime
+
+    const response = await firebaseAdmin.messaging().send({
       token,
-      notification: { title, body, imageUrl: image },
+      notification: { title, body },
+      ...(image && {
+        android: { notification: { imageUrl: image } },
+        apns: {
+          payload: { aps: { 'mutable-content': 1 } },
+          fcmOptions: { imageUrl: image },
+        },
+        webpush: { headers: { image } },
+      }),
     });
+
     return { success: true, messageId: response };
 
   } catch (error: any) {
@@ -38,7 +52,7 @@ export async function sendAppNotification({
       errorCode === 'messaging/registration-token-not-registered' ||
       errorCode === 'messaging/mismatched-credential'
     ) {
-      await dbConnect(); // 👈 add this before DB operation
+      await dbConnect();
       console.log(`Removing invalid token: ${token}`);
       await FcmToken.deleteOne({ fcmToken: token });
     } else {
